@@ -22,29 +22,29 @@ static HashTable <?= $ce['id'] ?>_prop_handlers;
  * */
 
 <?php
-foreach ($classes as $ce) {
-	if (!$ce['methods'])
+foreach ($all_classes as $ce) {
+	if (!$ce['own_methods'])
 		continue;
 	
 	echo "/* ".$ce['name']." */\n";
 	
-	foreach ($ce['methods'] as $method) {
+	foreach ($ce['own_methods'] as $method) {
 		switch ($method['hint']['type']) {
 			case "obj_info":
 				printf("ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_%s, %d, %d, %s, %d)\n", 
-					$ce['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
+					$method['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
 					addslashes($method['hint']['value']), (int) $method['hint']['null']);
 			break;
 			
 			case "type_info":
 				printf("ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_%s, %d, %d, %s, %d)\n", 
-					$ce['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
+					$method['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
 					addslashes($method['hint']['value']), (int) $method['hint']['null']);
 			break;
 			
 			default:
 				printf("ZEND_BEGIN_ARG_INFO_EX(arginfo_class_%s, 0, %d, %d)\n", 
-					$ce['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required']);
+					$method['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required']);
 			break;
 		}
 		
@@ -83,7 +83,7 @@ foreach ($classes as $ce) {
 /* <?= $ce['name'] ?> */
 static zend_function_entry <?= $ce['id'] ?>_methods[] = {
 <?php foreach ($ce['methods'] as $method): ?>
-	PHP_ME(<?= $ce['prefix'] ?>, <?= $method['name'] ?>, arginfo_class_<?= $ce['prefix'] ?>_<?= $method['name'] ?>, <?= $method['modifiers'] ?>)
+	PHP_ME(<?= $method['prefix'] ?>, <?= $method['name'] ?>, arginfo_class_<?= $method['prefix'] ?>_<?= $method['name'] ?>, <?= $method['modifiers'] ?>)
 <?php endforeach; ?>
 	PHP_FE_END
 };
@@ -138,8 +138,8 @@ void html5_dom_interfaces_init() {
 	/* <?= $ce['name'] ?> */
 <?php if ($ce['props']): ?>
 	html5_dom_prop_handler_list <?= $ce['id'] ?>_handlers[] = {
-<?php foreach ($ce['props'] as $var): ?>
-		{"<?= $var ?>", <?= $ce['id']."__".$var ?>}, 
+<?php foreach ($ce['props'] as $prop): ?>
+		{"<?= $prop['name'] ?>", <?= $prop['prefix']."__".$prop['name'] ?>}, 
 <?php endforeach; ?>
 		{"", NULL}, 
 	};
@@ -148,7 +148,7 @@ void html5_dom_interfaces_init() {
 	INIT_CLASS_ENTRY(ce, "<?= addslashes($ce['name']) ?>", <?= $ce['id'] ?>_methods);
 	ce.create_object = _create_object;
 	<?= $ce['id'] ?>_ce = zend_register_internal_class(&ce);
-<?php foreach ($ce['const'] as $const): ?>
+<?php foreach ($ce['consts'] as $const): ?>
 	zend_declare_class_constant_long(<?= $ce['id'] ?>_ce, ZEND_STRS("<?= addslashes($const['name']) ?>") - 1, <?= $ce['prefix']."__".$const['name'] ?>);
 <?php endforeach; ?>
 	

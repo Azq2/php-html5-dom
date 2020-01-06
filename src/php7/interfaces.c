@@ -167,89 +167,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Document_createAt
 	ZEND_ARG_TYPE_INFO(0, localName, IS_STRING, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Document_getElementsByTagName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, qualifiedName, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Document_getElementsByTagNameNS, 0, 2, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, namespace, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(0, localName, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Document_getElementsByClassName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, classNames, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Document_prepend, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Document_append, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Document_querySelector, 0, 1, HTML5\\DOM\\Node, 1)
-	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Document_querySelectorAll, 0, 1, HTML5\\DOM\\NodeList, 0)
-	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_Document_getElementById, 0, 0, 1)
-	ZEND_ARG_TYPE_INFO(0, elementId, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-/* HTML5\DOM\DocumentFragment */
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_getElementsByTagName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, qualifiedName, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_getElementsByTagNameNS, 0, 2, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, namespace, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(0, localName, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_getElementsByClassName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, classNames, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_prepend, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_append, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_querySelector, 0, 1, HTML5\\DOM\\Node, 1)
-	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_querySelectorAll, 0, 1, HTML5\\DOM\\NodeList, 0)
-	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DocumentFragment_getElementById, 0, 0, 1)
-	ZEND_ARG_TYPE_INFO(0, elementId, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-/* HTML5\DOM\DocumentType */
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentType_before, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentType_after, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentType_replaceWith, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentType_remove, 0, 0, IS_VOID, 0)
-ZEND_END_ARG_INFO();
-
 /* HTML5\DOM\CharacterData */
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_CharacterData_substringData, 0, 2, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, offset, IS_LONG, 0)
@@ -274,21 +191,6 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_CharacterData_re
 	ZEND_ARG_TYPE_INFO(0, offset, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, count, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, data, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_CharacterData_before, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_CharacterData_after, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_CharacterData_replaceWith, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_CharacterData_remove, 0, 0, IS_VOID, 0)
 ZEND_END_ARG_INFO();
 
 /* HTML5\DOM\Text */
@@ -394,35 +296,6 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Element_insertAdjacentHTML, 0, 2, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, where, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, html, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Element_getElementsByTagName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, qualifiedName, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Element_getElementsByTagNameNS, 0, 2, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, namespace, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(0, localName, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Element_getElementsByClassName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
-	ZEND_ARG_TYPE_INFO(0, classNames, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Element_prepend, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Element_append, 0, 0, IS_VOID, 0)
-	ZEND_ARG_VARIADIC_INFO(0, nodes)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Element_querySelector, 0, 1, HTML5\\DOM\\Node, 1)
-	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Element_querySelectorAll, 0, 1, HTML5\\DOM\\NodeList, 0)
-	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
 ZEND_END_ARG_INFO();
 
 /* HTML5\DOM\HTMLCollection */
@@ -641,6 +514,57 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_count, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
+/* HTML5\DOM\NonElementParentNode */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NonElementParentNode_getElementById, 0, 0, 1)
+	ZEND_ARG_TYPE_INFO(0, elementId, IS_STRING, 0)
+ZEND_END_ARG_INFO();
+
+/* HTML5\DOM\ParentNode */
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_getElementsByTagName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
+	ZEND_ARG_TYPE_INFO(0, qualifiedName, IS_STRING, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_getElementsByTagNameNS, 0, 2, HTML5\\DOM\\HTMLCollection, 0)
+	ZEND_ARG_TYPE_INFO(0, namespace, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, localName, IS_STRING, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_getElementsByClassName, 0, 1, HTML5\\DOM\\HTMLCollection, 0)
+	ZEND_ARG_TYPE_INFO(0, classNames, IS_STRING, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_prepend, 0, 0, IS_VOID, 0)
+	ZEND_ARG_VARIADIC_INFO(0, nodes)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_append, 0, 0, IS_VOID, 0)
+	ZEND_ARG_VARIADIC_INFO(0, nodes)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_querySelector, 0, 1, HTML5\\DOM\\Node, 1)
+	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ParentNode_querySelectorAll, 0, 1, HTML5\\DOM\\NodeList, 0)
+	ZEND_ARG_TYPE_INFO(0, selectors, IS_STRING, 0)
+ZEND_END_ARG_INFO();
+
+/* HTML5\DOM\ChildNode */
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ChildNode_before, 0, 0, IS_VOID, 0)
+	ZEND_ARG_VARIADIC_INFO(0, nodes)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ChildNode_after, 0, 0, IS_VOID, 0)
+	ZEND_ARG_VARIADIC_INFO(0, nodes)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ChildNode_replaceWith, 0, 0, IS_VOID, 0)
+	ZEND_ARG_VARIADIC_INFO(0, nodes)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ChildNode_remove, 0, 0, IS_VOID, 0)
+ZEND_END_ARG_INFO();
+
 
 /*
  * Methods info
@@ -705,36 +629,36 @@ static zend_function_entry html5_dom_document_methods[] = {
 	PHP_ME(HTML5_DOM_Document, adoptNode, arginfo_class_HTML5_DOM_Document_adoptNode, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_Document, createAttribute, arginfo_class_HTML5_DOM_Document_createAttribute, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_Document, createAttributeNS, arginfo_class_HTML5_DOM_Document_createAttributeNS, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, getElementsByTagName, arginfo_class_HTML5_DOM_Document_getElementsByTagName, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, getElementsByTagNameNS, arginfo_class_HTML5_DOM_Document_getElementsByTagNameNS, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, getElementsByClassName, arginfo_class_HTML5_DOM_Document_getElementsByClassName, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, prepend, arginfo_class_HTML5_DOM_Document_prepend, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, append, arginfo_class_HTML5_DOM_Document_append, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, querySelector, arginfo_class_HTML5_DOM_Document_querySelector, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, querySelectorAll, arginfo_class_HTML5_DOM_Document_querySelectorAll, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Document, getElementById, arginfo_class_HTML5_DOM_Document_getElementById, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByTagName, arginfo_class_HTML5_DOM_ParentNode_getElementsByTagName, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByTagNameNS, arginfo_class_HTML5_DOM_ParentNode_getElementsByTagNameNS, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByClassName, arginfo_class_HTML5_DOM_ParentNode_getElementsByClassName, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, prepend, arginfo_class_HTML5_DOM_ParentNode_prepend, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, append, arginfo_class_HTML5_DOM_ParentNode_append, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, querySelector, arginfo_class_HTML5_DOM_ParentNode_querySelector, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, querySelectorAll, arginfo_class_HTML5_DOM_ParentNode_querySelectorAll, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_NonElementParentNode, getElementById, arginfo_class_HTML5_DOM_NonElementParentNode_getElementById, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
 /* HTML5\DOM\DocumentFragment */
 static zend_function_entry html5_dom_documentfragment_methods[] = {
-	PHP_ME(HTML5_DOM_DocumentFragment, getElementsByTagName, arginfo_class_HTML5_DOM_DocumentFragment_getElementsByTagName, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, getElementsByTagNameNS, arginfo_class_HTML5_DOM_DocumentFragment_getElementsByTagNameNS, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, getElementsByClassName, arginfo_class_HTML5_DOM_DocumentFragment_getElementsByClassName, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, prepend, arginfo_class_HTML5_DOM_DocumentFragment_prepend, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, append, arginfo_class_HTML5_DOM_DocumentFragment_append, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, querySelector, arginfo_class_HTML5_DOM_DocumentFragment_querySelector, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, querySelectorAll, arginfo_class_HTML5_DOM_DocumentFragment_querySelectorAll, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentFragment, getElementById, arginfo_class_HTML5_DOM_DocumentFragment_getElementById, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByTagName, arginfo_class_HTML5_DOM_ParentNode_getElementsByTagName, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByTagNameNS, arginfo_class_HTML5_DOM_ParentNode_getElementsByTagNameNS, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByClassName, arginfo_class_HTML5_DOM_ParentNode_getElementsByClassName, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, prepend, arginfo_class_HTML5_DOM_ParentNode_prepend, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, append, arginfo_class_HTML5_DOM_ParentNode_append, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, querySelector, arginfo_class_HTML5_DOM_ParentNode_querySelector, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, querySelectorAll, arginfo_class_HTML5_DOM_ParentNode_querySelectorAll, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_NonElementParentNode, getElementById, arginfo_class_HTML5_DOM_NonElementParentNode_getElementById, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
 /* HTML5\DOM\DocumentType */
 static zend_function_entry html5_dom_documenttype_methods[] = {
-	PHP_ME(HTML5_DOM_DocumentType, before, arginfo_class_HTML5_DOM_DocumentType_before, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentType, after, arginfo_class_HTML5_DOM_DocumentType_after, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentType, replaceWith, arginfo_class_HTML5_DOM_DocumentType_replaceWith, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DocumentType, remove, arginfo_class_HTML5_DOM_DocumentType_remove, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, before, arginfo_class_HTML5_DOM_ChildNode_before, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, after, arginfo_class_HTML5_DOM_ChildNode_after, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, replaceWith, arginfo_class_HTML5_DOM_ChildNode_replaceWith, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, remove, arginfo_class_HTML5_DOM_ChildNode_remove, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -745,10 +669,10 @@ static zend_function_entry html5_dom_characterdata_methods[] = {
 	PHP_ME(HTML5_DOM_CharacterData, insertData, arginfo_class_HTML5_DOM_CharacterData_insertData, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_CharacterData, deleteData, arginfo_class_HTML5_DOM_CharacterData_deleteData, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_CharacterData, replaceData, arginfo_class_HTML5_DOM_CharacterData_replaceData, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_CharacterData, before, arginfo_class_HTML5_DOM_CharacterData_before, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_CharacterData, after, arginfo_class_HTML5_DOM_CharacterData_after, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_CharacterData, replaceWith, arginfo_class_HTML5_DOM_CharacterData_replaceWith, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_CharacterData, remove, arginfo_class_HTML5_DOM_CharacterData_remove, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, before, arginfo_class_HTML5_DOM_ChildNode_before, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, after, arginfo_class_HTML5_DOM_ChildNode_after, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, replaceWith, arginfo_class_HTML5_DOM_ChildNode_replaceWith, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ChildNode, remove, arginfo_class_HTML5_DOM_ChildNode_remove, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -792,13 +716,13 @@ static zend_function_entry html5_dom_element_methods[] = {
 	PHP_ME(HTML5_DOM_Element, insertAdjacentElement, arginfo_class_HTML5_DOM_Element_insertAdjacentElement, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_Element, insertAdjacentText, arginfo_class_HTML5_DOM_Element_insertAdjacentText, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_Element, insertAdjacentHTML, arginfo_class_HTML5_DOM_Element_insertAdjacentHTML, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, getElementsByTagName, arginfo_class_HTML5_DOM_Element_getElementsByTagName, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, getElementsByTagNameNS, arginfo_class_HTML5_DOM_Element_getElementsByTagNameNS, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, getElementsByClassName, arginfo_class_HTML5_DOM_Element_getElementsByClassName, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, prepend, arginfo_class_HTML5_DOM_Element_prepend, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, append, arginfo_class_HTML5_DOM_Element_append, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, querySelector, arginfo_class_HTML5_DOM_Element_querySelector, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_Element, querySelectorAll, arginfo_class_HTML5_DOM_Element_querySelectorAll, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByTagName, arginfo_class_HTML5_DOM_ParentNode_getElementsByTagName, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByTagNameNS, arginfo_class_HTML5_DOM_ParentNode_getElementsByTagNameNS, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, getElementsByClassName, arginfo_class_HTML5_DOM_ParentNode_getElementsByClassName, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, prepend, arginfo_class_HTML5_DOM_ParentNode_prepend, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, append, arginfo_class_HTML5_DOM_ParentNode_append, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, querySelector, arginfo_class_HTML5_DOM_ParentNode_querySelector, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_ParentNode, querySelectorAll, arginfo_class_HTML5_DOM_ParentNode_querySelectorAll, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -1062,10 +986,10 @@ void html5_dom_interfaces_init() {
 		{"contentType", html5_dom_document__contentType}, 
 		{"doctype", html5_dom_document__doctype}, 
 		{"documentElement", html5_dom_document__documentElement}, 
-		{"children", html5_dom_document__children}, 
-		{"firstElementChild", html5_dom_document__firstElementChild}, 
-		{"lastElementChild", html5_dom_document__lastElementChild}, 
-		{"childElementCount", html5_dom_document__childElementCount}, 
+		{"children", html5_dom_parentnode__children}, 
+		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
+		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
+		{"childElementCount", html5_dom_parentnode__childElementCount}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_document_prop_handlers, html5_dom_document_handlers);
@@ -1075,10 +999,10 @@ void html5_dom_interfaces_init() {
 	
 	/* HTML5\DOM\DocumentFragment */
 	html5_dom_prop_handler_list html5_dom_documentfragment_handlers[] = {
-		{"children", html5_dom_documentfragment__children}, 
-		{"firstElementChild", html5_dom_documentfragment__firstElementChild}, 
-		{"lastElementChild", html5_dom_documentfragment__lastElementChild}, 
-		{"childElementCount", html5_dom_documentfragment__childElementCount}, 
+		{"children", html5_dom_parentnode__children}, 
+		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
+		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
+		{"childElementCount", html5_dom_parentnode__childElementCount}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_documentfragment_prop_handlers, html5_dom_documentfragment_handlers);
@@ -1102,8 +1026,8 @@ void html5_dom_interfaces_init() {
 	html5_dom_prop_handler_list html5_dom_characterdata_handlers[] = {
 		{"data", html5_dom_characterdata__data}, 
 		{"length", html5_dom_characterdata__length}, 
-		{"previousElementSibling", html5_dom_characterdata__previousElementSibling}, 
-		{"nextElementSibling", html5_dom_characterdata__nextElementSibling}, 
+		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling}, 
+		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
@@ -1148,12 +1072,12 @@ void html5_dom_interfaces_init() {
 		{"attributes", html5_dom_element__attributes}, 
 		{"innerHTML", html5_dom_element__innerHTML}, 
 		{"outerHTML", html5_dom_element__outerHTML}, 
-		{"children", html5_dom_element__children}, 
-		{"firstElementChild", html5_dom_element__firstElementChild}, 
-		{"lastElementChild", html5_dom_element__lastElementChild}, 
-		{"childElementCount", html5_dom_element__childElementCount}, 
-		{"previousElementSibling", html5_dom_element__previousElementSibling}, 
-		{"nextElementSibling", html5_dom_element__nextElementSibling}, 
+		{"children", html5_dom_parentnode__children}, 
+		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
+		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
+		{"childElementCount", html5_dom_parentnode__childElementCount}, 
+		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling}, 
+		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_element_prop_handlers, html5_dom_element_handlers);

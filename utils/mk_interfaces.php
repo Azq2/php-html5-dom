@@ -3,45 +3,92 @@ $root = realpath(__DIR__."/../");
 
 require __DIR__."/data/interfaces.php";
 
-$tpl_params = [];
+$tpl_params = [
+	'classes'		=> [],		// classes
+	'all_classes'	=> []		// classes + traits
+];
 
-foreach (get_declared_classes() as $class) {
+foreach (array_merge(get_declared_classes(), get_declared_traits()) as $class) {
 	if (strpos($class, "HTML5\\DOM") !== 0)
 		continue;
 	
-	$ce_info = [
-		'name'		=> $class, 
-		'id'		=> strtolower(str_replace("\\", "_", $class)), 
-		'prefix'	=> str_replace("\\", "_", $class), 
-		'props'		=> [], 
-		'methods'	=> [], 
-		'const'		=> []
-	];
+	$class_info = getClassInfo($class);
 	
+	if (!$class_info['is_trait'])
+		$tpl_params['classes'][] = $class_info;
+	
+	$tpl_params['all_classes'][] = $class_info;
+}
+
+file_put_contents($root.'/src/php7/interfaces.c', tpl(__DIR__.'/data/interfaces_php7.c', $tpl_params));
+file_put_contents($root.'/src/php7/interfaces.h', tpl(__DIR__.'/data/interfaces_php7.h', $tpl_params));
+
+function tpl($___name, $___params) {
+	extract($___params);
+	ob_start();
+	require $___name;
+	return ob_get_clean();
+}
+
+function getClassInfo($class) {
 	$ref_class = new ReflectionClass($class);
-	
 	$ref_class_parent = $ref_class->getParentClass();
 	
-	// echo "$class".($ref_class_parent ? " extends ".$ref_class_parent->getName() : "")."\n";
+	$class_info = [
+		'name'			=> $class, 
+		'id'			=> strtolower(str_replace("\\", "_", $class)), 
+		'prefix'		=> str_replace("\\", "_", $class), 
+		'props'			=> [], 
+		'own_props'		=> [], 
+		'methods'		=> [], 
+		'own_methods'	=> [], 
+		'consts'		=> [], 
+		'is_trait'		=> $ref_class->isTrait()
+	];
 	
+	// Get properties and methods inherited from traits
+	$trait_methods = [];
+	$trait_props = [];
+	
+	foreach ($ref_class->getTraits() as $trait) {
+		foreach ($trait->getProperties() as $prop)
+			$trait_props[$prop->getName()] = getClassInfo($trait->getName());
+		
+		foreach ($trait->getMethods() as $method)
+			$trait_methods[$method->getName()] = getClassInfo($trait->getName());
+	}
+	
+	// Get own class constants
 	foreach ($ref_class->getConstants() as $k => $v) {
 		if (!$ref_class_parent || !$ref_class_parent->hasConstant($k)) {
-			$ce_info['const'][] = [
+			$class_info['consts'][] = [
 				'name'	=> $k, 
 				'value'	=> $v
 			];
 		}
 	}
 	
+	// Get own class properties
 	foreach ($ref_class->getProperties() as $prop) {
 		if (!$ref_class_parent || !$ref_class_parent->hasProperty($prop->getName())) {
-			// echo "\t$".$prop->getName()."\n";
-			$ce_info['props'][] = $prop->getName();
+			$property_class = $trait_props[$prop->getName()] ?? $class_info;
+			
+			$property_info = [
+				'name'		=> $prop->getName(), 
+				'prefix'	=> $property_class['id']
+			];
+			
+			if ($property_class['name'] == $class_info['name'])
+				$class_info['own_props'][] = $property_info;
+			
+			$class_info['props'][] = $property_info;
 		}
 	}
 	
 	foreach ($ref_class->getMethods() as $method) {
 		if (!$ref_class_parent || !$ref_class_parent->hasMethod($method->getName())) {
+			$method_class = $trait_methods[$method->getName()] ?? $class_info;
+			
 			$modifiers = [];
 			
 			if ($method->isFinal())
@@ -67,6 +114,7 @@ foreach (get_declared_classes() as $class) {
 			
 			$method_info = [
 				'name'			=> $method->getName(), 
+				'prefix'		=> $method_class['prefix'], 
 				'required'		=> $method->getNumberOfRequiredParameters(), 
 				'arginfo'		=> [], 
 				'hint'			=> getTypeHint($method), 
@@ -80,37 +128,14 @@ foreach (get_declared_classes() as $class) {
 				];
 			}
 			
-			$ce_info['methods'][] = $method_info;
+			if ($method_class['name'] == $class_info['name'])
+				$class_info['own_methods'][] = $method_info;
 			
-			/*
-			$params = array_map(function ($v) {
-				return $v->getName();
-			}, $method->getParameters());
-			
-			for ($i = 0; $i < count($params); ++$i) {
-				if ($i + 1 > $method->getNumberOfRequiredParameters())
-					$params[$i] = "[".$params[$i];
-				
-				if ($i + 1 > $method->getNumberOfRequiredParameters() && ($i + 1) == count($params))
-					$params[$i] = $params[$i]."]";
-			}
-			
-			echo "\t".$method->getName()."(".implode(", ", $params).")\n";
-			*/
+			$class_info['methods'][] = $method_info;
 		}
 	}
 	
-	$tpl_params['classes'][] = $ce_info;
-}
-
-file_put_contents($root.'/src/php7/interfaces.c', tpl(__DIR__.'/data/interfaces_php7.c', $tpl_params));
-file_put_contents($root.'/src/php7/interfaces.h', tpl(__DIR__.'/data/interfaces_php7.h', $tpl_params));
-
-function tpl($___name, $___params) {
-	extract($___params);
-	ob_start();
-	require $___name;
-	return ob_get_clean();
+	return $class_info;
 }
 
 function getTypeHint($obj, $parent = false) {

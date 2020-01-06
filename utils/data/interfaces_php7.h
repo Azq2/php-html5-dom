@@ -17,9 +17,9 @@ void html5_dom_interfaces_unload();
  * Constants
  * */
 
-<?php foreach ($classes as $ce): ?><?php if ($ce['const']): ?>
+<?php foreach ($classes as $ce): ?><?php if ($ce['consts']): ?>
 /* <?= $ce['name'] ?> */
-<?php foreach ($ce['const'] as $const): ?>
+<?php foreach ($ce['consts'] as $const): ?>
 #define <?= $ce['prefix']."__".$const['name'] ?> <?= $const['value'] ?>
 
 <?php endforeach; ?>
@@ -30,9 +30,9 @@ void html5_dom_interfaces_unload();
  * Methods
  * */
 
-<?php foreach ($classes as $ce): ?><?php if ($ce['methods']): ?>
+<?php foreach ($all_classes as $ce): ?><?php if ($ce['own_methods']): ?>
 /* <?= $ce['name'] ?> */
-<?php foreach ($ce['methods'] as $method): ?>
+<?php foreach ($ce['own_methods'] as $method): ?>
 PHP_METHOD(<?= $ce['prefix'] ?>, <?= $method['name'] ?>);
 <?php endforeach; ?>
 
@@ -42,10 +42,10 @@ PHP_METHOD(<?= $ce['prefix'] ?>, <?= $method['name'] ?>);
  * Properties
  * */
 
-<?php foreach ($classes as $ce): ?><?php if ($ce['props']): ?>
+<?php foreach ($all_classes as $ce): ?><?php if ($ce['own_props']): ?>
 /* <?= $ce['name'] ?> */
-<?php foreach ($ce['props'] as $var): ?>
-int <?= $ce['id'] ?>__<?= $var ?>(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+<?php foreach ($ce['own_props'] as $prop): ?>
+int <?= $prop['prefix'] ?>__<?= $prop['name'] ?>(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 <?php endforeach; ?>
 
 <?php endif; ?><?php endforeach; ?>

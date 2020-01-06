@@ -95,30 +95,6 @@ PHP_METHOD(HTML5_DOM_Document, importNode);
 PHP_METHOD(HTML5_DOM_Document, adoptNode);
 PHP_METHOD(HTML5_DOM_Document, createAttribute);
 PHP_METHOD(HTML5_DOM_Document, createAttributeNS);
-PHP_METHOD(HTML5_DOM_Document, getElementsByTagName);
-PHP_METHOD(HTML5_DOM_Document, getElementsByTagNameNS);
-PHP_METHOD(HTML5_DOM_Document, getElementsByClassName);
-PHP_METHOD(HTML5_DOM_Document, prepend);
-PHP_METHOD(HTML5_DOM_Document, append);
-PHP_METHOD(HTML5_DOM_Document, querySelector);
-PHP_METHOD(HTML5_DOM_Document, querySelectorAll);
-PHP_METHOD(HTML5_DOM_Document, getElementById);
-
-/* HTML5\DOM\DocumentFragment */
-PHP_METHOD(HTML5_DOM_DocumentFragment, getElementsByTagName);
-PHP_METHOD(HTML5_DOM_DocumentFragment, getElementsByTagNameNS);
-PHP_METHOD(HTML5_DOM_DocumentFragment, getElementsByClassName);
-PHP_METHOD(HTML5_DOM_DocumentFragment, prepend);
-PHP_METHOD(HTML5_DOM_DocumentFragment, append);
-PHP_METHOD(HTML5_DOM_DocumentFragment, querySelector);
-PHP_METHOD(HTML5_DOM_DocumentFragment, querySelectorAll);
-PHP_METHOD(HTML5_DOM_DocumentFragment, getElementById);
-
-/* HTML5\DOM\DocumentType */
-PHP_METHOD(HTML5_DOM_DocumentType, before);
-PHP_METHOD(HTML5_DOM_DocumentType, after);
-PHP_METHOD(HTML5_DOM_DocumentType, replaceWith);
-PHP_METHOD(HTML5_DOM_DocumentType, remove);
 
 /* HTML5\DOM\CharacterData */
 PHP_METHOD(HTML5_DOM_CharacterData, substringData);
@@ -126,10 +102,6 @@ PHP_METHOD(HTML5_DOM_CharacterData, appendData);
 PHP_METHOD(HTML5_DOM_CharacterData, insertData);
 PHP_METHOD(HTML5_DOM_CharacterData, deleteData);
 PHP_METHOD(HTML5_DOM_CharacterData, replaceData);
-PHP_METHOD(HTML5_DOM_CharacterData, before);
-PHP_METHOD(HTML5_DOM_CharacterData, after);
-PHP_METHOD(HTML5_DOM_CharacterData, replaceWith);
-PHP_METHOD(HTML5_DOM_CharacterData, remove);
 
 /* HTML5\DOM\Text */
 PHP_METHOD(HTML5_DOM_Text, splitText);
@@ -157,13 +129,6 @@ PHP_METHOD(HTML5_DOM_Element, matches);
 PHP_METHOD(HTML5_DOM_Element, insertAdjacentElement);
 PHP_METHOD(HTML5_DOM_Element, insertAdjacentText);
 PHP_METHOD(HTML5_DOM_Element, insertAdjacentHTML);
-PHP_METHOD(HTML5_DOM_Element, getElementsByTagName);
-PHP_METHOD(HTML5_DOM_Element, getElementsByTagNameNS);
-PHP_METHOD(HTML5_DOM_Element, getElementsByClassName);
-PHP_METHOD(HTML5_DOM_Element, prepend);
-PHP_METHOD(HTML5_DOM_Element, append);
-PHP_METHOD(HTML5_DOM_Element, querySelector);
-PHP_METHOD(HTML5_DOM_Element, querySelectorAll);
 
 /* HTML5\DOM\HTMLCollection */
 PHP_METHOD(HTML5_DOM_HTMLCollection, item);
@@ -230,6 +195,24 @@ PHP_METHOD(HTML5_DOM_NamedNodeMap, offsetSet);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, offsetUnset);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, count);
 
+/* HTML5\DOM\NonElementParentNode */
+PHP_METHOD(HTML5_DOM_NonElementParentNode, getElementById);
+
+/* HTML5\DOM\ParentNode */
+PHP_METHOD(HTML5_DOM_ParentNode, getElementsByTagName);
+PHP_METHOD(HTML5_DOM_ParentNode, getElementsByTagNameNS);
+PHP_METHOD(HTML5_DOM_ParentNode, getElementsByClassName);
+PHP_METHOD(HTML5_DOM_ParentNode, prepend);
+PHP_METHOD(HTML5_DOM_ParentNode, append);
+PHP_METHOD(HTML5_DOM_ParentNode, querySelector);
+PHP_METHOD(HTML5_DOM_ParentNode, querySelectorAll);
+
+/* HTML5\DOM\ChildNode */
+PHP_METHOD(HTML5_DOM_ChildNode, before);
+PHP_METHOD(HTML5_DOM_ChildNode, after);
+PHP_METHOD(HTML5_DOM_ChildNode, replaceWith);
+PHP_METHOD(HTML5_DOM_ChildNode, remove);
+
 
 /*
  * Properties
@@ -274,16 +257,6 @@ int html5_dom_document__inputEncoding(html5_dom_object_wrap *obj, zval *val, int
 int html5_dom_document__contentType(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 int html5_dom_document__doctype(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 int html5_dom_document__documentElement(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_document__children(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_document__firstElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_document__lastElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_document__childElementCount(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-
-/* HTML5\DOM\DocumentFragment */
-int html5_dom_documentfragment__children(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_documentfragment__firstElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_documentfragment__lastElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_documentfragment__childElementCount(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 
 /* HTML5\DOM\DocumentType */
 int html5_dom_documenttype__name(html5_dom_object_wrap *obj, zval *val, int write, int debug);
@@ -293,8 +266,6 @@ int html5_dom_documenttype__systemId(html5_dom_object_wrap *obj, zval *val, int 
 /* HTML5\DOM\CharacterData */
 int html5_dom_characterdata__data(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 int html5_dom_characterdata__length(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_characterdata__previousElementSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_characterdata__nextElementSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 
 /* HTML5\DOM\Text */
 int html5_dom_text__wholeText(html5_dom_object_wrap *obj, zval *val, int write, int debug);
@@ -313,12 +284,6 @@ int html5_dom_element__classList(html5_dom_object_wrap *obj, zval *val, int writ
 int html5_dom_element__attributes(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 int html5_dom_element__innerHTML(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 int html5_dom_element__outerHTML(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_element__children(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_element__firstElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_element__lastElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_element__childElementCount(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_element__previousElementSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-int html5_dom_element__nextElementSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 
 /* HTML5\DOM\HTMLCollection */
 int html5_dom_htmlcollection__length(html5_dom_object_wrap *obj, zval *val, int write, int debug);
@@ -333,6 +298,16 @@ int html5_dom_domtokenlist__value(html5_dom_object_wrap *obj, zval *val, int wri
 /* HTML5\DOM\NamedNodeMap */
 int html5_dom_namednodemap__length(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 int html5_dom_namednodemap__value(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+
+/* HTML5\DOM\ParentNode */
+int html5_dom_parentnode__children(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+int html5_dom_parentnode__firstElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+int html5_dom_parentnode__lastElementChild(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+int html5_dom_parentnode__childElementCount(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+
+/* HTML5\DOM\NonDocumentTypeChildNode */
+int html5_dom_nondocumenttypechildnode__previousElementSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug);
+int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 
 
 #endif // PHP_HTML5_DOM_INTERFACES_H
