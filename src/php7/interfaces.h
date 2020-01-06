@@ -6,6 +6,8 @@
 
 #include "php.h"
 
+#include <php7/utils.h>
+
 zend_class_entry *html5_dom_ce;
 zend_class_entry *html5_dom_asyncresult_ce;
 zend_class_entry *html5_dom_eventtarget_ce;

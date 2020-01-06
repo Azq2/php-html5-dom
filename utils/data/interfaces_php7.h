@@ -6,6 +6,8 @@
 
 #include "php.h"
 
+#include <php7/utils.h>
+
 <?php foreach ($classes as $ce): ?>
 zend_class_entry *<?= $ce['id'] ?>_ce;
 <?php endforeach; ?>

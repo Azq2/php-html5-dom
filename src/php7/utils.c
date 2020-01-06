@@ -24,11 +24,8 @@ void html5_dom_object_wrap_free(html5_dom_object_wrap *object) {
 	zend_object_std_dtor(&object->std);
 }
 
-void html5_dom_prop_handler_init(HashTable *hash, html5_dom_prop_handler_list *handlers) {
+void html5_dom_prop_handler_init(HashTable *hash) {
 	zend_hash_init(hash, 0, NULL, NULL, 1);
-	
-	if (handlers)
-		html5_dom_prop_handler_add(hash, handlers);
 }
 
 void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handler_list *handlers) {

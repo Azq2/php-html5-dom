@@ -30,7 +30,7 @@ typedef struct {
 	html5_dom_prop_handler func;
 } html5_dom_prop_handler_list;
 
-void html5_dom_prop_handler_init(HashTable *hash, html5_dom_prop_handler_list *handlers);
+void html5_dom_prop_handler_init(HashTable *hash);
 void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handler_list *handlers);
 void html5_dom_prop_handler_free(HashTable *hash);
 

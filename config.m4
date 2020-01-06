@@ -24,6 +24,7 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 		src/php7/utils.c \
 		src/php7/interfaces.c \
 		src/php7/html5_dom.c \
+		src/php7/stub.c \
 		\
 		third_party/lexbor/source/lexbor/tag/tag.c \
 		third_party/lexbor/source/lexbor/utils/http.c \
