@@ -143,10 +143,11 @@ void html5_dom_interfaces_init() {
 <?php endforeach; ?>
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&<?= $ce['id'] ?>_prop_handlers, <?= $ce['id'] ?>_handlers);
-<?php foreach ($ce['parents'] as $parent_ce): ?><?php if ($parent_ce['props']): ?>
+	html5_dom_prop_handler_init(&<?= $ce['id'] ?>_prop_handlers);
+<?php foreach (array_reverse($ce['parents']) as $parent_ce): ?><?php if ($parent_ce['props']): ?>
 	html5_dom_prop_handler_add(&<?= $parent_ce['id'] ?>_prop_handlers, <?= $parent_ce['id'] ?>_handlers);
 <?php endif; ?><?php endforeach; ?>
+	html5_dom_prop_handler_add(&<?= $ce['id'] ?>_prop_handlers, <?= $ce['id'] ?>_handlers);
 <?php endif; ?>
 	INIT_CLASS_ENTRY(ce, "<?= addslashes($ce['name']) ?>", <?= $ce['id'] ?>_methods);
 	ce.create_object = _create_object;

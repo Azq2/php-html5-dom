@@ -907,7 +907,8 @@ void html5_dom_interfaces_init() {
 		{"done", html5_dom_asyncresult__done}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_asyncresult_prop_handlers, html5_dom_asyncresult_handlers);
+	html5_dom_prop_handler_init(&html5_dom_asyncresult_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_asyncresult_prop_handlers, html5_dom_asyncresult_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\AsyncResult", html5_dom_asyncresult_methods);
 	ce.create_object = _create_object;
 	html5_dom_asyncresult_ce = zend_register_internal_class(&ce);
@@ -936,7 +937,8 @@ void html5_dom_interfaces_init() {
 		{"private", html5_dom_node__private}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_init(&html5_dom_node_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Node", html5_dom_node_methods);
 	ce.create_object = _create_object;
 	html5_dom_node_ce = zend_register_internal_class(&ce);
@@ -969,8 +971,9 @@ void html5_dom_interfaces_init() {
 		{"ownerElement", html5_dom_attr__ownerElement}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_attr_prop_handlers, html5_dom_attr_handlers);
+	html5_dom_prop_handler_init(&html5_dom_attr_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_attr_prop_handlers, html5_dom_attr_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Attr", html5_dom_attr_methods);
 	ce.create_object = _create_object;
 	html5_dom_attr_ce = zend_register_internal_class(&ce);
@@ -993,8 +996,9 @@ void html5_dom_interfaces_init() {
 		{"childElementCount", html5_dom_parentnode__childElementCount}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_document_prop_handlers, html5_dom_document_handlers);
+	html5_dom_prop_handler_init(&html5_dom_document_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_document_prop_handlers, html5_dom_document_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Document", html5_dom_document_methods);
 	ce.create_object = _create_object;
 	html5_dom_document_ce = zend_register_internal_class(&ce);
@@ -1007,8 +1011,9 @@ void html5_dom_interfaces_init() {
 		{"childElementCount", html5_dom_parentnode__childElementCount}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_documentfragment_prop_handlers, html5_dom_documentfragment_handlers);
+	html5_dom_prop_handler_init(&html5_dom_documentfragment_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_documentfragment_prop_handlers, html5_dom_documentfragment_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DocumentFragment", html5_dom_documentfragment_methods);
 	ce.create_object = _create_object;
 	html5_dom_documentfragment_ce = zend_register_internal_class(&ce);
@@ -1020,7 +1025,8 @@ void html5_dom_interfaces_init() {
 		{"systemId", html5_dom_documenttype__systemId}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_documenttype_prop_handlers, html5_dom_documenttype_handlers);
+	html5_dom_prop_handler_init(&html5_dom_documenttype_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_documenttype_prop_handlers, html5_dom_documenttype_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DocumentType", html5_dom_documenttype_methods);
 	ce.create_object = _create_object;
 	html5_dom_documenttype_ce = zend_register_internal_class(&ce);
@@ -1033,8 +1039,9 @@ void html5_dom_interfaces_init() {
 		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_init(&html5_dom_characterdata_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\CharacterData", html5_dom_characterdata_methods);
 	ce.create_object = _create_object;
 	html5_dom_characterdata_ce = zend_register_internal_class(&ce);
@@ -1044,9 +1051,10 @@ void html5_dom_interfaces_init() {
 		{"wholeText", html5_dom_text__wholeText}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_text_prop_handlers, html5_dom_text_handlers);
-	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_init(&html5_dom_text_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_add(&html5_dom_text_prop_handlers, html5_dom_text_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Text", html5_dom_text_methods);
 	ce.create_object = _create_object;
 	html5_dom_text_ce = zend_register_internal_class(&ce);
@@ -1061,9 +1069,10 @@ void html5_dom_interfaces_init() {
 		{"target", html5_dom_processinginstruction__target}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_processinginstruction_prop_handlers, html5_dom_processinginstruction_handlers);
-	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_init(&html5_dom_processinginstruction_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_add(&html5_dom_processinginstruction_prop_handlers, html5_dom_processinginstruction_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\ProcessingInstruction", html5_dom_processinginstruction_methods);
 	ce.create_object = _create_object;
 	html5_dom_processinginstruction_ce = zend_register_internal_class(&ce);
@@ -1088,8 +1097,9 @@ void html5_dom_interfaces_init() {
 		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_element_prop_handlers, html5_dom_element_handlers);
+	html5_dom_prop_handler_init(&html5_dom_element_prop_handlers);
 	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_element_prop_handlers, html5_dom_element_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Element", html5_dom_element_methods);
 	ce.create_object = _create_object;
 	html5_dom_element_ce = zend_register_internal_class(&ce);
@@ -1099,7 +1109,8 @@ void html5_dom_interfaces_init() {
 		{"length", html5_dom_htmlcollection__length}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_htmlcollection_prop_handlers, html5_dom_htmlcollection_handlers);
+	html5_dom_prop_handler_init(&html5_dom_htmlcollection_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_htmlcollection_prop_handlers, html5_dom_htmlcollection_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\HTMLCollection", html5_dom_htmlcollection_methods);
 	ce.create_object = _create_object;
 	html5_dom_htmlcollection_ce = zend_register_internal_class(&ce);
@@ -1109,7 +1120,8 @@ void html5_dom_interfaces_init() {
 		{"length", html5_dom_nodelist__length}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_nodelist_prop_handlers, html5_dom_nodelist_handlers);
+	html5_dom_prop_handler_init(&html5_dom_nodelist_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_nodelist_prop_handlers, html5_dom_nodelist_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\NodeList", html5_dom_nodelist_methods);
 	ce.create_object = _create_object;
 	html5_dom_nodelist_ce = zend_register_internal_class(&ce);
@@ -1120,7 +1132,8 @@ void html5_dom_interfaces_init() {
 		{"value", html5_dom_domtokenlist__value}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_domtokenlist_prop_handlers, html5_dom_domtokenlist_handlers);
+	html5_dom_prop_handler_init(&html5_dom_domtokenlist_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_domtokenlist_prop_handlers, html5_dom_domtokenlist_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DOMTokenList", html5_dom_domtokenlist_methods);
 	ce.create_object = _create_object;
 	html5_dom_domtokenlist_ce = zend_register_internal_class(&ce);
@@ -1131,7 +1144,8 @@ void html5_dom_interfaces_init() {
 		{"value", html5_dom_namednodemap__value}, 
 		{"", NULL}, 
 	};
-	html5_dom_prop_handler_init(&html5_dom_namednodemap_prop_handlers, html5_dom_namednodemap_handlers);
+	html5_dom_prop_handler_init(&html5_dom_namednodemap_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_namednodemap_prop_handlers, html5_dom_namednodemap_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\NamedNodeMap", html5_dom_namednodemap_methods);
 	ce.create_object = _create_object;
 	html5_dom_namednodemap_ce = zend_register_internal_class(&ce);
