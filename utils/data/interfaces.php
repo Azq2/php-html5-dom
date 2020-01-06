@@ -14,7 +14,8 @@ abstract class DOM {
 namespace HTML5\DOM;
 
 trait NonElementParentNode {
-	public abstract function getElementById(string $elementId) : Node;
+	/** @return Node|null */
+	public abstract function getElementById(string $elementId);
 }
 
 trait ParentNode {
@@ -27,17 +28,28 @@ trait ParentNode {
 	public abstract function getElementsByTagNameNS(string $namespace, string $localName) : HTMLCollection;
 	public abstract function getElementsByClassName(string $classNames) : HTMLCollection;
 	
+	/** @param Node|string ...$nodes */
 	public abstract function prepend(...$nodes) : void;
+	
+	/** @param Node|string ...$nodes */
 	public abstract function append(...$nodes) : void;
 	
-	public abstract function querySelector($selectors) : Node;
-	public abstract function querySelectorAll($selectors) : NodeList;
+	/** @return Node|null */
+	public abstract function querySelector(string $selectors) : Node;
+	
+	public abstract function querySelectorAll(string $selectors) : NodeList;
 }
 
 trait ChildNode {
+	/** @param Node|string ...$nodes */
 	public abstract function before(...$nodes) : void;
+	
+	/** @param Node|string ...$nodes */
 	public abstract function after(...$nodes) : void;
+	
+	/** @param Node|string ...$nodes */
 	public abstract function replaceWith(...$nodes) : void;
+	
 	public abstract function remove() : void;
 }
 
@@ -94,18 +106,29 @@ abstract class Node extends EventTarget {
 	
 	public $private;
 	
-	public abstract function getRootNode() : Node;
+	public abstract function getRootNode(array $options = []) : Node;
 	public abstract function hasChildNodes() : bool;
 	public abstract function normalize() : void;
 	public abstract function cloneNode(bool $deep = false) : Node;
+	
+	/** @param Node|null ...$otherNode */
 	public abstract function isEqualNode(Node $otherNode) : bool;
+	
+	/** @param Node|null ...$otherNode */
 	public abstract function isSameNode(Node $otherNode) : bool;
+	
 	public abstract function compareDocumentPosition(Node $other) : int;
+	
+	/** @param Node|null ...$other */
 	public abstract function contains(Node $other) : bool;
 	
+	/** @param Node|null ...$child */
 	public abstract function insertBefore(Node $node, Node $child) : Node;
+	
 	public abstract function appendChild(Node $child) : Node;
+	
 	public abstract function replaceChild(Node $node, Node $child) : Node;
+	
 	public abstract function removeChild(Node $child) : Node;
 }
 
@@ -126,9 +149,9 @@ abstract class Document extends Node {
 	public $doctype; // DocumentType
 	public $documentElement;
 	
-	public abstract function createElement(string $localName);
-	public abstract function createElementNS(string $namespace, string $qualifiedName);
+	public abstract function createElement(string $localName) : Element;
 	
+	public abstract function createElementNS(string $namespace, string $qualifiedName) : Element;
 	public abstract function createDocumentFragment() : DocumentFragment;
 	public abstract function createTextNode(string $data) : Text;
 	public abstract function createComment(string $data) : Comment;
@@ -215,7 +238,10 @@ abstract class Element extends Node {
 	public abstract function hasAttributes() : bool;
 	public abstract function getAttributeNames() : array;
 	
+	/** @return string|null */
 	public abstract function getAttribute(string $qualifiedName) : string;
+	
+	/** @return string|null */
 	public abstract function getAttributeNS(string $namespace, string $localName) : string;
 	
 	public abstract function setAttribute(string $qualifiedName, string $value) : void;
@@ -230,29 +256,47 @@ abstract class Element extends Node {
 	public abstract function hasAttribute(string $qualifiedName) : bool;
 	public abstract function hasAttributeNS(string $namespace, string $localName) : bool;
 	
+	/** @return Attr|null */
 	public abstract function getAttributeNode(string $qualifiedName) : Attr;
+	
+	/** @return Attr|null */
 	public abstract function getAttributeNodeNS(string $namespace, string $localName) : Attr;
 	
+	/** @return Attr|null */
 	public abstract function setAttributeNode(Attr $attr) : Attr;
+	
+	/** @return Attr|null */
 	public abstract function setAttributeNodeNS(Attr $attr) : Attr;
+	
 	public abstract function removeAttributeNode(Attr $attr) : Attr;
 	
+	/** @return Node|null */
 	public abstract function closest($selectors) : Node;
+	
 	public abstract function matches($selectors) : bool;
 	
+	/** @return Node|null */
 	public abstract function insertAdjacentElement(string $where, Node $element) : Node; // historical
+	
 	public abstract function insertAdjacentText(string $where, string $data) : void; // historical
+	
 	public abstract function insertAdjacentHTML(string $where, string $html) : void; // historical
 }
 
 abstract class HTMLCollection implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
+	
+	/** @return Node|null */
 	public abstract function item(int $index) : Node;
+	
+	/** @return Node|null */
 	public abstract function namedItem(string $name) : Node;
 }
 
 abstract class NodeList implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
+	
+	/** @return Node|null */
 	public abstract function item(int $index) : Node;
 }
 
@@ -260,12 +304,19 @@ abstract class DOMTokenList implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
 	public $value;
 	
+	/** @return string|null */
 	public abstract function item(int $index) : string;
+	
 	public abstract function contains(string $token) : bool;
+	
 	public abstract function add(string ...$tokens) : void;
+	
 	public abstract function remove(string ...$tokens) : void;
+	
 	public abstract function toggle(string $token, bool $force = NULL) : bool;
+	
 	public abstract function replace(string $token, string $newToken) : bool;
+	
 	public abstract function supports(string $token) : bool;
 }
 
@@ -273,13 +324,22 @@ abstract class NamedNodeMap implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
 	public $value;
 	
+	/** @return Attr|null */
 	public abstract function item(int $index) : Attr;
+	
+	/** @return Attr|null */
 	public abstract function getNamedItem(string $qualifiedName) : Attr;
+	
+	/** @return Attr|null */
 	public abstract function getNamedItemNS(string $namespace, string $localName) : Attr;
 	
+	/** @return Attr|null */
 	public abstract function setNamedItem(Attr $attr) : Attr;
+	
+	/** @return Attr|null */
 	public abstract function setNamedItemNS(Attr $attr) : Attr;
 	
 	public abstract function removeNamedItem(string $qualifiedName) : Attr;
+	
 	public abstract function removeNamedItemNS(string $namespace, string $localName) : Attr;
 }

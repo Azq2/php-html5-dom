@@ -20,30 +20,60 @@ static HashTable <?= $ce['id'] ?>_prop_handlers;
 /*
  * Arguments info
  * */
- 
-<?php foreach ($classes as $ce): ?><?php if ($ce['methods']): ?>
-/* <?= $ce['name'] ?> */
-<?php foreach ($ce['methods'] as $method): ?>
-<?php if ($method['hint']['type'] == 'obj_info'): ?>
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_<?= $ce['prefix'] ?>_<?= $method['name'] ?>, 0, <?= $method['required'] ?>, <?= addslashes($method['hint']['value']) ?>, <?= $method['hint']['null'] ? 1 : 0 ?>)
-<?php elseif ($method['hint']['type'] == 'type_info'): ?>
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_<?= $ce['prefix'] ?>_<?= $method['name'] ?>, 0, <?= $method['required'] ?>, <?= addslashes($method['hint']['value']) ?>, <?= $method['hint']['null'] ? 1 : 0 ?>)
-<?php else: ?>
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_<?= $ce['prefix'] ?>_<?= $method['name'] ?>, 0, 0, <?= $method['required'] ?>)
-<?php endif; ?>
-<?php foreach ($method['arginfo'] as $arginfo): ?>
-<?php if ($arginfo['hint']['type'] == 'obj_info'): ?>
-	ZEND_ARG_OBJ_INFO(0, <?= $arginfo['name'] ?>, <?= addslashes($arginfo['hint']['value']) ?>, <?= $arginfo['hint']['null'] ? 1 : 0 ?>)
-<?php elseif ($arginfo['hint']['type'] == 'type_info'): ?>
-	ZEND_ARG_TYPE_INFO(0, <?= $arginfo['name'] ?>, <?= addslashes($arginfo['hint']['value']) ?>, <?= $arginfo['hint']['null'] ? 1 : 0 ?>)
-<?php else: ?>
-	ZEND_ARG_INFO(0, <?= $arginfo['name'] ?>)
-<?php endif; ?>
-<?php endforeach; ?>
-ZEND_END_ARG_INFO();
 
-<?php endforeach; ?>
-<?php endif; ?><?php endforeach; ?>
+<?php
+foreach ($classes as $ce) {
+	if (!$ce['methods'])
+		continue;
+	
+	echo "/* ".$ce['name']." */\n";
+	
+	foreach ($ce['methods'] as $method) {
+		switch ($method['hint']['type']) {
+			case "obj_info":
+				printf("ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_%s, %d, %d, %s, %d)\n", 
+					$ce['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
+					addslashes($method['hint']['value']), (int) $method['hint']['null']);
+			break;
+			
+			case "type_info":
+				printf("ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_%s, %d, %d, %s, %d)\n", 
+					$ce['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
+					addslashes($method['hint']['value']), (int) $method['hint']['null']);
+			break;
+			
+			default:
+				printf("ZEND_BEGIN_ARG_INFO_EX(arginfo_class_%s, 0, %d, %d)\n", 
+					$ce['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required']);
+			break;
+		}
+		
+		foreach ($method['arginfo'] as $arginfo) {
+			$macro = $arginfo['hint']['variadic'] ? 'ARG_VARIADIC' : 'ARG';
+			
+			switch ($arginfo['hint']['type']) {
+				case "obj_info":
+					printf("\tZEND_%s_OBJ_INFO(%d, %s, %s, %d)\n", 
+						$macro, (int) $arginfo['hint']['ref'], $arginfo['name'], 
+						addslashes($arginfo['hint']['value']), (int) $arginfo['hint']['null']);
+				break;
+				
+				case "type_info":
+					printf("\tZEND_%s_TYPE_INFO(%d, %s, %s, %d)\n", 
+						$macro, (int) $arginfo['hint']['ref'], $arginfo['name'], 
+						addslashes($arginfo['hint']['value']), (int) $arginfo['hint']['null']);
+				break;
+				
+				default:
+					printf("\tZEND_%s_INFO(%d, %s)\n", $macro, 0, $arginfo['name']);
+				break;
+			}
+		}
+		
+		echo "ZEND_END_ARG_INFO();\n\n";
+	}
+}
+?>
 
 /*
  * Methods info

@@ -14,16 +14,16 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 	
 	case $host_alias in
 		cygwin* | mingw* | pw32*)
-			LEXBOR_OS_PORT_NAME=\
+			LEXBOR_PORTS=\
 				third_party/lexbor/source/lexbor/ports/windows_nt/lexbor/core/perf.c \
 				third_party/lexbor/source/lexbor/ports/windows_nt/lexbor/core/fs.c \
 				third_party/lexbor/source/lexbor/ports/windows_nt/lexbor/core/memory.c
 	esac
 	
 	PHP_NEW_EXTENSION(html5_dom, [
+		src/php7/utils.c \
 		src/php7/interfaces.c \
 		src/php7/html5_dom.c \
-		src/php7/utils.c \
 		\
 		third_party/lexbor/source/lexbor/tag/tag.c \
 		third_party/lexbor/source/lexbor/utils/http.c \

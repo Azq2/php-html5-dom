@@ -66,7 +66,7 @@ foreach (get_declared_classes() as $class) {
 			foreach ($method->getParameters() as $param) {
 				$method_info['arginfo'][] = [
 					'name'		=> $param->getName(), 
-					'hint'		=> getTypeHint($param), 
+					'hint'		=> getTypeHint($param, $method), 
 				];
 			}
 			
@@ -103,7 +103,7 @@ function tpl($___name, $___params) {
 	return ob_get_clean();
 }
 
-function getTypeHint($obj) {
+function getTypeHint($obj, $parent = false) {
 	$builtin_types = [
 		'int'			=> 'IS_LONG', 
 		'string'		=> 'IS_STRING', 
@@ -118,26 +118,52 @@ function getTypeHint($obj) {
 	$hint = [
 		'type'		=> 'none', 
 		'value'		=> false, 
-		'nullable'	=> true
+		'null'		=> false
 	];
 	
-	$type_object = false;
+	$type_name = false;
 	
 	if (($obj instanceof ReflectionMethod)) {
-		$type_object = $obj->hasReturnType() ? $obj->getReturnType() : false;
+		if ($obj->hasReturnType()) {
+			$type_name = $obj->getReturnType()->getName();
+			if ($obj->getReturnType()->allowsNull())
+				$hint['null'] = true;
+		}
+		
+		$hint['ref'] = $obj->returnsReference();
+		
+		$doc = $obj->getDocComment();
+		if (preg_match("/\@return\s+([^\s]+)/", $doc, $m)) {
+			$types = explode("|", $m[1]);
+			$hint['null'] = in_array("null", $types);
+		}
 	} elseif (($obj instanceof ReflectionParameter)) {
-		$type_object = $obj->hasType() ? $obj->getType() : false;
+		if ($obj->hasType()) {
+			$type_name = $obj->getType()->getName();
+			if ($obj->getType()->allowsNull())
+				$hint['null'] = true;
+		}
+		
+		$hint['variadic'] = $obj->isVariadic();
+		$hint['ref'] = $obj->isPassedByReference();
+		
+		if ($obj->allowsNull())
+			$hint['null'] = true;
+		
+		$doc = $parent->getDocComment();
+		if (preg_match("/\@param\s+([^\s]+)\s+".preg_quote(($obj->isVariadic() ? "...$" : "$").$obj->getName())."/", $doc, $m)) {
+			$types = explode("|", $m[1]);
+			$hint['null'] = in_array("null", $types);
+		}
 	}
 	
-	if ($type_object) {
-		if (isset($builtin_types[$type_object->getName()])) {
+	if ($type_name) {
+		if (isset($builtin_types[$type_name])) {
 			$hint['type'] = 'type_info';
-			$hint['value'] = $builtin_types[$type_object->getName()];
-			$hint['null'] = $type_object->allowsNull();
+			$hint['value'] = $builtin_types[$type_name];
 		} else {
 			$hint['type'] = 'obj_info';
-			$hint['value'] = $type_object->getName();
-			$hint['null'] = true;
+			$hint['value'] = $type_name;
 		}
 	}
 	
