@@ -42,6 +42,7 @@ function getClassInfo($class) {
 		'own_props'		=> [], 
 		'methods'		=> [], 
 		'own_methods'	=> [], 
+		'parents'		=> [], 
 		'consts'		=> [], 
 		'is_trait'		=> $ref_class->isTrait()
 	];
@@ -66,6 +67,16 @@ function getClassInfo($class) {
 				'value'	=> $v
 			];
 		}
+	}
+	
+	// Get class parents
+	$cursor = $ref_class_parent;
+	while ($cursor) {
+		if (strpos($cursor->getName(), "HTML5\\DOM") !== 0)
+			break;
+		
+		$class_info['parents'][] = getClassInfo($cursor->getName());
+		$cursor = $cursor->getParentClass();
 	}
 	
 	// Get own class properties
