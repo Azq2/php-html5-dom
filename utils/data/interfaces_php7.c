@@ -144,13 +144,13 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&<?= $ce['id'] ?>_prop_handlers, <?= $ce['id'] ?>_handlers);
-<?php else: ?>
-	// no prop handlers
 <?php endif; ?>
-	
 	INIT_CLASS_ENTRY(ce, "<?= addslashes($ce['name']) ?>", <?= $ce['id'] ?>_methods);
 	ce.create_object = _create_object;
 	<?= $ce['id'] ?>_ce = zend_register_internal_class(&ce);
+<?php foreach ($ce['const'] as $const): ?>
+	zend_declare_class_constant_long(<?= $ce['id'] ?>_ce, ZEND_STRS("<?= addslashes($const['name']) ?>") - 1, <?= $ce['prefix']."__".$const['name'] ?>);
+<?php endforeach; ?>
 	
 <?php endforeach; ?>
 }

@@ -14,6 +14,19 @@ void html5_dom_interfaces_init();
 void html5_dom_interfaces_unload();
 
 /*
+ * Constants
+ * */
+
+<?php foreach ($classes as $ce): ?><?php if ($ce['const']): ?>
+/* <?= $ce['name'] ?> */
+<?php foreach ($ce['const'] as $const): ?>
+#define <?= $ce['prefix']."__".$const['name'] ?> <?= $const['value'] ?>
+
+<?php endforeach; ?>
+	
+<?php endif; ?><?php endforeach; ?>
+
+/*
  * Methods
  * */
 

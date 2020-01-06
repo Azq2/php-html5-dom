@@ -15,6 +15,7 @@ foreach (get_declared_classes() as $class) {
 		'prefix'	=> str_replace("\\", "_", $class), 
 		'props'		=> [], 
 		'methods'	=> [], 
+		'const'		=> []
 	];
 	
 	$ref_class = new ReflectionClass($class);
@@ -22,6 +23,15 @@ foreach (get_declared_classes() as $class) {
 	$ref_class_parent = $ref_class->getParentClass();
 	
 	// echo "$class".($ref_class_parent ? " extends ".$ref_class_parent->getName() : "")."\n";
+	
+	foreach ($ref_class->getConstants() as $k => $v) {
+		if (!$ref_class_parent || !$ref_class_parent->hasConstant($k)) {
+			$ce_info['const'][] = [
+				'name'	=> $k, 
+				'value'	=> $v
+			];
+		}
+	}
 	
 	foreach ($ref_class->getProperties() as $prop) {
 		if (!$ref_class_parent || !$ref_class_parent->hasProperty($prop->getName())) {
