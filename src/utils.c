@@ -11,6 +11,7 @@ void *html5_dom_zend_object_alloc(size_t obj_size, zend_class_entry *ce) {
 
 html5_dom_object_wrap *html5_dom_object_wrap_create(zend_class_entry *ce, zend_object_handlers *handlers) {
 	html5_dom_object_wrap *intern = html5_dom_zend_object_alloc(sizeof(html5_dom_object_wrap), ce);
+	intern->free_handler = NULL;
 	zend_object_std_init(&intern->std, ce);
 	object_properties_init(&intern->std, ce);
 	intern->std.handlers = handlers;

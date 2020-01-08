@@ -1,5 +1,5 @@
-#ifndef PHP7_UTILS_H
-#define PHP7_UTILS_H
+#ifndef HTML5_DOM_PHP7_UTILS_H
+#define HTML5_DOM_PHP7_UTILS_H
 
 #define DOM_GC_TRACE(msg, ...) fprintf(stderr, "[GC] " msg "\n", ##__VA_ARGS__);
 // #define DOM_GC_TRACE(...)
@@ -17,11 +17,11 @@ typedef struct html5_dom_object_wrap html5_dom_object_wrap;
 typedef int (*html5_dom_prop_handler)(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 
 struct html5_dom_object_wrap {
-	void *ptr;													// custom payload
-	HashTable *prop_handler;									// handlers for class properties
-	zval parent;												// reference to parent object
-	zend_object std;											// self object
-	zend_long iter;												// offset for iterator
+	void *ptr;											// custom payload
+	HashTable *prop_handler;							// handlers for class properties
+	zval parent;										// reference to parent object
+	zend_object std;									// self object
+	zend_long iter;										// offset for iterator
 	void (*free_handler)(html5_dom_object_wrap *obj);	// free handler
 };
 
@@ -51,4 +51,4 @@ void *html5_dom_zend_object_alloc(size_t obj_size, zend_class_entry *ce);
 html5_dom_object_wrap *html5_dom_object_wrap_create(zend_class_entry *ce, zend_object_handlers *handlers);
 void html5_dom_object_wrap_free(html5_dom_object_wrap *object);
 
-#endif // PHP7_UTILS_H
+#endif // HTML5_DOM_PHP7_UTILS_H

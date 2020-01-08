@@ -20,8 +20,8 @@ foreach (array_merge(get_declared_classes(), get_declared_traits()) as $class) {
 	$tpl_params['all_classes'][] = $class_info;
 }
 
-file_put_contents($root.'/src/php7/interfaces.c', tpl(__DIR__.'/data/interfaces_php7.c', $tpl_params));
-file_put_contents($root.'/src/php7/interfaces.h', tpl(__DIR__.'/data/interfaces_php7.h', $tpl_params));
+file_put_contents($root.'/src/interfaces.c', tpl(__DIR__.'/data/interfaces.c', $tpl_params));
+file_put_contents($root.'/src/interfaces.h', tpl(__DIR__.'/data/interfaces.h', $tpl_params));
 
 function tpl($___name, $___params) {
 	extract($___params);
@@ -37,6 +37,7 @@ function getClassInfo($class) {
 	$class_info = [
 		'name'			=> $class, 
 		'id'			=> strtolower(str_replace("\\", "_", $class)), 
+		'ref'			=> strpos($class, "HTML5\\DOM") !== 0 ? "zend_ce_".strtolower(str_replace("\\", "_", $class)) : strtolower(str_replace("\\", "_", $class))."_ce", 
 		'prefix'		=> str_replace("\\", "_", $class), 
 		'props'			=> [], 
 		'own_props'		=> [], 
@@ -44,7 +45,10 @@ function getClassInfo($class) {
 		'own_methods'	=> [], 
 		'parents'		=> [], 
 		'consts'		=> [], 
-		'is_trait'		=> $ref_class->isTrait()
+		'interfaces'	=> [], 
+		'is_trait'		=> $ref_class->isTrait(), 
+		'use_props'		=> false, 
+		'internal'		=> strpos($class, "HTML5\\DOM") !== 0
 	];
 	
 	// Get properties and methods inherited from traits
@@ -72,10 +76,12 @@ function getClassInfo($class) {
 	// Get class parents
 	$cursor = $ref_class_parent;
 	while ($cursor) {
-		if (strpos($cursor->getName(), "HTML5\\DOM") !== 0)
-			break;
+		$parent_class_info = getClassInfo($cursor->getName());
+		if ($parent_class_info['props'] && !$parent_class_info['internal'])
+			$class_info['use_props'] = true;
 		
-		$class_info['parents'][] = getClassInfo($cursor->getName());
+		$class_info['parents'][] = $parent_class_info;
+		
 		$cursor = $cursor->getParentClass();
 	}
 	
@@ -94,6 +100,16 @@ function getClassInfo($class) {
 			
 			$class_info['props'][] = $property_info;
 		}
+	}
+	
+	if ($class_info['props'])
+		$class_info['use_props'] = true;
+	
+	// Get own interfaces
+	$parent_interfaces = $ref_class_parent ? $ref_class_parent->getInterfaceNames() : [];
+	foreach ($ref_class->getInterfaceNames() as $interface) {
+		if (!in_array($interface, $parent_interfaces) && $interface != 'Traversable')
+			$class_info['interfaces'][] = getClassInfo($interface);
 	}
 	
 	foreach ($ref_class->getMethods() as $method) {

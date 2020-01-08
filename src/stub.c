@@ -1,46 +1,11 @@
-#include <php7/utils.h>
-#include <php7/html5_dom.h>
-#include <php7/interfaces.h>
+#include "interfaces.h"
 
 /*
  * Methods
  * */
 
-/* HTML5\DOM */
-PHP_METHOD(HTML5_DOM, __construct) {
-	
-}
-
-PHP_METHOD(HTML5_DOM, parse) {
-	
-}
-
-PHP_METHOD(HTML5_DOM, parseChunkStart) {
-	
-}
-
-PHP_METHOD(HTML5_DOM, parseChunk) {
-	
-}
-
-PHP_METHOD(HTML5_DOM, parseChunkResult) {
-	
-}
-
-PHP_METHOD(HTML5_DOM, parseChunkEnd) {
-	
-}
-
-PHP_METHOD(HTML5_DOM, parseAsync) {
-	
-}
-
-/* HTML5\DOM\AsyncResult */
-PHP_METHOD(HTML5_DOM_AsyncResult, fd) {
-	
-}
-
-PHP_METHOD(HTML5_DOM_AsyncResult, wait) {
+/* HTML5\DOM\EventTarget */
+PHP_METHOD(HTML5_DOM_EventTarget, __construct) {
 	
 }
 
@@ -539,11 +504,6 @@ PHP_METHOD(HTML5_DOM_ChildNode, remove) {
 /*
  * Properties
  * */
-
-/* HTML5\DOM\AsyncResult */
-int html5_dom_asyncresult__done(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
-	return 0;
-}
 
 /* HTML5\DOM\Node */
 int html5_dom_node__nodeType(html5_dom_object_wrap *obj, zval *val, int write, int debug) {

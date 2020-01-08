@@ -25,3 +25,5 @@ run-tests.php
 modules
 *.lo
 *.la
+tmp-php.ini
+

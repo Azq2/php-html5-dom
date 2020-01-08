@@ -21,10 +21,11 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 	esac
 	
 	PHP_NEW_EXTENSION(html5_dom, [
-		src/php7/utils.c \
-		src/php7/interfaces.c \
-		src/php7/html5_dom.c \
-		src/php7/stub.c \
+		src/html5_dom.c \
+		src/utils.c \
+		src/interfaces.c \
+		src/stub.c \
+		src/parser.c \
 		\
 		third_party/lexbor/source/lexbor/tag/tag.c \
 		third_party/lexbor/source/lexbor/utils/http.c \

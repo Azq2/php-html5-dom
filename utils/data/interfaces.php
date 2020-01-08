@@ -3,12 +3,12 @@ namespace HTML5;
 
 abstract class DOM {
 	public abstract function __construct(array $options = []);
+	
 	public abstract function parse(string $html, array $options = []) : DOM\Document;
-	public abstract function parseChunkStart(string $html, array $options = []) : DOM;
-	public abstract function parseChunk(string $html) : DOM;
-	public abstract function parseChunkResult() : DOM\Document;
-	public abstract function parseChunkEnd() : DOM\Document;
-	public abstract function parseAsync(string $html, bool $loop = false, bool $callback = false) : DOM\AsyncResult;
+	public abstract function parseChunkStart(array $options = []) : DOM\ChunksParser;
+	
+	public abstract function parseAsync(string $html, bool $loop = false, bool $callback = false, array $options = []) : DOM\AsyncResult;
+	public abstract function parseAsyncChunkStart(bool $loop = false, bool $callback = false, array $options = []) : DOM\ChunksParserAsync;
 }
 
 namespace HTML5\DOM;
@@ -60,12 +60,78 @@ trait NonDocumentTypeChildNode {
 
 abstract class AsyncResult {
 	public $done;
+	
+	private function __construct() { }
 	public abstract function fd() : int;
 	public abstract function wait() : Document;
 }
 
-abstract class EventTarget {
+abstract class ChunksParser {
+	public $document;
 	
+	private function __construct() { }
+	public abstract function parseChunk(string $html) : ChunksParser;
+	public abstract function parseChunkEnd() : Document;
+}
+
+abstract class ChunksParserAsync {
+	private function __construct() { }
+	public abstract function parseChunk(string $html) : ChunksParserAsync;
+	public abstract function parseChunkEnd() : AsyncResult;
+}
+
+abstract class DOMException extends \Exception {
+	const INDEX_SIZE_ERR				= 1;
+	const DOMSTRING_SIZE_ERR			= 2;
+	const HIERARCHY_REQUEST_ERR			= 3;
+	const WRONG_DOCUMENT_ERR			= 4;
+	const INVALID_CHARACTER_ERR			= 5;
+	const NO_DATA_ALLOWED_ERR			= 6;
+	const NO_MODIFICATION_ALLOWED_ERR	= 7;
+	const NOT_FOUND_ERR					= 8;
+	const NOT_SUPPORTED_ERR				= 9;
+	const INUSE_ATTRIBUTE_ERR			= 10;
+
+	// Introduced in DOM Level 2:
+	const INVALID_STATE_ERR				= 11;
+
+	// Introduced in DOM Level 2:
+	const SYNTAX_ERR					= 12;
+
+	// Introduced in DOM Level 2:
+	const INVALID_MODIFICATION_ERR		= 13;
+
+	// Introduced in DOM Level 2:
+	const NAMESPACE_ERR					= 14;
+
+	// Introduced in DOM Level 2:
+	const INVALID_ACCESS_ERR			= 15;
+
+	// Introduced in DOM Level 3:
+	const VALIDATION_ERR				= 16;
+
+	// Introduced in DOM Level 3:
+	const TYPE_MISMATCH_ERR				= 17;
+
+	// Introduced as an XHR extension:
+	const SECURITY_ERR					= 18;
+
+	// Introduced in HTML5:
+	const NETWORK_ERR					= 19;
+	const ABORT_ERR						= 20;
+	const URL_MISMATCH_ERR				= 21;
+	const QUOTA_EXCEEDED_ERR			= 22;
+
+	// TIMEOUT_ERR is currently unused but was added for completeness.
+	const TIMEOUT_ERR					= 23;
+
+	// INVALID_NODE_TYPE_ERR is currently unused but was added for completeness.
+	const INVALID_NODE_TYPE_ERR			= 24;
+	const DATA_CLONE_ERR				= 25;
+}
+
+abstract class EventTarget {
+	private function __construct() { }
 }
 
 abstract class Node extends EventTarget {
@@ -136,9 +202,9 @@ abstract class Document extends Node {
 	use ParentNode;
 	use NonElementParentNode;
 	
-	public $URL;
-	public $documentURI;
-	public $origin;
+	public $URL; // about:blank
+	public $documentURI; // about:blank
+	public $origin; // null
 	
 	public $compatMode;
 	public $characterSet;

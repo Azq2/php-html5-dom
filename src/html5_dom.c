@@ -5,9 +5,9 @@
 #include "php.h"
 #include "ext/standard/info.h"
 
-#include <php7/utils.h>
-#include <php7/html5_dom.h>
-#include <php7/interfaces.h>
+#include "utils.h"
+#include "html5_dom.h"
+#include "interfaces.h"
 
 #include <lexbor/core/base.h>
 
