@@ -11,8 +11,6 @@
  
 static zend_object_handlers object_handlers;
 
-static HashTable html5_dom_asyncresult_prop_handlers;
-static HashTable html5_dom_chunksparser_prop_handlers;
 static HashTable html5_dom_node_prop_handlers;
 static HashTable html5_dom_attr_prop_handlers;
 static HashTable html5_dom_document_prop_handlers;
@@ -33,62 +31,35 @@ static HashTable html5_dom_namednodemap_prop_handlers;
  * */
 
 /* HTML5\DOM */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM___construct, 0, 0, 0)
-	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
-ZEND_END_ARG_INFO();
-
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_parse, 0, 1, HTML5\\DOM\\Document, 0)
 	ZEND_ARG_TYPE_INFO(0, html, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_parseChunkStart, 0, 0, HTML5\\DOM\\ChunksParser, 0)
+/* HTML5\DOM\Parser */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_Parser___construct, 0, 0, 0)
+	ZEND_ARG_INFO(0, options)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Parser_parse, 0, 1, HTML5\\DOM\\DOM\\Document, 0)
+	ZEND_ARG_TYPE_INFO(0, html, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_parseAsync, 0, 1, HTML5\\DOM\\AsyncResult, 0)
-	ZEND_ARG_TYPE_INFO(0, html, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(0, loop, _IS_BOOL, 0)
-	ZEND_ARG_TYPE_INFO(0, callback, _IS_BOOL, 0)
+/* HTML5\DOM\StreamParser */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_StreamParser___construct, 0, 0, 0)
+	ZEND_ARG_INFO(0, options)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_StreamParser_begin, 0, 0, HTML5\\DOM\\DOM\\Document, 0)
 	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_parseAsyncChunkStart, 0, 0, HTML5\\DOM\\ChunksParserAsync, 0)
-	ZEND_ARG_TYPE_INFO(0, loop, _IS_BOOL, 0)
-	ZEND_ARG_TYPE_INFO(0, callback, _IS_BOOL, 0)
-	ZEND_ARG_TYPE_INFO(0, options, IS_ARRAY, 0)
-ZEND_END_ARG_INFO();
-
-/* HTML5\DOM\AsyncResult */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_AsyncResult___construct, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_AsyncResult_fd, 0, 0, IS_LONG, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_AsyncResult_wait, 0, 0, HTML5\\DOM\\Document, 0)
-ZEND_END_ARG_INFO();
-
-/* HTML5\DOM\ChunksParser */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_ChunksParser___construct, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ChunksParser_parseChunk, 0, 1, HTML5\\DOM\\ChunksParser, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_StreamParser_parse, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, html, IS_STRING, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ChunksParser_parseChunkEnd, 0, 0, HTML5\\DOM\\Document, 0)
-ZEND_END_ARG_INFO();
-
-/* HTML5\DOM\ChunksParserAsync */
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_ChunksParserAsync___construct, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ChunksParserAsync_parseChunk, 0, 1, HTML5\\DOM\\ChunksParserAsync, 0)
-	ZEND_ARG_TYPE_INFO(0, html, IS_STRING, 0)
-ZEND_END_ARG_INFO();
-
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_ChunksParserAsync_parseChunkEnd, 0, 0, HTML5\\DOM\\AsyncResult, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_StreamParser_end, 0, 0, IS_VOID, 0)
 ZEND_END_ARG_INFO();
 
 /* HTML5\DOM\EventTarget */
@@ -335,16 +306,16 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_current, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_next, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_key, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_valid, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_next, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_rewind, 0, 0, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_valid, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_HTMLCollection_offsetExists, 0, 0, 1)
@@ -375,16 +346,16 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_current, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_next, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_key, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_valid, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_next, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_rewind, 0, 0, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_valid, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NodeList_offsetExists, 0, 0, 1)
@@ -441,16 +412,16 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_current, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_next, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_key, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_valid, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_next, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_rewind, 0, 0, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_valid, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_DOMTokenList_offsetExists, 0, 0, 1)
@@ -507,16 +478,16 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_current, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_next, 0, 0, 0)
-ZEND_END_ARG_INFO();
-
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_key, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_valid, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_next, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_rewind, 0, 0, 0)
+ZEND_END_ARG_INFO();
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_valid, 0, 0, 0)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_HTML5_DOM_NamedNodeMap_offsetExists, 0, 0, 1)
@@ -590,6 +561,10 @@ ZEND_END_ARG_INFO();
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_ChildNode_remove, 0, 0, IS_VOID, 0)
 ZEND_END_ARG_INFO();
 
+/* HTML5\DOM\DocumentNonStandart */
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_DocumentNonStandart_getParseErrors, 0, 0, IS_ARRAY, 0)
+ZEND_END_ARG_INFO();
+
 
 /*
  * Methods info
@@ -597,35 +572,23 @@ ZEND_END_ARG_INFO();
  
 /* HTML5\DOM */
 static zend_function_entry html5_dom_methods[] = {
-	PHP_ME(HTML5_DOM, __construct, arginfo_class_HTML5_DOM___construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(HTML5_DOM, parse, arginfo_class_HTML5_DOM_parse, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM, parseChunkStart, arginfo_class_HTML5_DOM_parseChunkStart, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM, parseAsync, arginfo_class_HTML5_DOM_parseAsync, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM, parseAsyncChunkStart, arginfo_class_HTML5_DOM_parseAsyncChunkStart, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM, parse, arginfo_class_HTML5_DOM_parse, ZEND_ACC_STATIC | ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
-/* HTML5\DOM\AsyncResult */
-static zend_function_entry html5_dom_asyncresult_methods[] = {
-	PHP_ME(HTML5_DOM_AsyncResult, __construct, arginfo_class_HTML5_DOM_AsyncResult___construct, ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
-	PHP_ME(HTML5_DOM_AsyncResult, fd, arginfo_class_HTML5_DOM_AsyncResult_fd, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_AsyncResult, wait, arginfo_class_HTML5_DOM_AsyncResult_wait, ZEND_ACC_PUBLIC)
+/* HTML5\DOM\Parser */
+static zend_function_entry html5_dom_parser_methods[] = {
+	PHP_ME(HTML5_DOM_Parser, __construct, arginfo_class_HTML5_DOM_Parser___construct, ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
+	PHP_ME(HTML5_DOM_Parser, parse, arginfo_class_HTML5_DOM_Parser_parse, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
-/* HTML5\DOM\ChunksParser */
-static zend_function_entry html5_dom_chunksparser_methods[] = {
-	PHP_ME(HTML5_DOM_ChunksParser, __construct, arginfo_class_HTML5_DOM_ChunksParser___construct, ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
-	PHP_ME(HTML5_DOM_ChunksParser, parseChunk, arginfo_class_HTML5_DOM_ChunksParser_parseChunk, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_ChunksParser, parseChunkEnd, arginfo_class_HTML5_DOM_ChunksParser_parseChunkEnd, ZEND_ACC_PUBLIC)
-	PHP_FE_END
-};
-
-/* HTML5\DOM\ChunksParserAsync */
-static zend_function_entry html5_dom_chunksparserasync_methods[] = {
-	PHP_ME(HTML5_DOM_ChunksParserAsync, __construct, arginfo_class_HTML5_DOM_ChunksParserAsync___construct, ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
-	PHP_ME(HTML5_DOM_ChunksParserAsync, parseChunk, arginfo_class_HTML5_DOM_ChunksParserAsync_parseChunk, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_ChunksParserAsync, parseChunkEnd, arginfo_class_HTML5_DOM_ChunksParserAsync_parseChunkEnd, ZEND_ACC_PUBLIC)
+/* HTML5\DOM\StreamParser */
+static zend_function_entry html5_dom_streamparser_methods[] = {
+	PHP_ME(HTML5_DOM_StreamParser, __construct, arginfo_class_HTML5_DOM_StreamParser___construct, ZEND_ACC_PRIVATE | ZEND_ACC_CTOR)
+	PHP_ME(HTML5_DOM_StreamParser, begin, arginfo_class_HTML5_DOM_StreamParser_begin, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_StreamParser, parse, arginfo_class_HTML5_DOM_StreamParser_parse, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_StreamParser, end, arginfo_class_HTML5_DOM_StreamParser_end, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -683,6 +646,7 @@ static zend_function_entry html5_dom_document_methods[] = {
 	PHP_ME(HTML5_DOM_ParentNode, querySelector, arginfo_class_HTML5_DOM_ParentNode_querySelector, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_ParentNode, querySelectorAll, arginfo_class_HTML5_DOM_ParentNode_querySelectorAll, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NonElementParentNode, getElementById, arginfo_class_HTML5_DOM_NonElementParentNode_getElementById, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_DocumentNonStandart, getParseErrors, arginfo_class_HTML5_DOM_DocumentNonStandart_getParseErrors, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -777,10 +741,10 @@ static zend_function_entry html5_dom_htmlcollection_methods[] = {
 	PHP_ME(HTML5_DOM_HTMLCollection, item, arginfo_class_HTML5_DOM_HTMLCollection_item, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, namedItem, arginfo_class_HTML5_DOM_HTMLCollection_namedItem, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, current, arginfo_class_HTML5_DOM_HTMLCollection_current, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_HTMLCollection, next, arginfo_class_HTML5_DOM_HTMLCollection_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, key, arginfo_class_HTML5_DOM_HTMLCollection_key, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_HTMLCollection, valid, arginfo_class_HTML5_DOM_HTMLCollection_valid, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_HTMLCollection, next, arginfo_class_HTML5_DOM_HTMLCollection_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, rewind, arginfo_class_HTML5_DOM_HTMLCollection_rewind, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_HTMLCollection, valid, arginfo_class_HTML5_DOM_HTMLCollection_valid, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, offsetExists, arginfo_class_HTML5_DOM_HTMLCollection_offsetExists, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, offsetGet, arginfo_class_HTML5_DOM_HTMLCollection_offsetGet, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_HTMLCollection, offsetSet, arginfo_class_HTML5_DOM_HTMLCollection_offsetSet, ZEND_ACC_PUBLIC)
@@ -793,10 +757,10 @@ static zend_function_entry html5_dom_htmlcollection_methods[] = {
 static zend_function_entry html5_dom_nodelist_methods[] = {
 	PHP_ME(HTML5_DOM_NodeList, item, arginfo_class_HTML5_DOM_NodeList_item, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NodeList, current, arginfo_class_HTML5_DOM_NodeList_current, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_NodeList, next, arginfo_class_HTML5_DOM_NodeList_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NodeList, key, arginfo_class_HTML5_DOM_NodeList_key, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_NodeList, valid, arginfo_class_HTML5_DOM_NodeList_valid, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_NodeList, next, arginfo_class_HTML5_DOM_NodeList_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NodeList, rewind, arginfo_class_HTML5_DOM_NodeList_rewind, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_NodeList, valid, arginfo_class_HTML5_DOM_NodeList_valid, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NodeList, offsetExists, arginfo_class_HTML5_DOM_NodeList_offsetExists, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NodeList, offsetGet, arginfo_class_HTML5_DOM_NodeList_offsetGet, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NodeList, offsetSet, arginfo_class_HTML5_DOM_NodeList_offsetSet, ZEND_ACC_PUBLIC)
@@ -815,10 +779,10 @@ static zend_function_entry html5_dom_domtokenlist_methods[] = {
 	PHP_ME(HTML5_DOM_DOMTokenList, replace, arginfo_class_HTML5_DOM_DOMTokenList_replace, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, supports, arginfo_class_HTML5_DOM_DOMTokenList_supports, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, current, arginfo_class_HTML5_DOM_DOMTokenList_current, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DOMTokenList, next, arginfo_class_HTML5_DOM_DOMTokenList_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, key, arginfo_class_HTML5_DOM_DOMTokenList_key, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_DOMTokenList, valid, arginfo_class_HTML5_DOM_DOMTokenList_valid, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_DOMTokenList, next, arginfo_class_HTML5_DOM_DOMTokenList_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, rewind, arginfo_class_HTML5_DOM_DOMTokenList_rewind, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_DOMTokenList, valid, arginfo_class_HTML5_DOM_DOMTokenList_valid, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, offsetExists, arginfo_class_HTML5_DOM_DOMTokenList_offsetExists, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, offsetGet, arginfo_class_HTML5_DOM_DOMTokenList_offsetGet, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_DOMTokenList, offsetSet, arginfo_class_HTML5_DOM_DOMTokenList_offsetSet, ZEND_ACC_PUBLIC)
@@ -837,10 +801,10 @@ static zend_function_entry html5_dom_namednodemap_methods[] = {
 	PHP_ME(HTML5_DOM_NamedNodeMap, removeNamedItem, arginfo_class_HTML5_DOM_NamedNodeMap_removeNamedItem, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, removeNamedItemNS, arginfo_class_HTML5_DOM_NamedNodeMap_removeNamedItemNS, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, current, arginfo_class_HTML5_DOM_NamedNodeMap_current, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_NamedNodeMap, next, arginfo_class_HTML5_DOM_NamedNodeMap_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, key, arginfo_class_HTML5_DOM_NamedNodeMap_key, ZEND_ACC_PUBLIC)
-	PHP_ME(HTML5_DOM_NamedNodeMap, valid, arginfo_class_HTML5_DOM_NamedNodeMap_valid, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_NamedNodeMap, next, arginfo_class_HTML5_DOM_NamedNodeMap_next, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, rewind, arginfo_class_HTML5_DOM_NamedNodeMap_rewind, ZEND_ACC_PUBLIC)
+	PHP_ME(HTML5_DOM_NamedNodeMap, valid, arginfo_class_HTML5_DOM_NamedNodeMap_valid, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, offsetExists, arginfo_class_HTML5_DOM_NamedNodeMap_offsetExists, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, offsetGet, arginfo_class_HTML5_DOM_NamedNodeMap_offsetGet, ZEND_ACC_PUBLIC)
 	PHP_ME(HTML5_DOM_NamedNodeMap, offsetSet, arginfo_class_HTML5_DOM_NamedNodeMap_offsetSet, ZEND_ACC_PUBLIC)
@@ -856,16 +820,8 @@ static zend_function_entry html5_dom_namednodemap_methods[] = {
 static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
 	html5_dom_object_wrap *intern = html5_dom_object_wrap_create(ce, &object_handlers);
 	
-	/* HTML5\DOM\AsyncResult */
-	if (ce == html5_dom_asyncresult_ce) {
-		intern->prop_handler = &html5_dom_asyncresult_prop_handlers;
-	}
-	/* HTML5\DOM\ChunksParser */
-	else if (ce == html5_dom_chunksparser_ce) {
-		intern->prop_handler = &html5_dom_chunksparser_prop_handlers;
-	}
 	/* HTML5\DOM\Node */
-	else if (ce == html5_dom_node_ce) {
+	if (ce == html5_dom_node_ce) {
 		intern->prop_handler = &html5_dom_node_prop_handlers;
 	}
 	/* HTML5\DOM\Attr */
@@ -957,32 +913,15 @@ void html5_dom_interfaces_init() {
 	ce.create_object = _create_object;
 	html5_dom_ce = zend_register_internal_class(&ce);
 
-	/* HTML5\DOM\AsyncResult */
-	html5_dom_prop_handler_list html5_dom_asyncresult_handlers[] = {
-		{"done", html5_dom_asyncresult__done}, 
-		{"", NULL}, 
-	};
-	html5_dom_prop_handler_init(&html5_dom_asyncresult_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_asyncresult_prop_handlers, html5_dom_asyncresult_handlers);
-	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\AsyncResult", html5_dom_asyncresult_methods);
+	/* HTML5\DOM\Parser */
+	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Parser", html5_dom_parser_methods);
 	ce.create_object = _create_object;
-	html5_dom_asyncresult_ce = zend_register_internal_class(&ce);
+	html5_dom_parser_ce = zend_register_internal_class(&ce);
 
-	/* HTML5\DOM\ChunksParser */
-	html5_dom_prop_handler_list html5_dom_chunksparser_handlers[] = {
-		{"document", html5_dom_chunksparser__document}, 
-		{"", NULL}, 
-	};
-	html5_dom_prop_handler_init(&html5_dom_chunksparser_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_chunksparser_prop_handlers, html5_dom_chunksparser_handlers);
-	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\ChunksParser", html5_dom_chunksparser_methods);
+	/* HTML5\DOM\StreamParser */
+	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\StreamParser", html5_dom_streamparser_methods);
 	ce.create_object = _create_object;
-	html5_dom_chunksparser_ce = zend_register_internal_class(&ce);
-
-	/* HTML5\DOM\ChunksParserAsync */
-	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\ChunksParserAsync", html5_dom_chunksparserasync_methods);
-	ce.create_object = _create_object;
-	html5_dom_chunksparserasync_ce = zend_register_internal_class(&ce);
+	html5_dom_streamparser_ce = zend_register_internal_class(&ce);
 
 	/* HTML5\DOM\DOMException */
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DOMException", html5_dom_domexception_methods);
@@ -1262,8 +1201,6 @@ void html5_dom_interfaces_init() {
 }
 
 void html5_dom_interfaces_unload() {
-	zend_hash_destroy(&html5_dom_asyncresult_prop_handlers);
-	zend_hash_destroy(&html5_dom_chunksparser_prop_handlers);
 	zend_hash_destroy(&html5_dom_node_prop_handlers);
 	zend_hash_destroy(&html5_dom_attr_prop_handlers);
 	zend_hash_destroy(&html5_dom_document_prop_handlers);

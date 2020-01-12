@@ -6,7 +6,12 @@
  * */
 
 /* HTML5\DOM */
-PHP_METHOD(HTML5_DOM, __construct) {
+PHP_METHOD(HTML5_DOM, parse) {
+	
+}
+
+/* HTML5\DOM\Parser */
+PHP_METHOD(HTML5_DOM_Parser, __construct) {
 	HTML5_DOM_METHOD_PARAMS(html5_dom_parser_t);
 	
 	zval *options_array = NULL;
@@ -16,74 +21,22 @@ PHP_METHOD(HTML5_DOM, __construct) {
 	html5_dom_options_t options = {0};
 	html5_dom_parse_options(&options, options_array);
 }
-
-PHP_METHOD(HTML5_DOM, parse) {
+PHP_METHOD(HTML5_DOM_Parser, parse) {
 	
 }
 
-PHP_METHOD(HTML5_DOM, parseChunkStart) {
+/* HTML5\DOM\StreamParser */
+PHP_METHOD(HTML5_DOM_StreamParser, __construct) {
 	
 }
-
-PHP_METHOD(HTML5_DOM, parseAsync) {
+PHP_METHOD(HTML5_DOM_StreamParser, begin) {
 	
 }
-
-PHP_METHOD(HTML5_DOM, parseAsyncChunkStart) {
+PHP_METHOD(HTML5_DOM_StreamParser, parse) {
 	
 }
-
-/* HTML5\DOM\AsyncResult */
-PHP_METHOD(HTML5_DOM_AsyncResult, __construct) {
+PHP_METHOD(HTML5_DOM_StreamParser, end) {
 	
-}
-
-PHP_METHOD(HTML5_DOM_AsyncResult, fd) {
-	
-}
-
-PHP_METHOD(HTML5_DOM_AsyncResult, wait) {
-	
-}
-
-/* HTML5\DOM\ChunksParser */
-PHP_METHOD(HTML5_DOM_ChunksParser, __construct) {
-	
-}
-
-PHP_METHOD(HTML5_DOM_ChunksParser, parseChunk) {
-	
-}
-
-PHP_METHOD(HTML5_DOM_ChunksParser, parseChunkEnd) {
-	
-}
-
-/* HTML5\DOM\ChunksParserAsync */
-PHP_METHOD(HTML5_DOM_ChunksParserAsync, __construct) {
-	
-}
-
-PHP_METHOD(HTML5_DOM_ChunksParserAsync, parseChunk) {
-	
-}
-
-PHP_METHOD(HTML5_DOM_ChunksParserAsync, parseChunkEnd) {
-	
-}
-
-/*
- * Properties
- * */
-
-/* HTML5\DOM\AsyncResult */
-int html5_dom_asyncresult__done(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
-	return 0;
-}
-
-/* HTML5\DOM\ChunksParser */
-int html5_dom_chunksparser__document(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
-	return 0;
 }
 
 /*

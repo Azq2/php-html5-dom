@@ -1,21 +1,15 @@
 <?php
 namespace HTML5;
 
-abstract class DOM {
-	public abstract function __construct(array $options = []);
-	
-	public abstract function parse(string $html, array $options = []) : DOM\Document;
-	public abstract function parseChunkStart(array $options = []) : DOM\ChunksParser;
-	
-	public abstract function parseAsync(string $html, bool $loop = false, bool $callback = false, array $options = []) : DOM\AsyncResult;
-	public abstract function parseAsyncChunkStart(bool $loop = false, bool $callback = false, array $options = []) : DOM\ChunksParserAsync;
+class DOM {
+	public static function parse(string $html, array $options = []) : DOM\Document { }
 }
 
 namespace HTML5\DOM;
 
 trait NonElementParentNode {
 	/** @return Node|null */
-	public abstract function getElementById(string $elementId);
+	public function getElementById(string $elementId) { }
 }
 
 trait ParentNode {
@@ -24,33 +18,33 @@ trait ParentNode {
 	public $lastElementChild;
 	public $childElementCount;
 	
-	public abstract function getElementsByTagName(string $qualifiedName) : HTMLCollection;
-	public abstract function getElementsByTagNameNS(string $namespace, string $localName) : HTMLCollection;
-	public abstract function getElementsByClassName(string $classNames) : HTMLCollection;
+	public function getElementsByTagName(string $qualifiedName) : HTMLCollection { }
+	public function getElementsByTagNameNS(string $namespace, string $localName) : HTMLCollection { }
+	public function getElementsByClassName(string $classNames) : HTMLCollection { }
 	
 	/** @param Node|string ...$nodes */
-	public abstract function prepend(...$nodes) : void;
+	public function prepend(...$nodes) : void { }
 	
 	/** @param Node|string ...$nodes */
-	public abstract function append(...$nodes) : void;
+	public function append(...$nodes) : void { }
 	
 	/** @return Node|null */
-	public abstract function querySelector(string $selectors) : Node;
+	public function querySelector(string $selectors) : Node { }
 	
-	public abstract function querySelectorAll(string $selectors) : NodeList;
+	public function querySelectorAll(string $selectors) : NodeList { }
 }
 
 trait ChildNode {
 	/** @param Node|string ...$nodes */
-	public abstract function before(...$nodes) : void;
+	public function before(...$nodes) : void { }
 	
 	/** @param Node|string ...$nodes */
-	public abstract function after(...$nodes) : void;
+	public function after(...$nodes) : void { }
 	
 	/** @param Node|string ...$nodes */
-	public abstract function replaceWith(...$nodes) : void;
+	public function replaceWith(...$nodes) : void { }
 	
-	public abstract function remove() : void;
+	public function remove() : void { }
 }
 
 trait NonDocumentTypeChildNode {
@@ -58,29 +52,23 @@ trait NonDocumentTypeChildNode {
 	public $nextElementSibling;
 }
 
-abstract class AsyncResult {
-	public $done;
-	
-	private function __construct() { }
-	public abstract function fd() : int;
-	public abstract function wait() : Document;
+trait DocumentNonStandart {
+	public function getParseErrors() : array { }
 }
 
-abstract class ChunksParser {
-	public $document;
-	
-	private function __construct() { }
-	public abstract function parseChunk(string $html) : ChunksParser;
-	public abstract function parseChunkEnd() : Document;
+class Parser {
+	private function __construct($options = []) { }
+	public function parse(string $html, array $options = []) : DOM\Document { }
 }
 
-abstract class ChunksParserAsync {
-	private function __construct() { }
-	public abstract function parseChunk(string $html) : ChunksParserAsync;
-	public abstract function parseChunkEnd() : AsyncResult;
+class StreamParser {
+	private function __construct($options = []) { }
+	public function begin(array $options = []) : DOM\Document { }
+	public function parse(string $html) : void { }
+	public function end() : void { }
 }
 
-abstract class DOMException extends \Exception {
+class DOMException extends \Exception {
 	const INDEX_SIZE_ERR				= 1;
 	const DOMSTRING_SIZE_ERR			= 2;
 	const HIERARCHY_REQUEST_ERR			= 3;
@@ -130,11 +118,11 @@ abstract class DOMException extends \Exception {
 	const DATA_CLONE_ERR				= 25;
 }
 
-abstract class EventTarget {
+class EventTarget {
 	private function __construct() { }
 }
 
-abstract class Node extends EventTarget {
+class Node extends EventTarget {
 	const ELEMENT_NODE					= 1;
 	const ATTRIBUTE_NODE				= 2;
 	const TEXT_NODE						= 3;
@@ -172,35 +160,36 @@ abstract class Node extends EventTarget {
 	
 	public $private;
 	
-	public abstract function getRootNode(array $options = []) : Node;
-	public abstract function hasChildNodes() : bool;
-	public abstract function normalize() : void;
-	public abstract function cloneNode(bool $deep = false) : Node;
+	public function getRootNode(array $options = []) : Node { }
+	public function hasChildNodes() : bool { }
+	public function normalize() : void { }
+	public function cloneNode(bool $deep = false) : Node { }
 	
 	/** @param Node|null ...$otherNode */
-	public abstract function isEqualNode(Node $otherNode) : bool;
+	public function isEqualNode(Node $otherNode) : bool { }
 	
 	/** @param Node|null ...$otherNode */
-	public abstract function isSameNode(Node $otherNode) : bool;
+	public function isSameNode(Node $otherNode) : bool { }
 	
-	public abstract function compareDocumentPosition(Node $other) : int;
+	public function compareDocumentPosition(Node $other) : int { }
 	
 	/** @param Node|null ...$other */
-	public abstract function contains(Node $other) : bool;
+	public function contains(Node $other) : bool { }
 	
 	/** @param Node|null ...$child */
-	public abstract function insertBefore(Node $node, Node $child) : Node;
+	public function insertBefore(Node $node, Node $child) : Node { }
 	
-	public abstract function appendChild(Node $child) : Node;
+	public function appendChild(Node $child) : Node { }
 	
-	public abstract function replaceChild(Node $node, Node $child) : Node;
+	public function replaceChild(Node $node, Node $child) : Node { }
 	
-	public abstract function removeChild(Node $child) : Node;
+	public function removeChild(Node $child) : Node { }
 }
 
-abstract class Document extends Node {
+class Document extends Node {
 	use ParentNode;
 	use NonElementParentNode;
+	use DocumentNonStandart;
 	
 	public $URL; // about:blank
 	public $documentURI; // about:blank
@@ -215,28 +204,28 @@ abstract class Document extends Node {
 	public $doctype; // DocumentType
 	public $documentElement;
 	
-	public abstract function createElement(string $localName) : Element;
+	public function createElement(string $localName) : Element { }
 	
-	public abstract function createElementNS(string $namespace, string $qualifiedName) : Element;
-	public abstract function createDocumentFragment() : DocumentFragment;
-	public abstract function createTextNode(string $data) : Text;
-	public abstract function createComment(string $data) : Comment;
-	public abstract function createCDATASection(string $data) : CDATASection;
-	public abstract function createProcessingInstruction(string $target, string $data) : ProcessingInstruction;
+	public function createElementNS(string $namespace, string $qualifiedName) : Element { }
+	public function createDocumentFragment() : DocumentFragment { }
+	public function createTextNode(string $data) : Text { }
+	public function createComment(string $data) : Comment { }
+	public function createCDATASection(string $data) : CDATASection { }
+	public function createProcessingInstruction(string $target, string $data) : ProcessingInstruction { }
 	
-	public abstract function importNode(Node $node, bool $deep = false) : Node;
-	public abstract function adoptNode(Node $data) : Node;
+	public function importNode(Node $node, bool $deep = false) : Node { }
+	public function adoptNode(Node $data) : Node { }
 	
-	public abstract function createAttribute(string $localName) : Attr;
-	public abstract function createAttributeNS(string $namespace, string $localName) : Attr;
+	public function createAttribute(string $localName) : Attr { }
+	public function createAttributeNS(string $namespace, string $localName) : Attr { }
 }
 
-abstract class DocumentFragment extends Node {
+class DocumentFragment extends Node {
 	use ParentNode;
 	use NonElementParentNode;
 }
 
-abstract class DocumentType {
+class DocumentType {
 	use ChildNode;
 	
 	public $name;
@@ -244,7 +233,7 @@ abstract class DocumentType {
 	public $systemId;
 }
 
-abstract class Attr extends Node {
+class Attr extends Node {
 	public $namespaceURI;
 	public $prefix;
 	public $localName;
@@ -254,37 +243,37 @@ abstract class Attr extends Node {
 	public $ownerElement;
 }
 
-abstract class CharacterData extends Node {
+class CharacterData extends Node {
 	use ChildNode;
 	use NonDocumentTypeChildNode;
 	
 	public $data;
 	public $length;
 	
-	public abstract function substringData(int $offset, int $count) : string;
-	public abstract function appendData(string $data) : void;
-	public abstract function insertData(int $offset, string $data) : void;
-	public abstract function deleteData(int $offset, int $count) : void;
-	public abstract function replaceData(int $offset, int $count, string $data) : void;
+	public function substringData(int $offset, int $count) : string { }
+	public function appendData(string $data) : void { }
+	public function insertData(int $offset, string $data) : void { }
+	public function deleteData(int $offset, int $count) : void { }
+	public function replaceData(int $offset, int $count, string $data) : void { }
 }
 
-abstract class Text extends CharacterData {
+class Text extends CharacterData {
 	use ChildNode;
 	
 	public $wholeText;
 	
-	public abstract function splitText(int $offset) : Text;
+	public function splitText(int $offset) : Text { }
 }
 
-abstract class CDATASection extends Text {
+class CDATASection extends Text {
 	
 }
 
-abstract class ProcessingInstruction extends CharacterData {
+class ProcessingInstruction extends CharacterData {
 	public $target;
 }
 
-abstract class Element extends Node {
+class Element extends Node {
 	use ParentNode;
 	use NonDocumentTypeChildNode;
 	
@@ -301,111 +290,227 @@ abstract class Element extends Node {
 	public $innerHTML;
 	public $outerHTML;
 	
-	public abstract function hasAttributes() : bool;
-	public abstract function getAttributeNames() : array;
+	public function hasAttributes() : bool { }
+	public function getAttributeNames() : array { }
 	
 	/** @return string|null */
-	public abstract function getAttribute(string $qualifiedName) : string;
+	public function getAttribute(string $qualifiedName) : string { }
 	
 	/** @return string|null */
-	public abstract function getAttributeNS(string $namespace, string $localName) : string;
+	public function getAttributeNS(string $namespace, string $localName) : string { }
 	
-	public abstract function setAttribute(string $qualifiedName, string $value) : void;
-	public abstract function setAttributeNS(string $namespace, string $localName, string $value) : void;
+	public function setAttribute(string $qualifiedName, string $value) : void { }
+	public function setAttributeNS(string $namespace, string $localName, string $value) : void { }
 	
-	public abstract function removeAttribute(string $qualifiedName) : void;
-	public abstract function removeAttributeNS(string $namespace, string $localName) : void;
+	public function removeAttribute(string $qualifiedName) : void { }
+	public function removeAttributeNS(string $namespace, string $localName) : void { }
 	
-	public abstract function toggleAttribute(string $qualifiedName, bool $force = NULL) : bool;
-	public abstract function toggleAttributeNS(string $namespace, string $localName, bool $force = NULL) : bool;
+	public function toggleAttribute(string $qualifiedName, bool $force = NULL) : bool { }
+	public function toggleAttributeNS(string $namespace, string $localName, bool $force = NULL) : bool { }
 	
-	public abstract function hasAttribute(string $qualifiedName) : bool;
-	public abstract function hasAttributeNS(string $namespace, string $localName) : bool;
-	
-	/** @return Attr|null */
-	public abstract function getAttributeNode(string $qualifiedName) : Attr;
+	public function hasAttribute(string $qualifiedName) : bool { }
+	public function hasAttributeNS(string $namespace, string $localName) : bool { }
 	
 	/** @return Attr|null */
-	public abstract function getAttributeNodeNS(string $namespace, string $localName) : Attr;
+	public function getAttributeNode(string $qualifiedName) : Attr { }
 	
 	/** @return Attr|null */
-	public abstract function setAttributeNode(Attr $attr) : Attr;
+	public function getAttributeNodeNS(string $namespace, string $localName) : Attr { }
 	
 	/** @return Attr|null */
-	public abstract function setAttributeNodeNS(Attr $attr) : Attr;
+	public function setAttributeNode(Attr $attr) : Attr { }
 	
-	public abstract function removeAttributeNode(Attr $attr) : Attr;
+	/** @return Attr|null */
+	public function setAttributeNodeNS(Attr $attr) : Attr { }
+	
+	public function removeAttributeNode(Attr $attr) : Attr { }
 	
 	/** @return Node|null */
-	public abstract function closest($selectors) : Node;
+	public function closest($selectors) : Node { }
 	
-	public abstract function matches($selectors) : bool;
+	public function matches($selectors) : bool { }
 	
 	/** @return Node|null */
-	public abstract function insertAdjacentElement(string $where, Node $element) : Node; // historical
+	public function insertAdjacentElement(string $where, Node $element) : Node { } // historical
 	
-	public abstract function insertAdjacentText(string $where, string $data) : void; // historical
+	public function insertAdjacentText(string $where, string $data) : void { } // historical
 	
-	public abstract function insertAdjacentHTML(string $where, string $html) : void; // historical
+	public function insertAdjacentHTML(string $where, string $html) : void { } // historical
 }
 
-abstract class HTMLCollection implements \Iterator, \ArrayAccess, \Countable {
+class HTMLCollection implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
 	
 	/** @return Node|null */
-	public abstract function item(int $index) : Node;
+	public function item(int $index) : Node { }
 	
 	/** @return Node|null */
-	public abstract function namedItem(string $name) : Node;
+	public function namedItem(string $name) : Node { }
+	
+	/*
+	 * Iterator
+	 */
+	public function current() { }
+	
+	public function key() { }
+	
+	public function next() { }
+	
+	public function rewind() { }
+	
+	public function valid() { }
+	
+	/*
+	 * ArrayAccess
+	 */
+	public function offsetExists($offset) { }
+	
+	public function offsetGet($offset) { }
+	
+	public function offsetSet($offset, $value) { }
+	
+	public function offsetUnset($offset) { }
+	
+	/*
+	 * Countable
+	 */
+	public function count() { }
 }
 
-abstract class NodeList implements \Iterator, \ArrayAccess, \Countable {
+class NodeList implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
 	
 	/** @return Node|null */
-	public abstract function item(int $index) : Node;
+	public function item(int $index) : Node { }
+	
+	/*
+	 * Iterator
+	 */
+	public function current() { }
+	
+	public function key() { }
+	
+	public function next() { }
+	
+	public function rewind() { }
+	
+	public function valid() { }
+	
+	/*
+	 * ArrayAccess
+	 */
+	public function offsetExists($offset) { }
+	
+	public function offsetGet($offset) { }
+	
+	public function offsetSet($offset, $value) { }
+	
+	public function offsetUnset($offset) { }
+	
+	/*
+	 * Countable
+	 */
+	public function count() { }
 }
 
-abstract class DOMTokenList implements \Iterator, \ArrayAccess, \Countable {
+class DOMTokenList implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
 	public $value;
 	
 	/** @return string|null */
-	public abstract function item(int $index) : string;
+	public function item(int $index) : string { }
 	
-	public abstract function contains(string $token) : bool;
+	public function contains(string $token) : bool { }
 	
-	public abstract function add(string ...$tokens) : void;
+	public function add(string ...$tokens) : void { }
 	
-	public abstract function remove(string ...$tokens) : void;
+	public function remove(string ...$tokens) : void { }
 	
-	public abstract function toggle(string $token, bool $force = NULL) : bool;
+	public function toggle(string $token, bool $force = NULL) : bool { }
 	
-	public abstract function replace(string $token, string $newToken) : bool;
+	public function replace(string $token, string $newToken) : bool { }
 	
-	public abstract function supports(string $token) : bool;
+	public function supports(string $token) : bool { }
+	
+	/*
+	 * Iterator
+	 */
+	public function current() { }
+	
+	public function key() { }
+	
+	public function next() { }
+	
+	public function rewind() { }
+	
+	public function valid() { }
+	
+	/*
+	 * ArrayAccess
+	 */
+	public function offsetExists($offset) { }
+	
+	public function offsetGet($offset) { }
+	
+	public function offsetSet($offset, $value) { }
+	
+	public function offsetUnset($offset) { }
+	
+	/*
+	 * Countable
+	 */
+	public function count() { }
 }
 
-abstract class NamedNodeMap implements \Iterator, \ArrayAccess, \Countable {
+class NamedNodeMap implements \Iterator, \ArrayAccess, \Countable {
 	public $length;
 	public $value;
 	
 	/** @return Attr|null */
-	public abstract function item(int $index) : Attr;
+	public function item(int $index) : Attr { }
 	
 	/** @return Attr|null */
-	public abstract function getNamedItem(string $qualifiedName) : Attr;
+	public function getNamedItem(string $qualifiedName) : Attr { }
 	
 	/** @return Attr|null */
-	public abstract function getNamedItemNS(string $namespace, string $localName) : Attr;
+	public function getNamedItemNS(string $namespace, string $localName) : Attr { }
 	
 	/** @return Attr|null */
-	public abstract function setNamedItem(Attr $attr) : Attr;
+	public function setNamedItem(Attr $attr) : Attr { }
 	
 	/** @return Attr|null */
-	public abstract function setNamedItemNS(Attr $attr) : Attr;
+	public function setNamedItemNS(Attr $attr) : Attr { }
 	
-	public abstract function removeNamedItem(string $qualifiedName) : Attr;
+	public function removeNamedItem(string $qualifiedName) : Attr { }
 	
-	public abstract function removeNamedItemNS(string $namespace, string $localName) : Attr;
+	public function removeNamedItemNS(string $namespace, string $localName) : Attr { }
+	
+	/*
+	 * Iterator
+	 */
+	public function current() { }
+	
+	public function key() { }
+	
+	public function next() { }
+	
+	public function rewind() { }
+	
+	public function valid() { }
+	
+	/*
+	 * ArrayAccess
+	 */
+	public function offsetExists($offset) { }
+	
+	public function offsetGet($offset) { }
+	
+	public function offsetSet($offset, $value) { }
+	
+	public function offsetUnset($offset) { }
+	
+	/*
+	 * Countable
+	 */
+	public function count() { }
 }

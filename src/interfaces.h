@@ -8,9 +8,8 @@
 #include "utils.h"
 
 zend_class_entry *html5_dom_ce;
-zend_class_entry *html5_dom_asyncresult_ce;
-zend_class_entry *html5_dom_chunksparser_ce;
-zend_class_entry *html5_dom_chunksparserasync_ce;
+zend_class_entry *html5_dom_parser_ce;
+zend_class_entry *html5_dom_streamparser_ce;
 zend_class_entry *html5_dom_domexception_ce;
 zend_class_entry *html5_dom_eventtarget_ce;
 zend_class_entry *html5_dom_node_ce;
@@ -88,26 +87,17 @@ void html5_dom_interfaces_unload();
  * */
 
 /* HTML5\DOM */
-PHP_METHOD(HTML5_DOM, __construct);
 PHP_METHOD(HTML5_DOM, parse);
-PHP_METHOD(HTML5_DOM, parseChunkStart);
-PHP_METHOD(HTML5_DOM, parseAsync);
-PHP_METHOD(HTML5_DOM, parseAsyncChunkStart);
 
-/* HTML5\DOM\AsyncResult */
-PHP_METHOD(HTML5_DOM_AsyncResult, __construct);
-PHP_METHOD(HTML5_DOM_AsyncResult, fd);
-PHP_METHOD(HTML5_DOM_AsyncResult, wait);
+/* HTML5\DOM\Parser */
+PHP_METHOD(HTML5_DOM_Parser, __construct);
+PHP_METHOD(HTML5_DOM_Parser, parse);
 
-/* HTML5\DOM\ChunksParser */
-PHP_METHOD(HTML5_DOM_ChunksParser, __construct);
-PHP_METHOD(HTML5_DOM_ChunksParser, parseChunk);
-PHP_METHOD(HTML5_DOM_ChunksParser, parseChunkEnd);
-
-/* HTML5\DOM\ChunksParserAsync */
-PHP_METHOD(HTML5_DOM_ChunksParserAsync, __construct);
-PHP_METHOD(HTML5_DOM_ChunksParserAsync, parseChunk);
-PHP_METHOD(HTML5_DOM_ChunksParserAsync, parseChunkEnd);
+/* HTML5\DOM\StreamParser */
+PHP_METHOD(HTML5_DOM_StreamParser, __construct);
+PHP_METHOD(HTML5_DOM_StreamParser, begin);
+PHP_METHOD(HTML5_DOM_StreamParser, parse);
+PHP_METHOD(HTML5_DOM_StreamParser, end);
 
 /* HTML5\DOM\EventTarget */
 PHP_METHOD(HTML5_DOM_EventTarget, __construct);
@@ -177,10 +167,10 @@ PHP_METHOD(HTML5_DOM_Element, insertAdjacentHTML);
 PHP_METHOD(HTML5_DOM_HTMLCollection, item);
 PHP_METHOD(HTML5_DOM_HTMLCollection, namedItem);
 PHP_METHOD(HTML5_DOM_HTMLCollection, current);
-PHP_METHOD(HTML5_DOM_HTMLCollection, next);
 PHP_METHOD(HTML5_DOM_HTMLCollection, key);
-PHP_METHOD(HTML5_DOM_HTMLCollection, valid);
+PHP_METHOD(HTML5_DOM_HTMLCollection, next);
 PHP_METHOD(HTML5_DOM_HTMLCollection, rewind);
+PHP_METHOD(HTML5_DOM_HTMLCollection, valid);
 PHP_METHOD(HTML5_DOM_HTMLCollection, offsetExists);
 PHP_METHOD(HTML5_DOM_HTMLCollection, offsetGet);
 PHP_METHOD(HTML5_DOM_HTMLCollection, offsetSet);
@@ -190,10 +180,10 @@ PHP_METHOD(HTML5_DOM_HTMLCollection, count);
 /* HTML5\DOM\NodeList */
 PHP_METHOD(HTML5_DOM_NodeList, item);
 PHP_METHOD(HTML5_DOM_NodeList, current);
-PHP_METHOD(HTML5_DOM_NodeList, next);
 PHP_METHOD(HTML5_DOM_NodeList, key);
-PHP_METHOD(HTML5_DOM_NodeList, valid);
+PHP_METHOD(HTML5_DOM_NodeList, next);
 PHP_METHOD(HTML5_DOM_NodeList, rewind);
+PHP_METHOD(HTML5_DOM_NodeList, valid);
 PHP_METHOD(HTML5_DOM_NodeList, offsetExists);
 PHP_METHOD(HTML5_DOM_NodeList, offsetGet);
 PHP_METHOD(HTML5_DOM_NodeList, offsetSet);
@@ -209,10 +199,10 @@ PHP_METHOD(HTML5_DOM_DOMTokenList, toggle);
 PHP_METHOD(HTML5_DOM_DOMTokenList, replace);
 PHP_METHOD(HTML5_DOM_DOMTokenList, supports);
 PHP_METHOD(HTML5_DOM_DOMTokenList, current);
-PHP_METHOD(HTML5_DOM_DOMTokenList, next);
 PHP_METHOD(HTML5_DOM_DOMTokenList, key);
-PHP_METHOD(HTML5_DOM_DOMTokenList, valid);
+PHP_METHOD(HTML5_DOM_DOMTokenList, next);
 PHP_METHOD(HTML5_DOM_DOMTokenList, rewind);
+PHP_METHOD(HTML5_DOM_DOMTokenList, valid);
 PHP_METHOD(HTML5_DOM_DOMTokenList, offsetExists);
 PHP_METHOD(HTML5_DOM_DOMTokenList, offsetGet);
 PHP_METHOD(HTML5_DOM_DOMTokenList, offsetSet);
@@ -228,10 +218,10 @@ PHP_METHOD(HTML5_DOM_NamedNodeMap, setNamedItemNS);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, removeNamedItem);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, removeNamedItemNS);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, current);
-PHP_METHOD(HTML5_DOM_NamedNodeMap, next);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, key);
-PHP_METHOD(HTML5_DOM_NamedNodeMap, valid);
+PHP_METHOD(HTML5_DOM_NamedNodeMap, next);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, rewind);
+PHP_METHOD(HTML5_DOM_NamedNodeMap, valid);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, offsetExists);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, offsetGet);
 PHP_METHOD(HTML5_DOM_NamedNodeMap, offsetSet);
@@ -256,16 +246,13 @@ PHP_METHOD(HTML5_DOM_ChildNode, after);
 PHP_METHOD(HTML5_DOM_ChildNode, replaceWith);
 PHP_METHOD(HTML5_DOM_ChildNode, remove);
 
+/* HTML5\DOM\DocumentNonStandart */
+PHP_METHOD(HTML5_DOM_DocumentNonStandart, getParseErrors);
+
 
 /*
  * Properties
  * */
-
-/* HTML5\DOM\AsyncResult */
-int html5_dom_asyncresult__done(html5_dom_object_wrap *obj, zval *val, int write, int debug);
-
-/* HTML5\DOM\ChunksParser */
-int html5_dom_chunksparser__document(html5_dom_object_wrap *obj, zval *val, int write, int debug);
 
 /* HTML5\DOM\Node */
 int html5_dom_node__nodeType(html5_dom_object_wrap *obj, zval *val, int write, int debug);
