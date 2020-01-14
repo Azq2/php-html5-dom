@@ -69,6 +69,7 @@ class StreamParser {
 }
 
 class DOMException extends \Exception {
+	const UNKNOWN_ERROR					= 0; // non-standart
 	const INDEX_SIZE_ERR				= 1;
 	const DOMSTRING_SIZE_ERR			= 2;
 	const HIERARCHY_REQUEST_ERR			= 3;
@@ -266,6 +267,10 @@ class Text extends CharacterData {
 }
 
 class CDATASection extends Text {
+	
+}
+
+class Comment extends CharacterData {
 	
 }
 

@@ -1,5 +1,5 @@
-#ifndef HTML5_DOM_PHP7_PARSER_H
-#define HTML5_DOM_PHP7_PARSER_H
+#ifndef HTML5_DOM_PARSER_H
+#define HTML5_DOM_PARSER_H
 
 #include "php.h"
 
@@ -23,7 +23,7 @@ static bool html5_dom_parse_opt_long(zval *options, const char *key, size_t key_
 static bool html5_dom_parse_opt_bool(zval *options, const char *key, size_t key_len, bool *result);
 static bool html5_dom_parse_opt_encoding(zval *options, const char *key, size_t key_len, const lxb_encoding_data_t **result, bool *is_auto);
 
-static bool html5_dom_init_options(html5_dom_options_t *options);
+static void html5_dom_init_options(html5_dom_options_t *options);
 static bool html5_dom_parse_options(html5_dom_options_t *opts, zval *options);
 
-#endif // HTML5_DOM_PHP7_PARSER_H
+#endif // HTML5_DOM_PARSER_H

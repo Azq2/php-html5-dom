@@ -7,25 +7,13 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 	PHP_ADD_INCLUDE(src)
 	PHP_ADD_INCLUDE(third_party/lexbor/source)
 	
-	LEXBOR_PORTS=\
-		third_party/lexbor/source/lexbor/ports/posix/lexbor/core/perf.c \
-		third_party/lexbor/source/lexbor/ports/posix/lexbor/core/fs.c \
-		third_party/lexbor/source/lexbor/ports/posix/lexbor/core/memory.c
-	
-	case $host_alias in
-		cygwin* | mingw* | pw32*)
-			LEXBOR_PORTS=\
-				third_party/lexbor/source/lexbor/ports/windows_nt/lexbor/core/perf.c \
-				third_party/lexbor/source/lexbor/ports/windows_nt/lexbor/core/fs.c \
-				third_party/lexbor/source/lexbor/ports/windows_nt/lexbor/core/memory.c
-	esac
-	
 	PHP_NEW_EXTENSION(html5_dom, [
 		src/html5_dom.c \
 		src/utils.c \
 		src/interfaces.c \
 		src/stub.c \
 		src/parser.c \
+		src/node.c \
 		\
 		third_party/lexbor/source/lexbor/tag/tag.c \
 		third_party/lexbor/source/lexbor/utils/http.c \
@@ -202,7 +190,9 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 		third_party/lexbor/source/lexbor/core/dobject.c \
 		third_party/lexbor/source/lexbor/core/bst.c \
 		third_party/lexbor/source/lexbor/core/hash.c \
-		${LEXBOR_PORTS} \
+		third_party/lexbor/source/lexbor/ports/posix/lexbor/core/perf.c \
+		third_party/lexbor/source/lexbor/ports/posix/lexbor/core/fs.c \
+		third_party/lexbor/source/lexbor/ports/posix/lexbor/core/memory.c \
 	], $ext_shared)
 	
 	PHP_ADD_LIBRARY(pthread, 1, HTML5_DOM_SHARED_LIBADD)

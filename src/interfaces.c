@@ -19,6 +19,7 @@ static HashTable html5_dom_documenttype_prop_handlers;
 static HashTable html5_dom_characterdata_prop_handlers;
 static HashTable html5_dom_text_prop_handlers;
 static HashTable html5_dom_cdatasection_prop_handlers;
+static HashTable html5_dom_comment_prop_handlers;
 static HashTable html5_dom_processinginstruction_prop_handlers;
 static HashTable html5_dom_element_prop_handlers;
 static HashTable html5_dom_htmlcollection_prop_handlers;
@@ -697,6 +698,11 @@ static zend_function_entry html5_dom_cdatasection_methods[] = {
 	PHP_FE_END
 };
 
+/* HTML5\DOM\Comment */
+static zend_function_entry html5_dom_comment_methods[] = {
+	PHP_FE_END
+};
+
 /* HTML5\DOM\ProcessingInstruction */
 static zend_function_entry html5_dom_processinginstruction_methods[] = {
 	PHP_FE_END
@@ -852,6 +858,10 @@ static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
 	else if (ce == html5_dom_cdatasection_ce) {
 		intern->prop_handler = &html5_dom_cdatasection_prop_handlers;
 	}
+	/* HTML5\DOM\Comment */
+	else if (ce == html5_dom_comment_ce) {
+		intern->prop_handler = &html5_dom_comment_prop_handlers;
+	}
 	/* HTML5\DOM\ProcessingInstruction */
 	else if (ce == html5_dom_processinginstruction_ce) {
 		intern->prop_handler = &html5_dom_processinginstruction_prop_handlers;
@@ -927,6 +937,7 @@ void html5_dom_interfaces_init() {
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DOMException", html5_dom_domexception_methods);
 	ce.create_object = _create_object;
 	html5_dom_domexception_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("UNKNOWN_ERROR") - 1, HTML5_DOM_DOMException__UNKNOWN_ERROR);
 	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INDEX_SIZE_ERR") - 1, HTML5_DOM_DOMException__INDEX_SIZE_ERR);
 	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("DOMSTRING_SIZE_ERR") - 1, HTML5_DOM_DOMException__DOMSTRING_SIZE_ERR);
 	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("HIERARCHY_REQUEST_ERR") - 1, HTML5_DOM_DOMException__HIERARCHY_REQUEST_ERR);
@@ -1108,6 +1119,14 @@ void html5_dom_interfaces_init() {
 	ce.create_object = _create_object;
 	html5_dom_cdatasection_ce = zend_register_internal_class_ex(&ce, html5_dom_text_ce);
 
+	/* HTML5\DOM\Comment */
+	html5_dom_prop_handler_init(&html5_dom_comment_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Comment", html5_dom_comment_methods);
+	ce.create_object = _create_object;
+	html5_dom_comment_ce = zend_register_internal_class_ex(&ce, html5_dom_characterdata_ce);
+
 	/* HTML5\DOM\ProcessingInstruction */
 	html5_dom_prop_handler_list html5_dom_processinginstruction_handlers[] = {
 		{"target", html5_dom_processinginstruction__target}, 
@@ -1209,6 +1228,7 @@ void html5_dom_interfaces_unload() {
 	zend_hash_destroy(&html5_dom_characterdata_prop_handlers);
 	zend_hash_destroy(&html5_dom_text_prop_handlers);
 	zend_hash_destroy(&html5_dom_cdatasection_prop_handlers);
+	zend_hash_destroy(&html5_dom_comment_prop_handlers);
 	zend_hash_destroy(&html5_dom_processinginstruction_prop_handlers);
 	zend_hash_destroy(&html5_dom_element_prop_handlers);
 	zend_hash_destroy(&html5_dom_htmlcollection_prop_handlers);

@@ -20,6 +20,7 @@ zend_class_entry *html5_dom_documenttype_ce;
 zend_class_entry *html5_dom_characterdata_ce;
 zend_class_entry *html5_dom_text_ce;
 zend_class_entry *html5_dom_cdatasection_ce;
+zend_class_entry *html5_dom_comment_ce;
 zend_class_entry *html5_dom_processinginstruction_ce;
 zend_class_entry *html5_dom_element_ce;
 zend_class_entry *html5_dom_htmlcollection_ce;
@@ -35,6 +36,7 @@ void html5_dom_interfaces_unload();
  * */
 
 /* HTML5\DOM\DOMException */
+#define HTML5_DOM_DOMException__UNKNOWN_ERROR 0
 #define HTML5_DOM_DOMException__INDEX_SIZE_ERR 1
 #define HTML5_DOM_DOMException__DOMSTRING_SIZE_ERR 2
 #define HTML5_DOM_DOMException__HIERARCHY_REQUEST_ERR 3
