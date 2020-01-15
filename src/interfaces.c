@@ -1023,7 +1023,7 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_attr_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_attr_prop_handlers, html5_dom_node_handlers);
 	html5_dom_prop_handler_add(&html5_dom_attr_prop_handlers, html5_dom_attr_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Attr", html5_dom_attr_methods);
 	ce.create_object = _create_object;
@@ -1048,7 +1048,7 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_document_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_document_prop_handlers, html5_dom_node_handlers);
 	html5_dom_prop_handler_add(&html5_dom_document_prop_handlers, html5_dom_document_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Document", html5_dom_document_methods);
 	ce.create_object = _create_object;
@@ -1063,7 +1063,7 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_documentfragment_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_documentfragment_prop_handlers, html5_dom_node_handlers);
 	html5_dom_prop_handler_add(&html5_dom_documentfragment_prop_handlers, html5_dom_documentfragment_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DocumentFragment", html5_dom_documentfragment_methods);
 	ce.create_object = _create_object;
@@ -1091,7 +1091,7 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_characterdata_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_node_handlers);
 	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\CharacterData", html5_dom_characterdata_methods);
 	ce.create_object = _create_object;
@@ -1103,8 +1103,8 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_text_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
-	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_add(&html5_dom_text_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_text_prop_handlers, html5_dom_characterdata_handlers);
 	html5_dom_prop_handler_add(&html5_dom_text_prop_handlers, html5_dom_text_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Text", html5_dom_text_methods);
 	ce.create_object = _create_object;
@@ -1112,17 +1112,17 @@ void html5_dom_interfaces_init() {
 
 	/* HTML5\DOM\CDATASection */
 	html5_dom_prop_handler_init(&html5_dom_cdatasection_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
-	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
-	html5_dom_prop_handler_add(&html5_dom_text_prop_handlers, html5_dom_text_handlers);
+	html5_dom_prop_handler_add(&html5_dom_cdatasection_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_cdatasection_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_add(&html5_dom_cdatasection_prop_handlers, html5_dom_text_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\CDATASection", html5_dom_cdatasection_methods);
 	ce.create_object = _create_object;
 	html5_dom_cdatasection_ce = zend_register_internal_class_ex(&ce, html5_dom_text_ce);
 
 	/* HTML5\DOM\Comment */
 	html5_dom_prop_handler_init(&html5_dom_comment_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
-	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_add(&html5_dom_comment_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_comment_prop_handlers, html5_dom_characterdata_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Comment", html5_dom_comment_methods);
 	ce.create_object = _create_object;
 	html5_dom_comment_ce = zend_register_internal_class_ex(&ce, html5_dom_characterdata_ce);
@@ -1133,8 +1133,8 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_processinginstruction_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
-	html5_dom_prop_handler_add(&html5_dom_characterdata_prop_handlers, html5_dom_characterdata_handlers);
+	html5_dom_prop_handler_add(&html5_dom_processinginstruction_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_processinginstruction_prop_handlers, html5_dom_characterdata_handlers);
 	html5_dom_prop_handler_add(&html5_dom_processinginstruction_prop_handlers, html5_dom_processinginstruction_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\ProcessingInstruction", html5_dom_processinginstruction_methods);
 	ce.create_object = _create_object;
@@ -1161,7 +1161,7 @@ void html5_dom_interfaces_init() {
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_element_prop_handlers);
-	html5_dom_prop_handler_add(&html5_dom_node_prop_handlers, html5_dom_node_handlers);
+	html5_dom_prop_handler_add(&html5_dom_element_prop_handlers, html5_dom_node_handlers);
 	html5_dom_prop_handler_add(&html5_dom_element_prop_handlers, html5_dom_element_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Element", html5_dom_element_methods);
 	ce.create_object = _create_object;

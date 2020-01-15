@@ -154,7 +154,7 @@ void html5_dom_interfaces_init() {
 		// Inherit prop handlers from parents
 		foreach (array_reverse($ce['parents']) as $parent_ce) {
 			if ($parent_ce['props'] && !$parent_ce['internal'])
-				echo "\thtml5_dom_prop_handler_add(&".$parent_ce['id']."_prop_handlers, ".$parent_ce['id']."_handlers);\n";
+				echo "\thtml5_dom_prop_handler_add(&".$ce['id']."_prop_handlers, ".$parent_ce['id']."_handlers);\n";
 		}
 		
 		if ($ce['props']) {

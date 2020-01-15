@@ -238,30 +238,71 @@ int html5_dom_node__baseURI(html5_dom_object_wrap *obj, zval *val, int write, in
 	return 0;
 }
 int html5_dom_node__isConnected(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		ZVAL_BOOL(val, self->parent ? 1 : 0);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__ownerDocument(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(&self->owner_document->node, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__parentNode(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->parent, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__parentElement(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		lxb_dom_node_t *parent = self->parent && self->parent->type == LXB_DOM_NODE_TYPE_ELEMENT ? self->parent : NULL;
+		html5_dom_node_to_zval(parent, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__childNodes(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
 	return 0;
 }
 int html5_dom_node__firstChild(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->first_child, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__lastChild(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->last_child, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__previousSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->prev, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__nextSibling(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_node_t *self = (lxb_dom_node_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->next, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_node__nodeValue(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
@@ -320,9 +361,19 @@ int html5_dom_document__contentType(html5_dom_object_wrap *obj, zval *val, int w
 	return 0;
 }
 int html5_dom_document__doctype(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_document_t *self = (lxb_dom_document_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->doctype, val);
+		return 1;
+	}
 	return 0;
 }
 int html5_dom_document__documentElement(html5_dom_object_wrap *obj, zval *val, int write, int debug) {
+	lxb_dom_document_t *self = (lxb_dom_document_t *) obj->ptr;
+	if (!write) {
+		html5_dom_node_to_zval(self->element, val);
+		return 1;
+	}
 	return 0;
 }
 
@@ -414,7 +465,15 @@ int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap
  * */
 
 static void _node_free_handler(html5_dom_object_wrap *obj) {
-	obj->ptr = lxb_html_interface_destroy(obj->ptr);
+	lxb_dom_node_t *node = obj->ptr;
+	
+	/*
+	lxb_dom_document_type_t         *doctype;
+	lxb_html_head_element_t         *head;
+    lxb_html_body_element_t         *body;
+	*/
+	
+	lxb_html_interface_destroy(node);
 }
 
 void html5_dom_node_to_zval(lxb_dom_node_t *node, zval *retval) {
