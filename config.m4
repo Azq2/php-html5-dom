@@ -4,12 +4,15 @@ PHP_ARG_ENABLE(html5-dom, for html5-dom,
 if test "${PHP_HTML5_DOM}" != "no"; then
 	AC_DEFINE(HAVE_HTML5_DOM, 1, [ ])
 	
+	# for debug
+	CFLAGS="$CFLAGS -Werror"
+	
 	PHP_ADD_INCLUDE(src)
 	PHP_ADD_INCLUDE(third_party/lexbor/source)
 	
 	PHP_NEW_EXTENSION(html5_dom, [
 		src/html5_dom.c \
-		src/utils.c \
+		src/object_wrap.c \
 		src/interfaces.c \
 		src/stub.c \
 		src/parser.c \

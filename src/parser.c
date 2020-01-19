@@ -17,11 +17,15 @@ PHP_METHOD(HTML5_DOM, parse) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|a", &html, &options_array) != SUCCESS)
 		RETURN_FALSE;
 	
-	html5_dom_options_t options = {0};
-	html5_dom_init_options(&options);
+	html5_dom_t *dom = (html5_dom_t *) emalloc(sizeof(html5_dom_t));
+	dom->refcount = 0;
 	
-	if (!html5_dom_parse_options(&options, options_array))
+	// Parser options
+	html5_dom_init_options(&dom->options);
+	if (!html5_dom_parse_options(&dom->options, options_array)) {
+		efree(dom);
 		RETURN_FALSE;
+	}
 	
 	lxb_status_t status;
 	lxb_html_document_t *document = lxb_html_document_create();
@@ -29,15 +33,19 @@ PHP_METHOD(HTML5_DOM, parse) {
 	status = lxb_html_document_parse(document, html->val, html->len);
 	if (status != LXB_STATUS_OK) {
 		lxb_html_document_destroy(document);
+		efree(dom);
 		RETURN_FALSE;
 	}
 	
-	html5_dom_node_to_zval(document, return_value);
+	lxb_dom_document_t *dom_document = lxb_dom_interface_document(document);
+	dom_document->user = dom;
+	
+	html5_dom_node_to_zval(lxb_dom_interface_node(document), return_value);
 }
 
 /* HTML5\DOM\Parser */
 PHP_METHOD(HTML5_DOM_Parser, __construct) {
-	HTML5_DOM_METHOD_PARAMS(html5_dom_parser_t);
+	// HTML5_DOM_METHOD_PARAMS(html5_dom_parser_t);
 	
 	zval *options_array = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|a", &options_array) != SUCCESS)
@@ -67,6 +75,30 @@ PHP_METHOD(HTML5_DOM_StreamParser, end) {
 /*
  * Utils
  * */
+
+size_t html5_dom_document_addref(lxb_dom_document_t *dom_document) {
+	html5_dom_t *dom = (html5_dom_t *) dom_document->user;
+	++dom->refcount;
+	
+	DOM_GC_TRACE("[++] DOM TREE (refcount=%ld)\n", dom->refcount);
+	
+	return dom->refcount;
+}
+
+size_t html5_dom_document_delref(lxb_dom_document_t *dom_document) {
+	html5_dom_t *dom = (html5_dom_t *) dom_document->user;
+	--dom->refcount;
+	
+	DOM_GC_TRACE("[--] DOM TREE (refcount=%ld)\n", dom->refcount);
+	
+	// Destroy lexbor document
+	if (dom->refcount == 0) {
+		DOM_GC_TRACE("[FREE] DOM\n");
+		lxb_html_document_destroy(lxb_html_interface_document(dom_document));
+	}
+	
+	return dom->refcount;
+}
 
 static bool html5_dom_parse_opt_long(zval *options_array, const char *key, size_t key_len, long *result) {
 	if (options_array) {

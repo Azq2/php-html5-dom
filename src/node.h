@@ -1,9 +1,7 @@
 #ifndef HTML5_DOM_NODE_H
 #define HTML5_DOM_NODE_H
 
-#include "php.h"
-
-#include "utils.h"
+#include "port.h"
 #include "interfaces.h"
 #include "lexbor/dom/interfaces/node.h"
 

@@ -1,7 +1,7 @@
-#include "utils.h"
+#include "object_wrap.h"
 #include "zend_smart_str.h"
 
-void *html5_dom_zend_object_alloc(size_t obj_size, zend_class_entry *ce) {
+static inline void *_object_alloc(size_t obj_size, zend_class_entry *ce) {
 	void *obj = emalloc(obj_size + zend_object_properties_size(ce));
 	/* Subtraction of sizeof(zval) is necessary, because zend_object_properties_size() may be
 	 * -sizeof(zval), if the object has no properties. */
@@ -9,8 +9,8 @@ void *html5_dom_zend_object_alloc(size_t obj_size, zend_class_entry *ce) {
 	return obj;
 }
 
-html5_dom_object_wrap *html5_dom_object_wrap_create(zend_class_entry *ce, zend_object_handlers *handlers) {
-	html5_dom_object_wrap *intern = html5_dom_zend_object_alloc(sizeof(html5_dom_object_wrap), ce);
+html5_dom_object_wrap_t *html5_dom_object_wrap_create(zend_class_entry *ce, zend_object_handlers *handlers) {
+	html5_dom_object_wrap_t *intern = _object_alloc(sizeof(html5_dom_object_wrap_t), ce);
 	intern->free_handler = NULL;
 	zend_object_std_init(&intern->std, ce);
 	object_properties_init(&intern->std, ce);
@@ -18,18 +18,17 @@ html5_dom_object_wrap *html5_dom_object_wrap_create(zend_class_entry *ce, zend_o
 	return intern;
 }
 
-void html5_dom_object_wrap_free(html5_dom_object_wrap *object) {
-	if (object->free_handler)
-		object->free_handler(object);
-	
-	zend_object_std_dtor(&object->std);
+void html5_dom_object_wrap_free(html5_dom_object_wrap_t *intern) {
+	if (intern->free_handler)
+		intern->free_handler(intern);
+	zend_object_std_dtor(&intern->std);
 }
 
 void html5_dom_prop_handler_init(HashTable *hash) {
 	zend_hash_init(hash, 0, NULL, NULL, 1);
 }
 
-void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handler_list *handlers) {
+void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handler_list_t *handlers) {
 	int i = 0;
 	while (handlers[i].func) {
 		zend_string *str = zend_string_init_interned(handlers[i].name, strlen(handlers[i].name), 1);
@@ -43,11 +42,8 @@ void html5_dom_prop_handler_free(HashTable *hash) {
 	zend_hash_destroy(hash);
 }
 
-/*
-	Generic object handlers
-*/
 zval *html5_dom_get_property_ptr_ptr(zval *object, zval *member, int type, void **cache_slot) {
-	html5_dom_object_wrap *obj = html5_dom_object_unwrap(Z_OBJ_P(object))
+	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object))
 	
 	zend_string *member_str = zval_get_string(member);
 	zval *retval = NULL;
@@ -61,10 +57,10 @@ zval *html5_dom_get_property_ptr_ptr(zval *object, zval *member, int type, void 
 }
 
 zval *html5_dom_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv) {
-	html5_dom_object_wrap *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
+	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
 	zval *retval;
-	html5_dom_prop_handler handler = NULL;
+	html5_dom_prop_handler_t handler = NULL;
 	
 	if (obj->prop_handler != NULL)
 		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
@@ -88,9 +84,9 @@ zval *html5_dom_read_property(zval *object, zval *member, int type, void **cache
 // Why if i write extension in perl - it works  without any changes after each new version?! :(
 #if PHP_VERSION_ID > 70400
 zval *html5_dom_write_property(zval *object, zval *member, zval *value, void **cache_slot) {
-	html5_dom_object_wrap *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
+	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
-	html5_dom_prop_handler handler = NULL;
+	html5_dom_prop_handler_t handler = NULL;
 	
 	if (obj->prop_handler != NULL)
 		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
@@ -107,9 +103,9 @@ zval *html5_dom_write_property(zval *object, zval *member, zval *value, void **c
 }
 #else
 void html5_dom_write_property(zval *object, zval *member, zval *value, void **cache_slot) {
-	html5_dom_object_wrap *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
+	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
-	html5_dom_prop_handler handler = NULL;
+	html5_dom_prop_handler_t handler = NULL;
 	
 	if (obj->prop_handler != NULL)
 		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
@@ -125,9 +121,9 @@ void html5_dom_write_property(zval *object, zval *member, zval *value, void **ca
 #endif
 
 int html5_dom_has_property(zval *object, zval *member, int has_set_exists, void **cache_slot) {
-	html5_dom_object_wrap *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
+	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
-	html5_dom_prop_handler handler = NULL;
+	html5_dom_prop_handler_t handler = NULL;
 	
 	int retval = 0;
 
@@ -166,13 +162,13 @@ int html5_dom_has_property(zval *object, zval *member, int has_set_exists, void 
 }
 
 HashTable *html5_dom_get_debug_info(zval *object, int *is_temp) {
-	html5_dom_object_wrap *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
+	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	
 	*is_temp = 1;
 	
 	HashTable *debug_info, *std_props;
 	zend_string *string_key;
-	html5_dom_prop_handler handler;
+	html5_dom_prop_handler_t handler;
 	
 	std_props = zend_std_get_properties(object);
 	debug_info = zend_array_dup(std_props);
@@ -180,7 +176,7 @@ HashTable *html5_dom_get_debug_info(zval *object, int *is_temp) {
 	if (!obj->prop_handler)
 		return debug_info;
 	
-	zend_string *object_str = zend_string_init("(object value omitted)", sizeof("(object value omitted)") - 1, 0);
+	zend_string *object_str = zend_string_init(ZEND_STRS("(object value omitted)") - 1, 0);
 	
 	ZEND_HASH_FOREACH_STR_KEY_PTR(obj->prop_handler, string_key, handler) {
 		zval value;

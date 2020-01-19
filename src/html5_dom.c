@@ -2,10 +2,9 @@
 #include "config.h"
 #endif
 
-#include "php.h"
+#include "port.h"
 #include "ext/standard/info.h"
 
-#include "utils.h"
 #include "html5_dom.h"
 #include "interfaces.h"
 

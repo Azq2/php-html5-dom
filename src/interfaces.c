@@ -824,7 +824,7 @@ static zend_function_entry html5_dom_namednodemap_methods[] = {
  * Functions
  * */
 static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
-	html5_dom_object_wrap *intern = html5_dom_object_wrap_create(ce, &object_handlers);
+	html5_dom_object_wrap_t *intern = html5_dom_object_wrap_create(ce, &object_handlers);
 	
 	/* HTML5\DOM\Node */
 	if (ce == html5_dom_node_ce) {
@@ -897,7 +897,7 @@ static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
 }
 
 static void _free_object(zend_object *object TSRMLS_DC) {
-	html5_dom_object_wrap *intern = html5_dom_object_unwrap(object);
+	html5_dom_object_wrap_t *intern = html5_dom_object_unwrap(object);
 	
 	DOM_GC_TRACE("[DESTROY] %s (refs=%d)", object->ce->name->val, GC_REFCOUNT(&intern->std));
 	
@@ -906,7 +906,7 @@ static void _free_object(zend_object *object TSRMLS_DC) {
 
 void html5_dom_interfaces_init() {
 	memcpy(&object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-	object_handlers.offset					= XtOffsetOf(html5_dom_object_wrap, std);
+	object_handlers.offset					= XtOffsetOf(html5_dom_object_wrap_t, std);
 	object_handlers.free_obj				= _free_object;
 	object_handlers.clone_obj				= NULL;
 	
@@ -970,7 +970,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_eventtarget_ce = zend_register_internal_class(&ce);
 
 	/* HTML5\DOM\Node */
-	html5_dom_prop_handler_list html5_dom_node_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_node_handlers[] = {
 		{"nodeType", html5_dom_node__nodeType}, 
 		{"nodeName", html5_dom_node__nodeName}, 
 		{"baseURI", html5_dom_node__baseURI}, 
@@ -1013,7 +1013,7 @@ void html5_dom_interfaces_init() {
 	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC") - 1, HTML5_DOM_Node__DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC);
 
 	/* HTML5\DOM\Attr */
-	html5_dom_prop_handler_list html5_dom_attr_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_attr_handlers[] = {
 		{"namespaceURI", html5_dom_attr__namespaceURI}, 
 		{"prefix", html5_dom_attr__prefix}, 
 		{"localName", html5_dom_attr__localName}, 
@@ -1030,7 +1030,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_attr_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\Document */
-	html5_dom_prop_handler_list html5_dom_document_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_document_handlers[] = {
 		{"URL", html5_dom_document__URL}, 
 		{"documentURI", html5_dom_document__documentURI}, 
 		{"origin", html5_dom_document__origin}, 
@@ -1055,7 +1055,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_document_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\DocumentFragment */
-	html5_dom_prop_handler_list html5_dom_documentfragment_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_documentfragment_handlers[] = {
 		{"children", html5_dom_parentnode__children}, 
 		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
 		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
@@ -1070,7 +1070,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_documentfragment_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\DocumentType */
-	html5_dom_prop_handler_list html5_dom_documenttype_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_documenttype_handlers[] = {
 		{"name", html5_dom_documenttype__name}, 
 		{"publicId", html5_dom_documenttype__publicId}, 
 		{"systemId", html5_dom_documenttype__systemId}, 
@@ -1083,7 +1083,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_documenttype_ce = zend_register_internal_class(&ce);
 
 	/* HTML5\DOM\CharacterData */
-	html5_dom_prop_handler_list html5_dom_characterdata_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_characterdata_handlers[] = {
 		{"data", html5_dom_characterdata__data}, 
 		{"length", html5_dom_characterdata__length}, 
 		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling}, 
@@ -1098,7 +1098,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_characterdata_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\Text */
-	html5_dom_prop_handler_list html5_dom_text_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_text_handlers[] = {
 		{"wholeText", html5_dom_text__wholeText}, 
 		{"", NULL}, 
 	};
@@ -1128,7 +1128,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_comment_ce = zend_register_internal_class_ex(&ce, html5_dom_characterdata_ce);
 
 	/* HTML5\DOM\ProcessingInstruction */
-	html5_dom_prop_handler_list html5_dom_processinginstruction_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_processinginstruction_handlers[] = {
 		{"target", html5_dom_processinginstruction__target}, 
 		{"", NULL}, 
 	};
@@ -1141,7 +1141,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_processinginstruction_ce = zend_register_internal_class_ex(&ce, html5_dom_characterdata_ce);
 
 	/* HTML5\DOM\Element */
-	html5_dom_prop_handler_list html5_dom_element_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_element_handlers[] = {
 		{"namespaceURI", html5_dom_element__namespaceURI}, 
 		{"prefix", html5_dom_element__prefix}, 
 		{"localName", html5_dom_element__localName}, 
@@ -1168,7 +1168,7 @@ void html5_dom_interfaces_init() {
 	html5_dom_element_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\HTMLCollection */
-	html5_dom_prop_handler_list html5_dom_htmlcollection_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_htmlcollection_handlers[] = {
 		{"length", html5_dom_htmlcollection__length}, 
 		{"", NULL}, 
 	};
@@ -1180,7 +1180,7 @@ void html5_dom_interfaces_init() {
 	zend_class_implements(html5_dom_htmlcollection_ce, 3, zend_ce_iterator, zend_ce_arrayaccess, zend_ce_countable);
 
 	/* HTML5\DOM\NodeList */
-	html5_dom_prop_handler_list html5_dom_nodelist_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_nodelist_handlers[] = {
 		{"length", html5_dom_nodelist__length}, 
 		{"", NULL}, 
 	};
@@ -1192,7 +1192,7 @@ void html5_dom_interfaces_init() {
 	zend_class_implements(html5_dom_nodelist_ce, 3, zend_ce_iterator, zend_ce_arrayaccess, zend_ce_countable);
 
 	/* HTML5\DOM\DOMTokenList */
-	html5_dom_prop_handler_list html5_dom_domtokenlist_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_domtokenlist_handlers[] = {
 		{"length", html5_dom_domtokenlist__length}, 
 		{"value", html5_dom_domtokenlist__value}, 
 		{"", NULL}, 
@@ -1205,7 +1205,7 @@ void html5_dom_interfaces_init() {
 	zend_class_implements(html5_dom_domtokenlist_ce, 3, zend_ce_iterator, zend_ce_arrayaccess, zend_ce_countable);
 
 	/* HTML5\DOM\NamedNodeMap */
-	html5_dom_prop_handler_list html5_dom_namednodemap_handlers[] = {
+	html5_dom_prop_handler_list_t html5_dom_namednodemap_handlers[] = {
 		{"length", html5_dom_namednodemap__length}, 
 		{"value", html5_dom_namednodemap__value}, 
 		{"", NULL}, 

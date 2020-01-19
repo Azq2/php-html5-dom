@@ -92,7 +92,7 @@ static zend_function_entry <?= $ce['id'] ?>_methods[] = {
  * Functions
  * */
 static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
-	html5_dom_object_wrap *intern = html5_dom_object_wrap_create(ce, &object_handlers);
+	html5_dom_object_wrap_t *intern = html5_dom_object_wrap_create(ce, &object_handlers);
 	
 <?php $i = 0; ?>
 <?php foreach ($classes as $ce): ?><?php if ($ce['use_props']): ?>
@@ -112,7 +112,7 @@ static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
 }
 
 static void _free_object(zend_object *object TSRMLS_DC) {
-	html5_dom_object_wrap *intern = html5_dom_object_unwrap(object);
+	html5_dom_object_wrap_t *intern = html5_dom_object_unwrap(object);
 	
 	DOM_GC_TRACE("[DESTROY] %s (refs=%d)", object->ce->name->val, GC_REFCOUNT(&intern->std));
 	
@@ -121,7 +121,7 @@ static void _free_object(zend_object *object TSRMLS_DC) {
 
 void html5_dom_interfaces_init() {
 	memcpy(&object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-	object_handlers.offset					= XtOffsetOf(html5_dom_object_wrap, std);
+	object_handlers.offset					= XtOffsetOf(html5_dom_object_wrap_t, std);
 	object_handlers.free_obj				= _free_object;
 	object_handlers.clone_obj				= NULL;
 	
@@ -139,7 +139,7 @@ void html5_dom_interfaces_init() {
 		
 		// Define own prop handlers
 		if ($ce['props']) {
-			echo "\thtml5_dom_prop_handler_list ".$ce['id']."_handlers[] = {\n";
+			echo "\thtml5_dom_prop_handler_list_t ".$ce['id']."_handlers[] = {\n";
 			foreach ($ce['props'] as $prop)
 				printf("\t\t{\"%s\", %s__%s}, \n", $prop['name'], $prop['prefix'], $prop['name']);
 			echo "\t\t{\"\", NULL}, \n";
