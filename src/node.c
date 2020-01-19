@@ -467,7 +467,7 @@ int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap
 
 static void _node_free_handler(html5_dom_object_wrap_t *intern) {
 	lxb_dom_node_t *node = intern->ptr;
-	intern->ptr = NULL;
+	node->user = NULL;
 	
 	// Del ref from document
 	html5_dom_document_delref(lxb_dom_interface_document(node->owner_document));
