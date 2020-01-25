@@ -28,11 +28,11 @@ void html5_dom_prop_handler_init(HashTable *hash) {
 	zend_hash_init(hash, 0, NULL, NULL, 1);
 }
 
-void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handler_list_t *handlers) {
+void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handlers_init_t *list) {
 	int i = 0;
-	while (handlers[i].func) {
-		zend_string *str = zend_string_init_interned(handlers[i].name, strlen(handlers[i].name), 1);
-		zend_hash_add_ptr(hash, str, handlers[i].func);
+	while (list[i].handlers.read) {
+		zend_string *str = zend_string_init_interned(list[i].name, strlen(list[i].name), 1);
+		zend_hash_add_mem(hash, str, &list[i].handlers, sizeof(list[i].handlers));
 		zend_string_release(str);
 		++i;
 	}
@@ -60,13 +60,13 @@ zval *html5_dom_read_property(zval *object, zval *member, int type, void **cache
 	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
 	zval *retval;
-	html5_dom_prop_handler_t handler = NULL;
+	html5_dom_prop_handlers_t *handlers = NULL;
 	
 	if (obj->prop_handler != NULL)
-		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
+		handlers = zend_hash_find_ptr(obj->prop_handler, member_str);
 	
-	if (handler) {
-		if (handler(obj, rv, 0, 0)) {
+	if (handlers->read) {
+		if (handlers->read(obj, rv)) {
 			retval = rv;
 		} else {
 			retval = &EG(uninitialized_zval);
@@ -86,13 +86,13 @@ zval *html5_dom_read_property(zval *object, zval *member, int type, void **cache
 zval *html5_dom_write_property(zval *object, zval *member, zval *value, void **cache_slot) {
 	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
-	html5_dom_prop_handler_t handler = NULL;
+	html5_dom_prop_handlers_t *handlers = NULL;
 	
 	if (obj->prop_handler != NULL)
-		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
+		handlers = zend_hash_find_ptr(obj->prop_handler, member_str);
 	
-	if (handler) {
-		handler(obj, value, 1, 0);
+	if (handlers->write) {
+		handlers->write(obj, value);
 	} else {
 		value = zend_get_std_object_handlers()->write_property(object, member, value, cache_slot);
 	}
@@ -105,13 +105,13 @@ zval *html5_dom_write_property(zval *object, zval *member, zval *value, void **c
 void html5_dom_write_property(zval *object, zval *member, zval *value, void **cache_slot) {
 	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
-	html5_dom_prop_handler_t handler = NULL;
+	html5_dom_prop_handlers_t *handlers = NULL;
 	
 	if (obj->prop_handler != NULL)
-		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
+		handlers = zend_hash_find_ptr(obj->prop_handler, member_str);
 	
-	if (handler) {
-		handler(obj, value, 1, 0);
+	if (handlers->write) {
+		handlers->write(obj, value);
 	} else {
 		zend_get_std_object_handlers()->write_property(object, member, value, cache_slot);
 	}
@@ -123,14 +123,14 @@ void html5_dom_write_property(zval *object, zval *member, zval *value, void **ca
 int html5_dom_has_property(zval *object, zval *member, int has_set_exists, void **cache_slot) {
 	html5_dom_object_wrap_t *obj = html5_dom_object_unwrap(Z_OBJ_P(object));
 	zend_string *member_str = zval_get_string(member);
-	html5_dom_prop_handler_t handler = NULL;
+	html5_dom_prop_handlers_t *handlers = NULL;
+	
+	if (obj->prop_handler != NULL)
+		handlers = zend_hash_find_ptr(obj->prop_handler, member_str);
 	
 	int retval = 0;
-
-	if (obj->prop_handler != NULL)
-		handler = zend_hash_find_ptr(obj->prop_handler, member_str);
 	
-	if (handler) {
+	if (handlers->read) {
 		zval tmp;
 		
 		switch (has_set_exists) {
@@ -139,14 +139,14 @@ int html5_dom_has_property(zval *object, zval *member, int has_set_exists, void 
 			break;
 			
 			case ZEND_ISEMPTY:
-				if (handler(obj, &tmp, 0, 0)) {
+				if (handlers->read(obj, &tmp)) {
 					retval = zend_is_true(&tmp);
 					zval_ptr_dtor(&tmp);
 				}
 			break;
 			
 			case 0:
-				if (handler(obj, &tmp, 0, 0)) {
+				if (handlers->read(obj, &tmp)) {
 					retval = (Z_TYPE(tmp) != IS_NULL);
 					zval_ptr_dtor(&tmp);
 				}
@@ -168,7 +168,7 @@ HashTable *html5_dom_get_debug_info(zval *object, int *is_temp) {
 	
 	HashTable *debug_info, *std_props;
 	zend_string *string_key;
-	html5_dom_prop_handler_t handler;
+	html5_dom_prop_handlers_t *handlers;
 	
 	std_props = zend_std_get_properties(object);
 	debug_info = zend_array_dup(std_props);
@@ -178,10 +178,10 @@ HashTable *html5_dom_get_debug_info(zval *object, int *is_temp) {
 	
 	zend_string *object_str = zend_string_init(ZEND_STRS("(object value omitted)") - 1, 0);
 	
-	ZEND_HASH_FOREACH_STR_KEY_PTR(obj->prop_handler, string_key, handler) {
+	ZEND_HASH_FOREACH_STR_KEY_PTR(obj->prop_handler, string_key, handlers) {
 		zval value;
 		
-		if (!handler(obj, &value, 0, 1) || !string_key)
+		if (!string_key || !handlers->read(obj, &value))
 			continue;
 		
 		// Prevent recursion dump

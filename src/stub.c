@@ -188,27 +188,30 @@ PHP_METHOD(HTML5_DOM_NamedNodeMap, count) {
  * */
 
 /* HTML5\DOM\HTMLCollection */
-int html5_dom_htmlcollection__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug) {
+int html5_dom_htmlcollection__length(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
 
 /* HTML5\DOM\NodeList */
-int html5_dom_nodelist__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug) {
+int html5_dom_nodelist__length(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
 
 /* HTML5\DOM\DOMTokenList */
-int html5_dom_domtokenlist__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug) {
+int html5_dom_domtokenlist__length(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
-int html5_dom_domtokenlist__value(html5_dom_object_wrap_t *obj, zval *val, int write, int debug) {
+int html5_dom_domtokenlist__value(html5_dom_object_wrap_t *obj, zval *val) {
+	return 0;
+}
+int html5_dom_domtokenlist__value_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
 
 /* HTML5\DOM\NamedNodeMap */
-int html5_dom_namednodemap__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug) {
+int html5_dom_namednodemap__length(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
-int html5_dom_namednodemap__value(html5_dom_object_wrap_t *obj, zval *val, int write, int debug) {
+int html5_dom_namednodemap__value(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }

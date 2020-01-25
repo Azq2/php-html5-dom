@@ -5,6 +5,9 @@
 #include "zend_exceptions.h"
 #include "zend_interfaces.h"
 
+#include "lexbor/dom/interfaces/node.h"
+#include "lexbor/dom/exception.h"
+
 /*
  * Property handlers
  * */
@@ -139,9 +142,14 @@ void html5_dom_interfaces_init() {
 		
 		// Define own prop handlers
 		if ($ce['props']) {
-			echo "\thtml5_dom_prop_handler_list_t ".$ce['id']."_handlers[] = {\n";
-			foreach ($ce['props'] as $prop)
-				printf("\t\t{\"%s\", %s__%s}, \n", $prop['name'], $prop['prefix'], $prop['name']);
+			echo "\thtml5_dom_prop_handlers_init_t ".$ce['id']."_handlers[] = {\n";
+			foreach ($ce['props'] as $prop) {
+				if ($prop['readonly']) {
+					printf("\t\t{\"%s\", %s__%s, NULL}, \n", $prop['name'], $prop['prefix'], $prop['name']);
+				} else {
+					printf("\t\t{\"%s\", {%s__%s, %s__%s_set}}, \n", $prop['name'], $prop['prefix'], $prop['name'], $prop['prefix'], $prop['name']);
+				}
+			}
 			echo "\t\t{\"\", NULL}, \n";
 			echo "\t};\n";
 			
@@ -174,7 +182,7 @@ void html5_dom_interfaces_init() {
 		
 		// Define constants
 		foreach ($ce['consts'] as $const)
-			echo "\tzend_declare_class_constant_long(".$ce['ref'].", ZEND_STRS(\"".addslashes($const['name'])."\") - 1, ".$ce['prefix']."__".$const['name'].");\n";
+			echo "\tzend_declare_class_constant_long(".$ce['ref'].", ZEND_STRS(\"".addslashes($const['name'])."\") - 1, ".($const['c_name'] ?: $ce['prefix']."__".$const['name']).");\n";
 		
 		$interfaces = array_map(function ($v) {
 			return $v['ref'];

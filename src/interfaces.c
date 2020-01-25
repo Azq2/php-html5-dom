@@ -5,6 +5,9 @@
 #include "zend_exceptions.h"
 #include "zend_interfaces.h"
 
+#include "lexbor/dom/interfaces/node.h"
+#include "lexbor/dom/exception.h"
+
 /*
  * Property handlers
  * */
@@ -937,32 +940,31 @@ void html5_dom_interfaces_init() {
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DOMException", html5_dom_domexception_methods);
 	ce.create_object = _create_object;
 	html5_dom_domexception_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("UNKNOWN_ERROR") - 1, HTML5_DOM_DOMException__UNKNOWN_ERROR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INDEX_SIZE_ERR") - 1, HTML5_DOM_DOMException__INDEX_SIZE_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("DOMSTRING_SIZE_ERR") - 1, HTML5_DOM_DOMException__DOMSTRING_SIZE_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("HIERARCHY_REQUEST_ERR") - 1, HTML5_DOM_DOMException__HIERARCHY_REQUEST_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("WRONG_DOCUMENT_ERR") - 1, HTML5_DOM_DOMException__WRONG_DOCUMENT_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_CHARACTER_ERR") - 1, HTML5_DOM_DOMException__INVALID_CHARACTER_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NO_DATA_ALLOWED_ERR") - 1, HTML5_DOM_DOMException__NO_DATA_ALLOWED_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NO_MODIFICATION_ALLOWED_ERR") - 1, HTML5_DOM_DOMException__NO_MODIFICATION_ALLOWED_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NOT_FOUND_ERR") - 1, HTML5_DOM_DOMException__NOT_FOUND_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NOT_SUPPORTED_ERR") - 1, HTML5_DOM_DOMException__NOT_SUPPORTED_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INUSE_ATTRIBUTE_ERR") - 1, HTML5_DOM_DOMException__INUSE_ATTRIBUTE_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_STATE_ERR") - 1, HTML5_DOM_DOMException__INVALID_STATE_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("SYNTAX_ERR") - 1, HTML5_DOM_DOMException__SYNTAX_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_MODIFICATION_ERR") - 1, HTML5_DOM_DOMException__INVALID_MODIFICATION_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NAMESPACE_ERR") - 1, HTML5_DOM_DOMException__NAMESPACE_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_ACCESS_ERR") - 1, HTML5_DOM_DOMException__INVALID_ACCESS_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("VALIDATION_ERR") - 1, HTML5_DOM_DOMException__VALIDATION_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("TYPE_MISMATCH_ERR") - 1, HTML5_DOM_DOMException__TYPE_MISMATCH_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("SECURITY_ERR") - 1, HTML5_DOM_DOMException__SECURITY_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NETWORK_ERR") - 1, HTML5_DOM_DOMException__NETWORK_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("ABORT_ERR") - 1, HTML5_DOM_DOMException__ABORT_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("URL_MISMATCH_ERR") - 1, HTML5_DOM_DOMException__URL_MISMATCH_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("QUOTA_EXCEEDED_ERR") - 1, HTML5_DOM_DOMException__QUOTA_EXCEEDED_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("TIMEOUT_ERR") - 1, HTML5_DOM_DOMException__TIMEOUT_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_NODE_TYPE_ERR") - 1, HTML5_DOM_DOMException__INVALID_NODE_TYPE_ERR);
-	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("DATA_CLONE_ERR") - 1, HTML5_DOM_DOMException__DATA_CLONE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INDEX_SIZE_ERR") - 1, LXB_DOM_INDEX_SIZE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("DOMSTRING_SIZE_ERR") - 1, LXB_DOM_DOMSTRING_SIZE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("HIERARCHY_REQUEST_ERR") - 1, LXB_DOM_HIERARCHY_REQUEST_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("WRONG_DOCUMENT_ERR") - 1, LXB_DOM_WRONG_DOCUMENT_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_CHARACTER_ERR") - 1, LXB_DOM_INVALID_CHARACTER_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NO_DATA_ALLOWED_ERR") - 1, LXB_DOM_NO_DATA_ALLOWED_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NO_MODIFICATION_ALLOWED_ERR") - 1, LXB_DOM_NO_MODIFICATION_ALLOWED_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NOT_FOUND_ERR") - 1, LXB_DOM_NOT_FOUND_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NOT_SUPPORTED_ERR") - 1, LXB_DOM_NOT_SUPPORTED_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INUSE_ATTRIBUTE_ERR") - 1, LXB_DOM_INUSE_ATTRIBUTE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_STATE_ERR") - 1, LXB_DOM_INVALID_STATE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("SYNTAX_ERR") - 1, LXB_DOM_SYNTAX_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_MODIFICATION_ERR") - 1, LXB_DOM_INVALID_MODIFICATION_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NAMESPACE_ERR") - 1, LXB_DOM_NAMESPACE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_ACCESS_ERR") - 1, LXB_DOM_INVALID_ACCESS_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("VALIDATION_ERR") - 1, LXB_DOM_VALIDATION_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("TYPE_MISMATCH_ERR") - 1, LXB_DOM_TYPE_MISMATCH_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("SECURITY_ERR") - 1, LXB_DOM_SECURITY_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("NETWORK_ERR") - 1, LXB_DOM_NETWORK_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("ABORT_ERR") - 1, LXB_DOM_ABORT_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("URL_MISMATCH_ERR") - 1, LXB_DOM_URL_MISMATCH_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("QUOTA_EXCEEDED_ERR") - 1, LXB_DOM_QUOTA_EXCEEDED_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("TIMEOUT_ERR") - 1, LXB_DOM_TIMEOUT_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("INVALID_NODE_TYPE_ERR") - 1, LXB_DOM_INVALID_NODE_TYPE_ERR);
+	zend_declare_class_constant_long(html5_dom_domexception_ce, ZEND_STRS("DATA_CLONE_ERR") - 1, LXB_DOM_DATA_CLONE_ERR);
 
 	/* HTML5\DOM\EventTarget */
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\EventTarget", html5_dom_eventtarget_methods);
@@ -970,22 +972,22 @@ void html5_dom_interfaces_init() {
 	html5_dom_eventtarget_ce = zend_register_internal_class(&ce);
 
 	/* HTML5\DOM\Node */
-	html5_dom_prop_handler_list_t html5_dom_node_handlers[] = {
-		{"nodeType", html5_dom_node__nodeType}, 
-		{"nodeName", html5_dom_node__nodeName}, 
-		{"baseURI", html5_dom_node__baseURI}, 
-		{"isConnected", html5_dom_node__isConnected}, 
-		{"ownerDocument", html5_dom_node__ownerDocument}, 
-		{"parentNode", html5_dom_node__parentNode}, 
-		{"parentElement", html5_dom_node__parentElement}, 
-		{"childNodes", html5_dom_node__childNodes}, 
-		{"firstChild", html5_dom_node__firstChild}, 
-		{"lastChild", html5_dom_node__lastChild}, 
-		{"previousSibling", html5_dom_node__previousSibling}, 
-		{"nextSibling", html5_dom_node__nextSibling}, 
-		{"nodeValue", html5_dom_node__nodeValue}, 
-		{"textContent", html5_dom_node__textContent}, 
-		{"private", html5_dom_node__private}, 
+	html5_dom_prop_handlers_init_t html5_dom_node_handlers[] = {
+		{"nodeType", html5_dom_node__nodeType, NULL}, 
+		{"nodeName", html5_dom_node__nodeName, NULL}, 
+		{"baseURI", html5_dom_node__baseURI, NULL}, 
+		{"isConnected", html5_dom_node__isConnected, NULL}, 
+		{"ownerDocument", html5_dom_node__ownerDocument, NULL}, 
+		{"parentNode", html5_dom_node__parentNode, NULL}, 
+		{"parentElement", html5_dom_node__parentElement, NULL}, 
+		{"childNodes", html5_dom_node__childNodes, NULL}, 
+		{"firstChild", html5_dom_node__firstChild, NULL}, 
+		{"lastChild", html5_dom_node__lastChild, NULL}, 
+		{"previousSibling", html5_dom_node__previousSibling, NULL}, 
+		{"nextSibling", html5_dom_node__nextSibling, NULL}, 
+		{"nodeValue", html5_dom_node__nodeValue, NULL}, 
+		{"textContent", html5_dom_node__textContent, NULL}, 
+		{"private", {html5_dom_node__private, html5_dom_node__private_set}}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_node_prop_handlers);
@@ -993,18 +995,18 @@ void html5_dom_interfaces_init() {
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\Node", html5_dom_node_methods);
 	ce.create_object = _create_object;
 	html5_dom_node_ce = zend_register_internal_class_ex(&ce, html5_dom_eventtarget_ce);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ELEMENT_NODE") - 1, HTML5_DOM_Node__ELEMENT_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ATTRIBUTE_NODE") - 1, HTML5_DOM_Node__ATTRIBUTE_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("TEXT_NODE") - 1, HTML5_DOM_Node__TEXT_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("CDATA_SECTION_NODE") - 1, HTML5_DOM_Node__CDATA_SECTION_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ENTITY_REFERENCE_NODE") - 1, HTML5_DOM_Node__ENTITY_REFERENCE_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ENTITY_NODE") - 1, HTML5_DOM_Node__ENTITY_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("PROCESSING_INSTRUCTION_NODE") - 1, HTML5_DOM_Node__PROCESSING_INSTRUCTION_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("COMMENT_NODE") - 1, HTML5_DOM_Node__COMMENT_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_NODE") - 1, HTML5_DOM_Node__DOCUMENT_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_TYPE_NODE") - 1, HTML5_DOM_Node__DOCUMENT_TYPE_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_FRAGMENT_NODE") - 1, HTML5_DOM_Node__DOCUMENT_FRAGMENT_NODE);
-	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("NOTATION_NODE") - 1, HTML5_DOM_Node__NOTATION_NODE);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ELEMENT_NODE") - 1, LXB_DOM_NODE_TYPE_ELEMENT);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ATTRIBUTE_NODE") - 1, LXB_DOM_NODE_TYPE_ATTRIBUTE);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("TEXT_NODE") - 1, LXB_DOM_NODE_TYPE_TEXT);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("CDATA_SECTION_NODE") - 1, LXB_DOM_NODE_TYPE_CDATA_SECTION);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ENTITY_REFERENCE_NODE") - 1, LXB_DOM_NODE_TYPE_ENTITY_REFERENCE);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("ENTITY_NODE") - 1, LXB_DOM_NODE_TYPE_ENTITY);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("PROCESSING_INSTRUCTION_NODE") - 1, LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("COMMENT_NODE") - 1, LXB_DOM_NODE_TYPE_COMMENT);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_NODE") - 1, LXB_DOM_NODE_TYPE_DOCUMENT);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_TYPE_NODE") - 1, LXB_DOM_NODE_TYPE_DOCUMENT_TYPE);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_FRAGMENT_NODE") - 1, LXB_DOM_NODE_TYPE_DOCUMENT_FRAGMENT);
+	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("NOTATION_NODE") - 1, LXB_DOM_NODE_TYPE_NOTATION);
 	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_POSITION_DISCONNECTED") - 1, HTML5_DOM_Node__DOCUMENT_POSITION_DISCONNECTED);
 	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_POSITION_PRECEDING") - 1, HTML5_DOM_Node__DOCUMENT_POSITION_PRECEDING);
 	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_POSITION_FOLLOWING") - 1, HTML5_DOM_Node__DOCUMENT_POSITION_FOLLOWING);
@@ -1013,13 +1015,13 @@ void html5_dom_interfaces_init() {
 	zend_declare_class_constant_long(html5_dom_node_ce, ZEND_STRS("DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC") - 1, HTML5_DOM_Node__DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC);
 
 	/* HTML5\DOM\Attr */
-	html5_dom_prop_handler_list_t html5_dom_attr_handlers[] = {
-		{"namespaceURI", html5_dom_attr__namespaceURI}, 
-		{"prefix", html5_dom_attr__prefix}, 
-		{"localName", html5_dom_attr__localName}, 
-		{"name", html5_dom_attr__name}, 
-		{"value", html5_dom_attr__value}, 
-		{"ownerElement", html5_dom_attr__ownerElement}, 
+	html5_dom_prop_handlers_init_t html5_dom_attr_handlers[] = {
+		{"namespaceURI", html5_dom_attr__namespaceURI, NULL}, 
+		{"prefix", html5_dom_attr__prefix, NULL}, 
+		{"localName", html5_dom_attr__localName, NULL}, 
+		{"name", html5_dom_attr__name, NULL}, 
+		{"value", {html5_dom_attr__value, html5_dom_attr__value_set}}, 
+		{"ownerElement", html5_dom_attr__ownerElement, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_attr_prop_handlers);
@@ -1030,21 +1032,21 @@ void html5_dom_interfaces_init() {
 	html5_dom_attr_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\Document */
-	html5_dom_prop_handler_list_t html5_dom_document_handlers[] = {
-		{"URL", html5_dom_document__URL}, 
-		{"documentURI", html5_dom_document__documentURI}, 
-		{"origin", html5_dom_document__origin}, 
-		{"compatMode", html5_dom_document__compatMode}, 
-		{"characterSet", html5_dom_document__characterSet}, 
-		{"charset", html5_dom_document__charset}, 
-		{"inputEncoding", html5_dom_document__inputEncoding}, 
-		{"contentType", html5_dom_document__contentType}, 
-		{"doctype", html5_dom_document__doctype}, 
-		{"documentElement", html5_dom_document__documentElement}, 
-		{"children", html5_dom_parentnode__children}, 
-		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
-		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
-		{"childElementCount", html5_dom_parentnode__childElementCount}, 
+	html5_dom_prop_handlers_init_t html5_dom_document_handlers[] = {
+		{"URL", html5_dom_document__URL, NULL}, 
+		{"documentURI", html5_dom_document__documentURI, NULL}, 
+		{"origin", html5_dom_document__origin, NULL}, 
+		{"compatMode", html5_dom_document__compatMode, NULL}, 
+		{"characterSet", html5_dom_document__characterSet, NULL}, 
+		{"charset", html5_dom_document__charset, NULL}, 
+		{"inputEncoding", html5_dom_document__inputEncoding, NULL}, 
+		{"contentType", html5_dom_document__contentType, NULL}, 
+		{"doctype", html5_dom_document__doctype, NULL}, 
+		{"documentElement", html5_dom_document__documentElement, NULL}, 
+		{"children", html5_dom_parentnode__children, NULL}, 
+		{"firstElementChild", html5_dom_parentnode__firstElementChild, NULL}, 
+		{"lastElementChild", html5_dom_parentnode__lastElementChild, NULL}, 
+		{"childElementCount", html5_dom_parentnode__childElementCount, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_document_prop_handlers);
@@ -1055,11 +1057,11 @@ void html5_dom_interfaces_init() {
 	html5_dom_document_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\DocumentFragment */
-	html5_dom_prop_handler_list_t html5_dom_documentfragment_handlers[] = {
-		{"children", html5_dom_parentnode__children}, 
-		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
-		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
-		{"childElementCount", html5_dom_parentnode__childElementCount}, 
+	html5_dom_prop_handlers_init_t html5_dom_documentfragment_handlers[] = {
+		{"children", html5_dom_parentnode__children, NULL}, 
+		{"firstElementChild", html5_dom_parentnode__firstElementChild, NULL}, 
+		{"lastElementChild", html5_dom_parentnode__lastElementChild, NULL}, 
+		{"childElementCount", html5_dom_parentnode__childElementCount, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_documentfragment_prop_handlers);
@@ -1070,10 +1072,10 @@ void html5_dom_interfaces_init() {
 	html5_dom_documentfragment_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\DocumentType */
-	html5_dom_prop_handler_list_t html5_dom_documenttype_handlers[] = {
-		{"name", html5_dom_documenttype__name}, 
-		{"publicId", html5_dom_documenttype__publicId}, 
-		{"systemId", html5_dom_documenttype__systemId}, 
+	html5_dom_prop_handlers_init_t html5_dom_documenttype_handlers[] = {
+		{"name", html5_dom_documenttype__name, NULL}, 
+		{"publicId", html5_dom_documenttype__publicId, NULL}, 
+		{"systemId", html5_dom_documenttype__systemId, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_documenttype_prop_handlers);
@@ -1083,11 +1085,11 @@ void html5_dom_interfaces_init() {
 	html5_dom_documenttype_ce = zend_register_internal_class(&ce);
 
 	/* HTML5\DOM\CharacterData */
-	html5_dom_prop_handler_list_t html5_dom_characterdata_handlers[] = {
-		{"data", html5_dom_characterdata__data}, 
-		{"length", html5_dom_characterdata__length}, 
-		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling}, 
-		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling}, 
+	html5_dom_prop_handlers_init_t html5_dom_characterdata_handlers[] = {
+		{"data", {html5_dom_characterdata__data, html5_dom_characterdata__data_set}}, 
+		{"length", html5_dom_characterdata__length, NULL}, 
+		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling, NULL}, 
+		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_characterdata_prop_handlers);
@@ -1098,8 +1100,8 @@ void html5_dom_interfaces_init() {
 	html5_dom_characterdata_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\Text */
-	html5_dom_prop_handler_list_t html5_dom_text_handlers[] = {
-		{"wholeText", html5_dom_text__wholeText}, 
+	html5_dom_prop_handlers_init_t html5_dom_text_handlers[] = {
+		{"wholeText", html5_dom_text__wholeText, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_text_prop_handlers);
@@ -1128,8 +1130,8 @@ void html5_dom_interfaces_init() {
 	html5_dom_comment_ce = zend_register_internal_class_ex(&ce, html5_dom_characterdata_ce);
 
 	/* HTML5\DOM\ProcessingInstruction */
-	html5_dom_prop_handler_list_t html5_dom_processinginstruction_handlers[] = {
-		{"target", html5_dom_processinginstruction__target}, 
+	html5_dom_prop_handlers_init_t html5_dom_processinginstruction_handlers[] = {
+		{"target", html5_dom_processinginstruction__target, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_processinginstruction_prop_handlers);
@@ -1141,23 +1143,23 @@ void html5_dom_interfaces_init() {
 	html5_dom_processinginstruction_ce = zend_register_internal_class_ex(&ce, html5_dom_characterdata_ce);
 
 	/* HTML5\DOM\Element */
-	html5_dom_prop_handler_list_t html5_dom_element_handlers[] = {
-		{"namespaceURI", html5_dom_element__namespaceURI}, 
-		{"prefix", html5_dom_element__prefix}, 
-		{"localName", html5_dom_element__localName}, 
-		{"tagName", html5_dom_element__tagName}, 
-		{"id", html5_dom_element__id}, 
-		{"className", html5_dom_element__className}, 
-		{"classList", html5_dom_element__classList}, 
-		{"attributes", html5_dom_element__attributes}, 
-		{"innerHTML", html5_dom_element__innerHTML}, 
-		{"outerHTML", html5_dom_element__outerHTML}, 
-		{"children", html5_dom_parentnode__children}, 
-		{"firstElementChild", html5_dom_parentnode__firstElementChild}, 
-		{"lastElementChild", html5_dom_parentnode__lastElementChild}, 
-		{"childElementCount", html5_dom_parentnode__childElementCount}, 
-		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling}, 
-		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling}, 
+	html5_dom_prop_handlers_init_t html5_dom_element_handlers[] = {
+		{"namespaceURI", html5_dom_element__namespaceURI, NULL}, 
+		{"prefix", html5_dom_element__prefix, NULL}, 
+		{"localName", html5_dom_element__localName, NULL}, 
+		{"tagName", html5_dom_element__tagName, NULL}, 
+		{"id", {html5_dom_element__id, html5_dom_element__id_set}}, 
+		{"className", {html5_dom_element__className, html5_dom_element__className_set}}, 
+		{"classList", html5_dom_element__classList, NULL}, 
+		{"attributes", html5_dom_element__attributes, NULL}, 
+		{"innerHTML", {html5_dom_element__innerHTML, html5_dom_element__innerHTML_set}}, 
+		{"outerHTML", {html5_dom_element__outerHTML, html5_dom_element__outerHTML_set}}, 
+		{"children", html5_dom_parentnode__children, NULL}, 
+		{"firstElementChild", html5_dom_parentnode__firstElementChild, NULL}, 
+		{"lastElementChild", html5_dom_parentnode__lastElementChild, NULL}, 
+		{"childElementCount", html5_dom_parentnode__childElementCount, NULL}, 
+		{"previousElementSibling", html5_dom_nondocumenttypechildnode__previousElementSibling, NULL}, 
+		{"nextElementSibling", html5_dom_nondocumenttypechildnode__nextElementSibling, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_element_prop_handlers);
@@ -1168,8 +1170,8 @@ void html5_dom_interfaces_init() {
 	html5_dom_element_ce = zend_register_internal_class_ex(&ce, html5_dom_node_ce);
 
 	/* HTML5\DOM\HTMLCollection */
-	html5_dom_prop_handler_list_t html5_dom_htmlcollection_handlers[] = {
-		{"length", html5_dom_htmlcollection__length}, 
+	html5_dom_prop_handlers_init_t html5_dom_htmlcollection_handlers[] = {
+		{"length", html5_dom_htmlcollection__length, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_htmlcollection_prop_handlers);
@@ -1180,8 +1182,8 @@ void html5_dom_interfaces_init() {
 	zend_class_implements(html5_dom_htmlcollection_ce, 3, zend_ce_iterator, zend_ce_arrayaccess, zend_ce_countable);
 
 	/* HTML5\DOM\NodeList */
-	html5_dom_prop_handler_list_t html5_dom_nodelist_handlers[] = {
-		{"length", html5_dom_nodelist__length}, 
+	html5_dom_prop_handlers_init_t html5_dom_nodelist_handlers[] = {
+		{"length", html5_dom_nodelist__length, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_nodelist_prop_handlers);
@@ -1192,9 +1194,9 @@ void html5_dom_interfaces_init() {
 	zend_class_implements(html5_dom_nodelist_ce, 3, zend_ce_iterator, zend_ce_arrayaccess, zend_ce_countable);
 
 	/* HTML5\DOM\DOMTokenList */
-	html5_dom_prop_handler_list_t html5_dom_domtokenlist_handlers[] = {
-		{"length", html5_dom_domtokenlist__length}, 
-		{"value", html5_dom_domtokenlist__value}, 
+	html5_dom_prop_handlers_init_t html5_dom_domtokenlist_handlers[] = {
+		{"length", html5_dom_domtokenlist__length, NULL}, 
+		{"value", {html5_dom_domtokenlist__value, html5_dom_domtokenlist__value_set}}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_domtokenlist_prop_handlers);
@@ -1205,9 +1207,8 @@ void html5_dom_interfaces_init() {
 	zend_class_implements(html5_dom_domtokenlist_ce, 3, zend_ce_iterator, zend_ce_arrayaccess, zend_ce_countable);
 
 	/* HTML5\DOM\NamedNodeMap */
-	html5_dom_prop_handler_list_t html5_dom_namednodemap_handlers[] = {
-		{"length", html5_dom_namednodemap__length}, 
-		{"value", html5_dom_namednodemap__value}, 
+	html5_dom_prop_handlers_init_t html5_dom_namednodemap_handlers[] = {
+		{"length", html5_dom_namednodemap__length, NULL}, 
 		{"", NULL}, 
 	};
 	html5_dom_prop_handler_init(&html5_dom_namednodemap_prop_handlers);

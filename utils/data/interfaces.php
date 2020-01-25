@@ -13,9 +13,16 @@ trait NonElementParentNode {
 }
 
 trait ParentNode {
-	public $children; // HTMLCollection
+	/** @var HTMLCollection|readonly */
+	public $children;
+	
+	/** @var Element|null|readonly */
 	public $firstElementChild;
+	
+	/** @var Element|null|readonly */
 	public $lastElementChild;
+	
+	/** @var int|readonly */
 	public $childElementCount;
 	
 	public function getElementsByTagName(string $qualifiedName) : HTMLCollection { }
@@ -48,7 +55,10 @@ trait ChildNode {
 }
 
 trait NonDocumentTypeChildNode {
+	/** @var Element|null|readonly */
 	public $previousElementSibling;
+	
+	/** @var Element|null|readonly */
 	public $nextElementSibling;
 }
 
@@ -69,53 +79,79 @@ class StreamParser {
 }
 
 class DOMException extends \Exception {
-	const UNKNOWN_ERROR					= 0; // non-standart
+	/** @const LXB_DOM_INDEX_SIZE_ERR */
 	const INDEX_SIZE_ERR				= 1;
+	
+	/** @const LXB_DOM_DOMSTRING_SIZE_ERR */
 	const DOMSTRING_SIZE_ERR			= 2;
+	
+	/** @const LXB_DOM_HIERARCHY_REQUEST_ERR */
 	const HIERARCHY_REQUEST_ERR			= 3;
+	
+	/** @const LXB_DOM_WRONG_DOCUMENT_ERR */
 	const WRONG_DOCUMENT_ERR			= 4;
+	
+	/** @const LXB_DOM_INVALID_CHARACTER_ERR */
 	const INVALID_CHARACTER_ERR			= 5;
+	
+	/** @const LXB_DOM_NO_DATA_ALLOWED_ERR */
 	const NO_DATA_ALLOWED_ERR			= 6;
+	
+	/** @const LXB_DOM_NO_MODIFICATION_ALLOWED_ERR */
 	const NO_MODIFICATION_ALLOWED_ERR	= 7;
+	
+	/** @const LXB_DOM_NOT_FOUND_ERR */
 	const NOT_FOUND_ERR					= 8;
+	
+	/** @const LXB_DOM_NOT_SUPPORTED_ERR */
 	const NOT_SUPPORTED_ERR				= 9;
+	
+	/** @const LXB_DOM_INUSE_ATTRIBUTE_ERR */
 	const INUSE_ATTRIBUTE_ERR			= 10;
-
-	// Introduced in DOM Level 2:
+	
+	/** @const LXB_DOM_INVALID_STATE_ERR */
 	const INVALID_STATE_ERR				= 11;
-
-	// Introduced in DOM Level 2:
+	
+	/** @const LXB_DOM_SYNTAX_ERR */
 	const SYNTAX_ERR					= 12;
-
-	// Introduced in DOM Level 2:
+	
+	/** @const LXB_DOM_INVALID_MODIFICATION_ERR */
 	const INVALID_MODIFICATION_ERR		= 13;
-
-	// Introduced in DOM Level 2:
+	
+	/** @const LXB_DOM_NAMESPACE_ERR */
 	const NAMESPACE_ERR					= 14;
-
-	// Introduced in DOM Level 2:
+	
+	/** @const LXB_DOM_INVALID_ACCESS_ERR */
 	const INVALID_ACCESS_ERR			= 15;
-
-	// Introduced in DOM Level 3:
+	
+	/** @const LXB_DOM_VALIDATION_ERR */
 	const VALIDATION_ERR				= 16;
-
-	// Introduced in DOM Level 3:
+	
+	/** @const LXB_DOM_TYPE_MISMATCH_ERR */
 	const TYPE_MISMATCH_ERR				= 17;
-
-	// Introduced as an XHR extension:
+	
+	/** @const LXB_DOM_SECURITY_ERR */
 	const SECURITY_ERR					= 18;
-
-	// Introduced in HTML5:
+	
+	/** @const LXB_DOM_NETWORK_ERR */
 	const NETWORK_ERR					= 19;
+	
+	/** @const LXB_DOM_ABORT_ERR */
 	const ABORT_ERR						= 20;
+	
+	/** @const LXB_DOM_URL_MISMATCH_ERR */
 	const URL_MISMATCH_ERR				= 21;
+	
+	/** @const LXB_DOM_QUOTA_EXCEEDED_ERR */
 	const QUOTA_EXCEEDED_ERR			= 22;
-
-	// TIMEOUT_ERR is currently unused but was added for completeness.
+	
+	/** @const LXB_DOM_TIMEOUT_ERR */
 	const TIMEOUT_ERR					= 23;
-
-	// INVALID_NODE_TYPE_ERR is currently unused but was added for completeness.
+	
+	/** @const LXB_DOM_INVALID_NODE_TYPE_ERR */
 	const INVALID_NODE_TYPE_ERR			= 24;
+	
+	/** @const LXB_DOM_DATA_CLONE_ERR */
 	const DATA_CLONE_ERR				= 25;
 }
 
@@ -124,17 +160,40 @@ class EventTarget {
 }
 
 class Node extends EventTarget {
+	/** @const LXB_DOM_NODE_TYPE_ELEMENT */
 	const ELEMENT_NODE					= 1;
+	
+	/** @const LXB_DOM_NODE_TYPE_ATTRIBUTE */
 	const ATTRIBUTE_NODE				= 2;
+	
+	/** @const LXB_DOM_NODE_TYPE_TEXT */
 	const TEXT_NODE						= 3;
+	
+	/** @const LXB_DOM_NODE_TYPE_CDATA_SECTION */
 	const CDATA_SECTION_NODE			= 4;
+	
+	/** @const LXB_DOM_NODE_TYPE_ENTITY_REFERENCE */
 	const ENTITY_REFERENCE_NODE			= 5; // historical
+	
+	/** @const LXB_DOM_NODE_TYPE_ENTITY */
 	const ENTITY_NODE					= 6; // historical
+	
+	/** @const LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION */
 	const PROCESSING_INSTRUCTION_NODE	= 7;
+	
+	/** @const LXB_DOM_NODE_TYPE_COMMENT */
 	const COMMENT_NODE					= 8;
+	
+	/** @const LXB_DOM_NODE_TYPE_DOCUMENT */
 	const DOCUMENT_NODE					= 9;
+	
+	/** @const LXB_DOM_NODE_TYPE_DOCUMENT_TYPE */
 	const DOCUMENT_TYPE_NODE			= 10;
+	
+	/** @const LXB_DOM_NODE_TYPE_DOCUMENT_FRAGMENT */
 	const DOCUMENT_FRAGMENT_NODE		= 11;
+	
+	/** @const LXB_DOM_NODE_TYPE_NOTATION */
 	const NOTATION_NODE					= 12; // historical
 	
 	const DOCUMENT_POSITION_DISCONNECTED			= 0x01;
@@ -144,21 +203,49 @@ class Node extends EventTarget {
 	const DOCUMENT_POSITION_CONTAINED_BY			= 0x10;
 	const DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC	= 0x20;
 	
+	/** @var int|readonly */
 	public $nodeType;
+	
+	/** @var string|readonly */
 	public $nodeName;
+	
+	/** @var string|null|readonly */
 	public $baseURI;
+	
+	/** @var bool|readonly */
 	public $isConnected;
+	
+	/** @var Document|null|readonly */
 	public $ownerDocument;
+	
+	/** @var Node|null|readonly */
 	public $parentNode;
+	
+	/** @var Element|null|readonly */
 	public $parentElement;
+	
+	/** @var NodeList|readonly */
 	public $childNodes;
+	
+	/** @var Node|null|readonly */
 	public $firstChild;
+	
+	/** @var Node|null|readonly */
 	public $lastChild;
+	
+	/** @var Node|null|readonly */
 	public $previousSibling;
+	
+	/** @var Node|null|readonly */
 	public $nextSibling;
+	
+	/** @var string|null|readonly */
 	public $nodeValue;
+	
+	/** @var string|null|readonly */
 	public $textContent;
 	
+	/** @var mixed */
 	public $private;
 	
 	public function getRootNode(array $options = []) : Node { }
@@ -192,17 +279,34 @@ class Document extends Node {
 	use NonElementParentNode;
 	use DocumentNonStandart;
 	
+	/** @var string|readonly */
 	public $URL; // about:blank
+	
+	/** @var string|readonly */
 	public $documentURI; // about:blank
+	
+	/** @var string|null|readonly */
 	public $origin; // null
 	
+	/** @var string|readonly */
 	public $compatMode;
+	
+	/** @var string|readonly */
 	public $characterSet;
+	
+	/** @var string|readonly */
 	public $charset; // historical alias of .characterSet
+	
+	/** @var string|readonly */
 	public $inputEncoding; // historical alias of .characterSet
+	
+	/** @var string|readonly */
 	public $contentType;
 	
-	public $doctype; // DocumentType
+	/** @var DocumentType|null|readonly */
+	public $doctype;
+	
+	/** @var Element|null|readonly */
 	public $documentElement;
 	
 	public function createElement(string $localName) : Element { }
@@ -229,18 +333,33 @@ class DocumentFragment extends Node {
 class DocumentType {
 	use ChildNode;
 	
+	/** @var string|readonly */
 	public $name;
+	
+	/** @var string|readonly */
 	public $publicId;
+	
+	/** @var string|readonly */
 	public $systemId;
 }
 
 class Attr extends Node {
+	/** @var string|null|readonly */
 	public $namespaceURI;
+	
+	/** @var string|null|readonly */
 	public $prefix;
+	
+	/** @var string|readonly */
 	public $localName;
 	
+	/** @var string|readonly */
 	public $name;
+	
+	/** @var string */
 	public $value;
+	
+	/** @var Element|null|readonly */
 	public $ownerElement;
 }
 
@@ -248,7 +367,10 @@ class CharacterData extends Node {
 	use ChildNode;
 	use NonDocumentTypeChildNode;
 	
+	/** @var string */
 	public $data;
+	
+	/** @var int|readonly */
 	public $length;
 	
 	public function substringData(int $offset, int $count) : string { }
@@ -261,6 +383,7 @@ class CharacterData extends Node {
 class Text extends CharacterData {
 	use ChildNode;
 	
+	/** @var string|readonly */
 	public $wholeText;
 	
 	public function splitText(int $offset) : Text { }
@@ -275,6 +398,7 @@ class Comment extends CharacterData {
 }
 
 class ProcessingInstruction extends CharacterData {
+	/** @var string|readonly */
 	public $target;
 }
 
@@ -282,17 +406,34 @@ class Element extends Node {
 	use ParentNode;
 	use NonDocumentTypeChildNode;
 	
+	/** @var string|null|readonly */
 	public $namespaceURI; // ns uri
+	
+	/** @var string|null|readonly */
 	public $prefix; // ns
+	
+	/** @var string|readonly */
 	public $localName; // element
+	
+	/** @var string|readonly */
 	public $tagName; // ns:element
 	
+	/** @var string */
 	public $id;
+	
+	/** @var string */
 	public $className;
+	
+	/** @var DOMTokenList|readonly */
 	public $classList; // DOMTokenList
+	
+	/** @var NamedNodeMap|readonly */
 	public $attributes; // NamedNodeMap
 	
+	/** @var string */
 	public $innerHTML;
+	
+	/** @var string */
 	public $outerHTML;
 	
 	public function hasAttributes() : bool { }
@@ -344,6 +485,7 @@ class Element extends Node {
 }
 
 class HTMLCollection implements \Iterator, \ArrayAccess, \Countable {
+	/** @var int|readonly */
 	public $length;
 	
 	/** @return Node|null */
@@ -383,6 +525,7 @@ class HTMLCollection implements \Iterator, \ArrayAccess, \Countable {
 }
 
 class NodeList implements \Iterator, \ArrayAccess, \Countable {
+	/** @var int|readonly */
 	public $length;
 	
 	/** @return Node|null */
@@ -419,7 +562,10 @@ class NodeList implements \Iterator, \ArrayAccess, \Countable {
 }
 
 class DOMTokenList implements \Iterator, \ArrayAccess, \Countable {
+	/** @var int|readonly */
 	public $length;
+	
+	/** @var string */
 	public $value;
 	
 	/** @return string|null */
@@ -468,8 +614,8 @@ class DOMTokenList implements \Iterator, \ArrayAccess, \Countable {
 }
 
 class NamedNodeMap implements \Iterator, \ArrayAccess, \Countable {
+	/** @var int|readonly */
 	public $length;
-	public $value;
 	
 	/** @return Attr|null */
 	public function item(int $index) : Attr { }

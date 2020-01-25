@@ -11,7 +11,7 @@
 	T *self = (T *) self_object->ptr;
 
 typedef struct html5_dom_object_wrap html5_dom_object_wrap_t;
-typedef int (*html5_dom_prop_handler_t)(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+typedef int (html5_dom_prop_handler_t)(html5_dom_object_wrap_t *obj, zval *val);
 
 struct html5_dom_object_wrap {
 	void *ptr;											// custom payload
@@ -22,9 +22,14 @@ struct html5_dom_object_wrap {
 };
 
 typedef struct {
+	html5_dom_prop_handler_t *read;
+	html5_dom_prop_handler_t *write;
+} html5_dom_prop_handlers_t;
+
+typedef struct {
 	const char name[64];
-	html5_dom_prop_handler_t func;
-} html5_dom_prop_handler_list_t;
+	html5_dom_prop_handlers_t handlers;
+} html5_dom_prop_handlers_init_t;
 
 // Object wrap
 html5_dom_object_wrap_t *html5_dom_object_wrap_create(zend_class_entry *ce, zend_object_handlers *handlers);
@@ -32,7 +37,7 @@ void html5_dom_object_wrap_free(html5_dom_object_wrap_t *object);
 
 // Property handlers
 void html5_dom_prop_handler_init(HashTable *hash);
-void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handler_list_t *handlers);
+void html5_dom_prop_handler_add(HashTable *hash, html5_dom_prop_handlers_init_t *list);
 void html5_dom_prop_handler_free(HashTable *hash);
 
 // Generic property handlers

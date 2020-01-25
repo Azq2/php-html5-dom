@@ -45,6 +45,7 @@ function getClassInfo($class) {
 		'own_methods'	=> [], 
 		'parents'		=> [], 
 		'consts'		=> [], 
+		'own_consts'	=> [], 
 		'interfaces'	=> [], 
 		'is_trait'		=> $ref_class->isTrait(), 
 		'use_props'		=> false, 
@@ -64,12 +65,21 @@ function getClassInfo($class) {
 	}
 	
 	// Get own class constants
-	foreach ($ref_class->getConstants() as $k => $v) {
-		if (!$ref_class_parent || !$ref_class_parent->hasConstant($k)) {
-			$class_info['consts'][] = [
-				'name'	=> $k, 
-				'value'	=> $v
+	foreach ($ref_class->getReflectionConstants() as $const) {
+		if (!$ref_class_parent || !$ref_class_parent->hasConstant($const->getName())) {
+			$const_info = [
+				'name'			=> $const->getName(), 
+				'value'			=> $const->getValue(), 
+				'c_name'	=> false
 			];
+			
+			if (preg_match("/\@const\s+([^\s]+)/", $const->getDocComment(), $m))
+				$const_info['c_name'] = $m[1];
+			
+			$class_info['consts'][] = $const_info;
+			
+			if (!$const_info['c_name'])
+				$class_info['own_consts'][] = $const_info;
 		}
 	}
 	
@@ -92,8 +102,16 @@ function getClassInfo($class) {
 			
 			$property_info = [
 				'name'		=> $prop->getName(), 
-				'prefix'	=> $property_class['id']
+				'prefix'	=> $property_class['id'], 
+				'null'		=> true, 
+				'readonly'	=> false, 
 			];
+			
+			if (preg_match("/\@var\s+([^\s]+)/", $prop->getDocComment(), $m)) {
+				$types = explode("|", $m[1]);
+				$property_info['null'] = in_array("null", $types);
+				$property_info['readonly'] = in_array("readonly", $types);
+			}
 			
 			if ($property_class['name'] == $class_info['name'])
 				$class_info['own_props'][] = $property_info;

@@ -38,47 +38,7 @@ void html5_dom_interfaces_unload();
  * Constants
  * */
 
-/* HTML5\DOM\DOMException */
-#define HTML5_DOM_DOMException__UNKNOWN_ERROR 0
-#define HTML5_DOM_DOMException__INDEX_SIZE_ERR 1
-#define HTML5_DOM_DOMException__DOMSTRING_SIZE_ERR 2
-#define HTML5_DOM_DOMException__HIERARCHY_REQUEST_ERR 3
-#define HTML5_DOM_DOMException__WRONG_DOCUMENT_ERR 4
-#define HTML5_DOM_DOMException__INVALID_CHARACTER_ERR 5
-#define HTML5_DOM_DOMException__NO_DATA_ALLOWED_ERR 6
-#define HTML5_DOM_DOMException__NO_MODIFICATION_ALLOWED_ERR 7
-#define HTML5_DOM_DOMException__NOT_FOUND_ERR 8
-#define HTML5_DOM_DOMException__NOT_SUPPORTED_ERR 9
-#define HTML5_DOM_DOMException__INUSE_ATTRIBUTE_ERR 10
-#define HTML5_DOM_DOMException__INVALID_STATE_ERR 11
-#define HTML5_DOM_DOMException__SYNTAX_ERR 12
-#define HTML5_DOM_DOMException__INVALID_MODIFICATION_ERR 13
-#define HTML5_DOM_DOMException__NAMESPACE_ERR 14
-#define HTML5_DOM_DOMException__INVALID_ACCESS_ERR 15
-#define HTML5_DOM_DOMException__VALIDATION_ERR 16
-#define HTML5_DOM_DOMException__TYPE_MISMATCH_ERR 17
-#define HTML5_DOM_DOMException__SECURITY_ERR 18
-#define HTML5_DOM_DOMException__NETWORK_ERR 19
-#define HTML5_DOM_DOMException__ABORT_ERR 20
-#define HTML5_DOM_DOMException__URL_MISMATCH_ERR 21
-#define HTML5_DOM_DOMException__QUOTA_EXCEEDED_ERR 22
-#define HTML5_DOM_DOMException__TIMEOUT_ERR 23
-#define HTML5_DOM_DOMException__INVALID_NODE_TYPE_ERR 24
-#define HTML5_DOM_DOMException__DATA_CLONE_ERR 25
-	
 /* HTML5\DOM\Node */
-#define HTML5_DOM_Node__ELEMENT_NODE 1
-#define HTML5_DOM_Node__ATTRIBUTE_NODE 2
-#define HTML5_DOM_Node__TEXT_NODE 3
-#define HTML5_DOM_Node__CDATA_SECTION_NODE 4
-#define HTML5_DOM_Node__ENTITY_REFERENCE_NODE 5
-#define HTML5_DOM_Node__ENTITY_NODE 6
-#define HTML5_DOM_Node__PROCESSING_INSTRUCTION_NODE 7
-#define HTML5_DOM_Node__COMMENT_NODE 8
-#define HTML5_DOM_Node__DOCUMENT_NODE 9
-#define HTML5_DOM_Node__DOCUMENT_TYPE_NODE 10
-#define HTML5_DOM_Node__DOCUMENT_FRAGMENT_NODE 11
-#define HTML5_DOM_Node__NOTATION_NODE 12
 #define HTML5_DOM_Node__DOCUMENT_POSITION_DISCONNECTED 1
 #define HTML5_DOM_Node__DOCUMENT_POSITION_PRECEDING 2
 #define HTML5_DOM_Node__DOCUMENT_POSITION_FOLLOWING 4
@@ -260,92 +220,99 @@ PHP_METHOD(HTML5_DOM_DocumentNonStandart, getParseErrors);
  * */
 
 /* HTML5\DOM\Node */
-int html5_dom_node__nodeType(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__nodeName(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__baseURI(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__isConnected(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__ownerDocument(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__parentNode(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__parentElement(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__childNodes(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__firstChild(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__lastChild(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__previousSibling(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__nextSibling(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__nodeValue(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_node__private(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_node__nodeType(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__nodeName(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__baseURI(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__isConnected(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__ownerDocument(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__parentNode(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__parentElement(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__childNodes(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__firstChild(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__lastChild(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__previousSibling(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__nextSibling(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__nodeValue(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__private(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__private_set(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\Attr */
-int html5_dom_attr__namespaceURI(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_attr__prefix(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_attr__localName(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_attr__name(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_attr__ownerElement(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_attr__namespaceURI(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__prefix(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__localName(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__name(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__value_set(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__ownerElement(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\Document */
-int html5_dom_document__URL(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__documentURI(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__origin(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__compatMode(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__characterSet(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__charset(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__inputEncoding(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__contentType(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__doctype(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_document__documentElement(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_document__URL(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__documentURI(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__origin(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__compatMode(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__characterSet(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__charset(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__inputEncoding(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__contentType(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__doctype(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_document__documentElement(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\DocumentType */
-int html5_dom_documenttype__name(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_documenttype__publicId(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_documenttype__systemId(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_documenttype__name(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_documenttype__publicId(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_documenttype__systemId(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\CharacterData */
-int html5_dom_characterdata__data(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_characterdata__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_characterdata__data(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_characterdata__data_set(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_characterdata__length(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\Text */
-int html5_dom_text__wholeText(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_text__wholeText(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\ProcessingInstruction */
-int html5_dom_processinginstruction__target(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_processinginstruction__target(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\Element */
-int html5_dom_element__namespaceURI(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__prefix(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__localName(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__tagName(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__id(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__className(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__classList(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__attributes(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__innerHTML(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_element__outerHTML(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_element__namespaceURI(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__prefix(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__localName(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__tagName(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__id(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__id_set(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__className(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__className_set(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__classList(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__attributes(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__innerHTML(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__innerHTML_set(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__outerHTML(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_element__outerHTML_set(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\HTMLCollection */
-int html5_dom_htmlcollection__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_htmlcollection__length(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\NodeList */
-int html5_dom_nodelist__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_nodelist__length(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\DOMTokenList */
-int html5_dom_domtokenlist__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_domtokenlist__value(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_domtokenlist__length(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_domtokenlist__value(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_domtokenlist__value_set(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\NamedNodeMap */
-int html5_dom_namednodemap__length(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_namednodemap__value(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_namednodemap__length(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\ParentNode */
-int html5_dom_parentnode__children(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_parentnode__firstElementChild(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_parentnode__lastElementChild(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_parentnode__childElementCount(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_parentnode__children(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_parentnode__firstElementChild(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_parentnode__lastElementChild(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_parentnode__childElementCount(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\NonDocumentTypeChildNode */
-int html5_dom_nondocumenttypechildnode__previousElementSibling(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
-int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap_t *obj, zval *val, int write, int debug);
+int html5_dom_nondocumenttypechildnode__previousElementSibling(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap_t *obj, zval *val);
 
 
 #endif // PHP_HTML5_DOM_INTERFACES_H
