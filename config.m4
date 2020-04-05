@@ -64,7 +64,6 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 		third_party/lexbor/source/lexbor/html/tokenizer/state_comment.c \
 		third_party/lexbor/source/lexbor/html/tokenizer/state.c \
 		third_party/lexbor/source/lexbor/html/token.c \
-		third_party/lexbor/source/lexbor/html/html.c \
 		third_party/lexbor/source/lexbor/html/parser_char.c \
 		third_party/lexbor/source/lexbor/html/parser_char_ref.c \
 		third_party/lexbor/source/lexbor/html/serialize.c \
@@ -174,6 +173,7 @@ if test "${PHP_HTML5_DOM}" != "no"; then
 		third_party/lexbor/source/lexbor/html/tree/insertion_mode/in_template.c \
 		third_party/lexbor/source/lexbor/html/tree/insertion_mode/after_after_body.c \
 		third_party/lexbor/source/lexbor/html/tree/template_insertion.c \
+		third_party/lexbor/source/lexbor/html/node.c \
 		third_party/lexbor/source/lexbor/html/encoding.c \
 		third_party/lexbor/source/lexbor/core/array.c \
 		third_party/lexbor/source/lexbor/core/conv.c \

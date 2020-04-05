@@ -215,3 +215,8 @@ int html5_dom_namednodemap__length(html5_dom_object_wrap_t *obj, zval *val) {
 int html5_dom_namednodemap__value(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
+/* HTML5\DOM\DOMException */
+int html5_dom_domexception__name(html5_dom_object_wrap_t *obj, zval *val) {
+	return 0;
+}

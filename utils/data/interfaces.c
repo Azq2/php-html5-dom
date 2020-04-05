@@ -197,6 +197,6 @@ void html5_dom_interfaces_init() {
 
 void html5_dom_interfaces_unload() {
 <?php foreach ($classes as $ce): ?><?php if ($ce['use_props']): ?>
-	zend_hash_destroy(&<?= $ce['id'] ?>_prop_handlers);
+	html5_dom_prop_handler_free(&<?= $ce['id'] ?>_prop_handlers);
 <?php endif; ?><?php endforeach; ?>
 }

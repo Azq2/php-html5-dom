@@ -24,13 +24,18 @@ PHP_METHOD(HTML5_DOM_EventTarget, __construct) {
 
 /* HTML5\DOM\Node */
 PHP_METHOD(HTML5_DOM_Node, getRootNode) {
-	
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
+	html5_dom_node_to_zval(lxb_dom_interface_node(self->owner_document), return_value);
 }
 PHP_METHOD(HTML5_DOM_Node, hasChildNodes) {
-	
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
+	RETURN_BOOL(self->first_child ? 1 : 0);
 }
 PHP_METHOD(HTML5_DOM_Node, normalize) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	if (!html5_dom_node_normalize(self))
+		zend_throw_exception_ex(html5_dom_domexception_ce, 0, "empty tag name not allowed.");
 }
 PHP_METHOD(HTML5_DOM_Node, cloneNode) {
 	
@@ -600,6 +605,59 @@ int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap
 /*
  * Utils
  * */
+
+bool html5_dom_characterdata_append(lxb_dom_character_data_t *char_data, const char *data, size_t length) {
+	if (char_data->data.data == NULL)
+		lexbor_str_init(&char_data->data, char_data->node.owner_document->text, length);
+	
+	if (!char_data->data.data)
+		return false;
+	
+	if (!lexbor_str_append(&char_data->data, char_data->node.owner_document->text, data, length))
+		return false;
+	
+	return true;
+}
+
+bool html5_dom_node_normalize(lxb_dom_node_t *node) {
+	lxb_dom_character_data_t *first_char_data = NULL;
+	lxb_dom_node_t *cursor = node->first_child;
+	
+	while (cursor) {
+		if (cursor->type == LXB_DOM_NODE_TYPE_TEXT) {
+			lxb_dom_character_data_t *char_data = lxb_dom_interface_character_data(cursor);
+			if (first_char_data) {
+				// concat
+				if (char_data->data.length) {
+					html5_dom_characterdata_append(first_char_data, char_data->data.data, char_data->data.length);
+					return false;
+				}
+				
+				html5_dom_node_remove(cursor);
+			} else {
+				first_char_data = char_data;
+			}
+		} else if (cursor->type == LXB_DOM_NODE_TYPE_ELEMENT) {
+			html5_dom_node_normalize(cursor);
+		} else {
+			first_char_data = NULL;
+		}
+		cursor = node->next;
+	}
+	
+	return true;
+}
+
+void html5_dom_node_remove(lxb_dom_node_t *node) {
+	if (node->owner_document) {
+		lxb_dom_document_t *dom_document = lxb_dom_interface_document(node->owner_document);
+		if (lxb_dom_interface_node(dom_document->element) == node)
+			dom_document->element = NULL;
+		if (lxb_dom_interface_node(dom_document->doctype) == node)
+			dom_document->doctype = NULL;
+	}
+	lxb_dom_node_remove(node);
+}
 
 static void _node_free_handler(html5_dom_object_wrap_t *intern) {
 	lxb_dom_node_t *node = intern->ptr;

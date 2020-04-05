@@ -14,6 +14,7 @@
  
 static zend_object_handlers object_handlers;
 
+static HashTable html5_dom_domexception_prop_handlers;
 static HashTable html5_dom_node_prop_handlers;
 static HashTable html5_dom_attr_prop_handlers;
 static HashTable html5_dom_document_prop_handlers;
@@ -829,8 +830,12 @@ static zend_function_entry html5_dom_namednodemap_methods[] = {
 static zend_object *_create_object(zend_class_entry *ce TSRMLS_DC) {
 	html5_dom_object_wrap_t *intern = html5_dom_object_wrap_create(ce, &object_handlers);
 	
+	/* HTML5\DOM\DOMException */
+	if (ce == html5_dom_domexception_ce) {
+		intern->prop_handler = &html5_dom_domexception_prop_handlers;
+	}
 	/* HTML5\DOM\Node */
-	if (ce == html5_dom_node_ce) {
+	else if (ce == html5_dom_node_ce) {
 		intern->prop_handler = &html5_dom_node_prop_handlers;
 	}
 	/* HTML5\DOM\Attr */
@@ -937,6 +942,12 @@ void html5_dom_interfaces_init() {
 	html5_dom_streamparser_ce = zend_register_internal_class(&ce);
 
 	/* HTML5\DOM\DOMException */
+	html5_dom_prop_handlers_init_t html5_dom_domexception_handlers[] = {
+		{"name", html5_dom_domexception__name, NULL}, 
+		{"", NULL}, 
+	};
+	html5_dom_prop_handler_init(&html5_dom_domexception_prop_handlers);
+	html5_dom_prop_handler_add(&html5_dom_domexception_prop_handlers, html5_dom_domexception_handlers);
 	INIT_CLASS_ENTRY(ce, "HTML5\\DOM\\DOMException", html5_dom_domexception_methods);
 	ce.create_object = _create_object;
 	html5_dom_domexception_ce = zend_register_internal_class_ex(&ce, zend_ce_exception);
@@ -1221,19 +1232,20 @@ void html5_dom_interfaces_init() {
 }
 
 void html5_dom_interfaces_unload() {
-	zend_hash_destroy(&html5_dom_node_prop_handlers);
-	zend_hash_destroy(&html5_dom_attr_prop_handlers);
-	zend_hash_destroy(&html5_dom_document_prop_handlers);
-	zend_hash_destroy(&html5_dom_documentfragment_prop_handlers);
-	zend_hash_destroy(&html5_dom_documenttype_prop_handlers);
-	zend_hash_destroy(&html5_dom_characterdata_prop_handlers);
-	zend_hash_destroy(&html5_dom_text_prop_handlers);
-	zend_hash_destroy(&html5_dom_cdatasection_prop_handlers);
-	zend_hash_destroy(&html5_dom_comment_prop_handlers);
-	zend_hash_destroy(&html5_dom_processinginstruction_prop_handlers);
-	zend_hash_destroy(&html5_dom_element_prop_handlers);
-	zend_hash_destroy(&html5_dom_htmlcollection_prop_handlers);
-	zend_hash_destroy(&html5_dom_nodelist_prop_handlers);
-	zend_hash_destroy(&html5_dom_domtokenlist_prop_handlers);
-	zend_hash_destroy(&html5_dom_namednodemap_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_domexception_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_node_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_attr_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_document_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_documentfragment_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_documenttype_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_characterdata_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_text_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_cdatasection_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_comment_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_processinginstruction_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_element_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_htmlcollection_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_nodelist_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_domtokenlist_prop_handlers);
+	html5_dom_prop_handler_free(&html5_dom_namednodemap_prop_handlers);
 }

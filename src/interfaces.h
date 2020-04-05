@@ -219,6 +219,9 @@ PHP_METHOD(HTML5_DOM_DocumentNonStandart, getParseErrors);
  * Properties
  * */
 
+/* HTML5\DOM\DOMException */
+int html5_dom_domexception__name(html5_dom_object_wrap_t *obj, zval *val);
+
 /* HTML5\DOM\Node */
 int html5_dom_node__nodeType(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__nodeName(html5_dom_object_wrap_t *obj, zval *val);

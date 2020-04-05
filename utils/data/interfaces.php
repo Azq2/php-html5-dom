@@ -153,6 +153,17 @@ class DOMException extends \Exception {
 	
 	/** @const LXB_DOM_DATA_CLONE_ERR */
 	const DATA_CLONE_ERR				= 25;
+	
+	/** @var string|readonly */
+	public $name;
+	
+	/** @var string|readonly */
+	public $message;
+	
+	/** @var int|readonly */
+	public $code;
+	
+	public function __construct(string $message = '', string $name = '') { }
 }
 
 class EventTarget {
