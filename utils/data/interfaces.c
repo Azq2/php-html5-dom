@@ -32,18 +32,21 @@ foreach ($all_classes as $ce) {
 	foreach ($ce['own_methods'] as $method) {
 		switch ($method['hint']['type']) {
 			case "obj_info":
+				// name, return_reference, required_num_args, class_name, allow_null
 				printf("ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_%s, %d, %d, %s, %d)\n", 
 					$method['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
 					addslashes($method['hint']['value']), (int) $method['hint']['null']);
 			break;
 			
 			case "type_info":
+				// name, return_reference, required_num_args, type, allow_null
 				printf("ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_%s, %d, %d, %s, %d)\n", 
 					$method['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required'], 
 					addslashes($method['hint']['value']), (int) $method['hint']['null']);
 			break;
 			
 			default:
+				// name, _unused, return_reference, required_num_arg
 				printf("ZEND_BEGIN_ARG_INFO_EX(arginfo_class_%s, 0, %d, %d)\n", 
 					$method['prefix']."_".$method['name'], (int) $method['hint']['ref'], $method['required']);
 			break;
@@ -54,12 +57,14 @@ foreach ($all_classes as $ce) {
 			
 			switch ($arginfo['hint']['type']) {
 				case "obj_info":
+					// pass_by_ref, name, classname, allow_null
 					printf("\tZEND_%s_OBJ_INFO(%d, %s, %s, %d)\n", 
 						$macro, (int) $arginfo['hint']['ref'], $arginfo['name'], 
 						addslashes($arginfo['hint']['value']), (int) $arginfo['hint']['null']);
 				break;
 				
 				case "type_info":
+					// pass_by_ref, name, type_hint, allow_null
 					printf("\tZEND_%s_TYPE_INFO(%d, %s, %s, %d)\n", 
 						$macro, (int) $arginfo['hint']['ref'], $arginfo['name'], 
 						addslashes($arginfo['hint']['value']), (int) $arginfo['hint']['null']);

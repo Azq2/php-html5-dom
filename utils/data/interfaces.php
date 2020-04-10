@@ -264,18 +264,18 @@ class Node extends EventTarget {
 	public function normalize() : void { }
 	public function cloneNode(bool $deep = false) : Node { }
 	
-	/** @param Node|null ...$otherNode */
+	/** @param Node|null $otherNode */
 	public function isEqualNode(Node $otherNode) : bool { }
 	
-	/** @param Node|null ...$otherNode */
+	/** @param Node|null $otherNode */
 	public function isSameNode(Node $otherNode) : bool { }
 	
 	public function compareDocumentPosition(Node $other) : int { }
 	
-	/** @param Node|null ...$other */
+	/** @param Node|null $other */
 	public function contains(Node $other) : bool { }
 	
-	/** @param Node|null ...$child */
+	/** @param Node|null $child */
 	public function insertBefore(Node $node, Node $child) : Node { }
 	
 	public function appendChild(Node $child) : Node { }

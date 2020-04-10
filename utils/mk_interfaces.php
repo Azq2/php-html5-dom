@@ -213,6 +213,7 @@ function getTypeHint($obj, $parent = false) {
 		$hint['ref'] = $obj->returnsReference();
 		
 		$doc = $obj->getDocComment();
+		$hint['_doc'] = $doc;
 		if (preg_match("/\@return\s+([^\s]+)/", $doc, $m)) {
 			$types = explode("|", $m[1]);
 			$hint['null'] = in_array("null", $types);
@@ -231,6 +232,7 @@ function getTypeHint($obj, $parent = false) {
 			$hint['null'] = true;
 		
 		$doc = $parent->getDocComment();
+		$hint['_doc'] = $doc;
 		if (preg_match("/\@param\s+([^\s]+)\s+".preg_quote(($obj->isVariadic() ? "...$" : "$").$obj->getName())."/", $doc, $m)) {
 			$types = explode("|", $m[1]);
 			$hint['null'] = in_array("null", $types);

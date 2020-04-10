@@ -33,9 +33,7 @@ PHP_METHOD(HTML5_DOM_Node, hasChildNodes) {
 }
 PHP_METHOD(HTML5_DOM_Node, normalize) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
-	
-	if (!html5_dom_node_normalize(self))
-		zend_throw_exception_ex(html5_dom_domexception_ce, 0, "empty tag name not allowed.");
+	html5_dom_node_normalize(self);
 }
 PHP_METHOD(HTML5_DOM_Node, cloneNode) {
 	
@@ -44,13 +42,37 @@ PHP_METHOD(HTML5_DOM_Node, isEqualNode) {
 	
 }
 PHP_METHOD(HTML5_DOM_Node, isSameNode) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zval *other_node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O!", &other_node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj);
+	RETURN_BOOL(other_node == self);
 }
 PHP_METHOD(HTML5_DOM_Node, compareDocumentPosition) {
 	
 }
 PHP_METHOD(HTML5_DOM_Node, contains) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zval *other_node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O!", &other_node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj);
+	
+	if (!other_node || other_node->owner_document != self->owner_document)
+		RETURN_FALSE;
+	
+	while (other_node) {
+		if (other_node == self)
+			RETURN_TRUE;
+		other_node = other_node->parent;
+	}
+	
+	RETURN_FALSE;
 }
 PHP_METHOD(HTML5_DOM_Node, insertBefore) {
 	
@@ -627,17 +649,14 @@ bool html5_dom_node_normalize(lxb_dom_node_t *node) {
 		if (cursor->type == LXB_DOM_NODE_TYPE_TEXT) {
 			lxb_dom_character_data_t *char_data = lxb_dom_interface_character_data(cursor);
 			if (first_char_data) {
-				// concat
-				if (char_data->data.length) {
+				if (char_data->data.length)
 					html5_dom_characterdata_append(first_char_data, char_data->data.data, char_data->data.length);
-					return false;
-				}
-				
 				html5_dom_node_remove(cursor);
 			} else {
 				first_char_data = char_data;
 			}
 		} else if (cursor->type == LXB_DOM_NODE_TYPE_ELEMENT) {
+			first_char_data = NULL;
 			html5_dom_node_normalize(cursor);
 		} else {
 			first_char_data = NULL;

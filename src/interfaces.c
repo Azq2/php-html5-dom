@@ -87,11 +87,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Node_cloneNode, 0
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Node_isEqualNode, 0, 1, _IS_BOOL, 0)
-	ZEND_ARG_OBJ_INFO(0, otherNode, HTML5\\DOM\\Node, 0)
+	ZEND_ARG_OBJ_INFO(0, otherNode, HTML5\\DOM\\Node, 1)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Node_isSameNode, 0, 1, _IS_BOOL, 0)
-	ZEND_ARG_OBJ_INFO(0, otherNode, HTML5\\DOM\\Node, 0)
+	ZEND_ARG_OBJ_INFO(0, otherNode, HTML5\\DOM\\Node, 1)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Node_compareDocumentPosition, 0, 1, IS_LONG, 0)
@@ -99,12 +99,12 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Node_compareDocu
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_HTML5_DOM_Node_contains, 0, 1, _IS_BOOL, 0)
-	ZEND_ARG_OBJ_INFO(0, other, HTML5\\DOM\\Node, 0)
+	ZEND_ARG_OBJ_INFO(0, other, HTML5\\DOM\\Node, 1)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Node_insertBefore, 0, 2, HTML5\\DOM\\Node, 0)
 	ZEND_ARG_OBJ_INFO(0, node, HTML5\\DOM\\Node, 0)
-	ZEND_ARG_OBJ_INFO(0, child, HTML5\\DOM\\Node, 0)
+	ZEND_ARG_OBJ_INFO(0, child, HTML5\\DOM\\Node, 1)
 ZEND_END_ARG_INFO();
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_HTML5_DOM_Node_appendChild, 0, 1, HTML5\\DOM\\Node, 0)
