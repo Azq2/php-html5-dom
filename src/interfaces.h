@@ -16,10 +16,10 @@ zend_class_entry *html5_dom_streamparser_ce;
 zend_class_entry *html5_dom_domexception_ce;
 zend_class_entry *html5_dom_eventtarget_ce;
 zend_class_entry *html5_dom_node_ce;
-zend_class_entry *html5_dom_attr_ce;
 zend_class_entry *html5_dom_document_ce;
 zend_class_entry *html5_dom_documentfragment_ce;
 zend_class_entry *html5_dom_documenttype_ce;
+zend_class_entry *html5_dom_attr_ce;
 zend_class_entry *html5_dom_characterdata_ce;
 zend_class_entry *html5_dom_text_ce;
 zend_class_entry *html5_dom_cdatasection_ce;
@@ -240,15 +240,6 @@ int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__private(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__private_set(html5_dom_object_wrap_t *obj, zval *val);
 
-/* HTML5\DOM\Attr */
-int html5_dom_attr__namespaceURI(html5_dom_object_wrap_t *obj, zval *val);
-int html5_dom_attr__prefix(html5_dom_object_wrap_t *obj, zval *val);
-int html5_dom_attr__localName(html5_dom_object_wrap_t *obj, zval *val);
-int html5_dom_attr__name(html5_dom_object_wrap_t *obj, zval *val);
-int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val);
-int html5_dom_attr__value_set(html5_dom_object_wrap_t *obj, zval *val);
-int html5_dom_attr__ownerElement(html5_dom_object_wrap_t *obj, zval *val);
-
 /* HTML5\DOM\Document */
 int html5_dom_document__URL(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_document__documentURI(html5_dom_object_wrap_t *obj, zval *val);
@@ -265,6 +256,15 @@ int html5_dom_document__documentElement(html5_dom_object_wrap_t *obj, zval *val)
 int html5_dom_documenttype__name(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_documenttype__publicId(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_documenttype__systemId(html5_dom_object_wrap_t *obj, zval *val);
+
+/* HTML5\DOM\Attr */
+int html5_dom_attr__namespaceURI(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__prefix(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__localName(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__name(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__value_set(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_attr__ownerElement(html5_dom_object_wrap_t *obj, zval *val);
 
 /* HTML5\DOM\CharacterData */
 int html5_dom_characterdata__data(html5_dom_object_wrap_t *obj, zval *val);

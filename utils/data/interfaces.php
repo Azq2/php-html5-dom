@@ -341,7 +341,7 @@ class DocumentFragment extends Node {
 	use NonElementParentNode;
 }
 
-class DocumentType {
+class DocumentType extends Node {
 	use ChildNode;
 	
 	/** @var string|readonly */

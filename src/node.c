@@ -36,7 +36,13 @@ PHP_METHOD(HTML5_DOM_Node, normalize) {
 	html5_dom_node_normalize(self);
 }
 PHP_METHOD(HTML5_DOM_Node, cloneNode) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zend_bool deep = 0;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|b", &deep) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	html5_dom_node_to_zval(html5_dom_node_clone(self, deep, NULL), return_value);
 }
 PHP_METHOD(HTML5_DOM_Node, isEqualNode) {
 	
@@ -608,13 +614,35 @@ int html5_dom_element__attributes(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
 int html5_dom_element__innerHTML(html5_dom_object_wrap_t *obj, zval *val) {
-	return 0;
+	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
+	
+	smart_str buf = {0};
+	lxb_html_serialize_deep_cb(self, html5_dom_node_serialize_callback, &buf);
+	
+	if (buf.s) {
+		ZSTR_VAL(buf.s)[ZSTR_LEN(buf.s)] = '\0';
+		ZVAL_NEW_STR(val, buf.s);
+	} else {
+		ZVAL_EMPTY_STRING(val);
+	}
+	return 1;
 }
 int html5_dom_element__innerHTML_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
 int html5_dom_element__outerHTML(html5_dom_object_wrap_t *obj, zval *val) {
-	return 0;
+	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
+	
+	smart_str buf = {0};
+	lxb_html_serialize_tree_cb(self, html5_dom_node_serialize_callback, &buf);
+	
+	if (buf.s) {
+		ZSTR_VAL(buf.s)[ZSTR_LEN(buf.s)] = '\0';
+		ZVAL_NEW_STR(val, buf.s);
+	} else {
+		ZVAL_EMPTY_STRING(val);
+	}
+	return 1;
 }
 int html5_dom_element__outerHTML_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
@@ -674,6 +702,196 @@ int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap
 /*
  * Utils
  * */
+
+lxb_status_t html5_dom_node_serialize_callback(const lxb_char_t *data, size_t len, void *ctx) {
+	smart_str_appendl((smart_str *) ctx, data, len);
+	return LXB_STATUS_OK;
+}
+
+lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_document_t *new_document) {
+	if (!new_document)
+		new_document = node->owner_document;
+	
+	switch (node->type) {
+		case LXB_DOM_NODE_TYPE_ELEMENT:
+		{
+			lxb_dom_element_t *old_element = lxb_dom_interface_element(node);
+			
+			// localName
+			size_t local_name_len = 0;
+			const lxb_char_t *local_name = lxb_dom_element_local_name(old_element, &local_name_len);
+			
+			// prefix
+			size_t prefix_len = 0;
+			const lxb_char_t *prefix = lxb_dom_element_prefix(old_element, &prefix_len);
+			
+			// namespaceURI
+			size_t ns_link_len = 0;
+			const lxb_char_t *ns_link = lxb_ns_by_id(node->owner_document->ns, node->ns, &ns_link_len);
+			
+			// Create new element
+			lxb_dom_element_t *new_element = lxb_dom_element_create(
+				new_document, 
+				local_name, local_name_len, 
+				ns_link, ns_link_len, 
+				prefix, prefix_len, 
+				(old_element->is_value ? old_element->is_value->data : NULL), (old_element->is_value ? old_element->is_value->length : 0), 
+				true
+			);
+			
+			if (!new_element)
+				return NULL;
+			
+			// Copy all attributes
+			lxb_dom_attr_t *attr = old_element->first_attr;
+			while (attr) {
+				lxb_dom_attr_t *new_attr = lxb_dom_interface_attr(html5_dom_node_clone(lxb_dom_interface_node(attr), false, new_document));
+				if (!new_attr)
+					return NULL;
+				lxb_dom_element_attr_append(new_element, new_attr);
+				
+				attr = attr->next;
+			}
+			
+			// Copy all child nodes
+			if (deep) {
+				lxb_dom_node_t *child = node->first_child;
+				while (child) {
+					lxb_dom_node_t *new_child = html5_dom_node_clone(child, true, new_document);
+					if (!new_child)
+						return NULL;
+					
+					lxb_dom_node_insert_child(lxb_dom_interface_node(new_element), new_child);
+					
+					child = child->next;
+				}
+			}
+			
+			return lxb_dom_interface_node(new_element);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_ATTRIBUTE:
+		{
+			lxb_dom_attr_t *old_attr = lxb_dom_interface_attr(node);
+			
+			// localName
+			size_t local_name_len = 0;
+			const lxb_char_t *local_name = lxb_dom_attr_local_name(old_attr, &local_name_len);
+			
+			// prefix
+			size_t prefix_len = 0;
+			const lxb_char_t *prefix = lxb_dom_attr_prefix(old_attr, &prefix_len);
+			
+			// namespaceURI
+			size_t ns_link_len = 0;
+			const lxb_char_t *ns_link = lxb_ns_by_id(old_attr->node.owner_document->ns, old_attr->node.ns, &ns_link_len);
+			
+			// Create new attribute
+			lxb_dom_attr_t *new_attr = lxb_dom_attr_interface_create(new_document);
+			
+			if (!new_attr)
+				return NULL;
+			
+			lxb_status_t ret = lxb_dom_attr_set_name_ns(
+				new_attr, 
+				local_name, local_name_len, 
+				ns_link, ns_link_len, 
+				prefix, prefix_len, 
+				false
+			);
+			
+			if (ret != LXB_STATUS_OK)
+				return NULL;
+			
+			if (old_attr->value)
+				lxb_dom_attr_set_value(new_attr, old_attr->value->data, old_attr->value->length);
+			
+			return lxb_dom_interface_node(new_attr);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_TEXT:
+		{
+			lxb_dom_character_data_t *old_char_data = lxb_dom_interface_character_data(node);
+			lxb_dom_text_t *new_text = lxb_dom_document_create_text_node(
+				new_document, 
+				old_char_data->data.data, old_char_data->data.length
+			);
+			return lxb_dom_interface_node(new_text);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_CDATA_SECTION:
+		{
+			lxb_dom_character_data_t *old_char_data = lxb_dom_interface_character_data(node);
+			lxb_dom_cdata_section_t *new_cdata = lxb_dom_document_create_cdata_section(
+				new_document, 
+				old_char_data->data.data, old_char_data->data.length
+			);
+			return lxb_dom_interface_node(new_cdata);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION:
+		{
+			lxb_dom_character_data_t *old_char_data = lxb_dom_interface_character_data(node);
+			lxb_dom_processing_instruction_t *old_proc_instr = lxb_dom_interface_processing_instruction(node);
+			
+			lxb_dom_processing_instruction_t *new_proc_instr = lxb_dom_document_create_processing_instruction(
+				new_document, 
+				old_proc_instr->target.data, old_proc_instr->target.length, 
+				old_char_data->data.data, old_char_data->data.length
+			);
+			
+			return lxb_dom_interface_node(new_proc_instr);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_COMMENT:
+		{
+			lxb_dom_character_data_t *old_char_data = lxb_dom_interface_character_data(node);
+			lxb_dom_comment_t *new_comment = lxb_dom_document_create_comment(
+				new_document, 
+				old_char_data->data.data, old_char_data->data.length
+			);
+			return lxb_dom_interface_node(new_comment);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_DOCUMENT:
+			// unsupported now
+		break;
+		
+		case LXB_DOM_NODE_TYPE_DOCUMENT_TYPE:
+		{
+			lxb_dom_document_type_t *old_doctype = lxb_dom_interface_document_type(node);
+			
+			// Create new doctype
+			lxb_dom_document_type_t *new_doctype = lxb_dom_document_type_interface_create(new_document);
+			if (!new_doctype)
+				return NULL;
+			
+			if (!lexbor_str_copy(&new_doctype->name, &old_doctype->name, new_doctype->node.owner_document->text))
+				return NULL;
+			
+			if (!lexbor_str_copy(&new_doctype->public_id, &old_doctype->public_id, new_doctype->node.owner_document->text))
+				return NULL;
+			
+			if (!lexbor_str_copy(&new_doctype->system_id, &old_doctype->system_id, new_doctype->node.owner_document->text))
+				return NULL;
+			
+			return lxb_dom_interface_node(new_doctype);
+		}
+		break;
+		
+		case LXB_DOM_NODE_TYPE_DOCUMENT_FRAGMENT:
+			// unsupported now
+		break;
+	}
+	
+	return NULL;
+}
 
 bool html5_dom_characterdata_append(lxb_dom_character_data_t *char_data, const char *data, size_t length) {
 	if (char_data->data.data == NULL)
