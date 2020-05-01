@@ -74,17 +74,64 @@ PHP_METHOD(HTML5_DOM_Node, contains) {
 	
 	RETURN_FALSE;
 }
+
 PHP_METHOD(HTML5_DOM_Node, insertBefore) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zval *new_node_obj, *ref_node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "OO!", &new_node_obj, html5_dom_node_ce, &ref_node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	// The new child element contains the parent.
+	// The node before which the new node is to be inserted is not a child of this node.
+	
+	lxb_dom_node_t *new_node = html5_dom_zval_to_node(new_node_obj);
+	lxb_dom_node_t *ref_node = html5_dom_zval_to_node(ref_node_obj);
+	
+	if (ref_node) {
+		lxb_dom_node_insert_before(ref_node, new_node);
+	} else {
+		lxb_dom_node_insert_child(self, new_node);
+	}
+	
+	html5_dom_node_to_zval(new_node, return_value);
 }
 PHP_METHOD(HTML5_DOM_Node, appendChild) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zval *child_node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &child_node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	lxb_dom_node_t *child_node = html5_dom_zval_to_node(child_node_obj);
+	lxb_dom_node_insert_child(self, child_node);
+	html5_dom_node_to_zval(child_node, return_value);
 }
 PHP_METHOD(HTML5_DOM_Node, replaceChild) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zval *new_node_obj, *old_node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "OO", &new_node_obj, html5_dom_node_ce, &old_node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	lxb_dom_node_t *new_node = html5_dom_zval_to_node(new_node_obj);
+	lxb_dom_node_t *old_node = html5_dom_zval_to_node(old_node_obj);
+	
+	lxb_dom_node_insert_before(old_node, new_node);
+	lxb_dom_node_remove(old_node);
+	
+	html5_dom_node_to_zval(old_node, return_value);
 }
 PHP_METHOD(HTML5_DOM_Node, removeChild) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
+	zval *child_node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &child_node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	lxb_dom_node_t *child_node = html5_dom_zval_to_node(child_node_obj);
+	lxb_dom_node_remove(child_node);
+	html5_dom_node_to_zval(child_node, return_value);
 }
 
 /* HTML5\DOM\Document */
