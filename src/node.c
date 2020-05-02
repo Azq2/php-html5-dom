@@ -450,48 +450,56 @@ int html5_dom_node__nextSibling(html5_dom_object_wrap_t *obj, zval *val) {
 
 int html5_dom_node__nodeValue(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
+	
 	switch (self->type) {
 		case LXB_DOM_NODE_TYPE_ATTRIBUTE:
-		{
-			lxb_dom_attr_t *node_attr = lxb_dom_interface_attr(self);
-			if (node_attr->value) {
-				ZVAL_STRINGL(val, node_attr->value->data, node_attr->value->length);
-			} else {
-				ZVAL_EMPTY_STRING(val);
-			}
-		}
+			return html5_dom_attr__value(obj, val);
 		break;
 		
 		case LXB_DOM_NODE_TYPE_TEXT:
 		case LXB_DOM_NODE_TYPE_COMMENT:
 		case LXB_DOM_NODE_TYPE_CDATA_SECTION:
 		case LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION:
-		{
-			lxb_dom_character_data_t *node_char_data = lxb_dom_interface_character_data(self);
-			ZVAL_STRINGL(val, node_char_data->data.data, node_char_data->data.length);
-		}
-		break;
-		
-		default:
-			ZVAL_NULL(val);
+			return html5_dom_characterdata__data(obj, val);
 		break;
 	}
-	return 1;
+	
+	ZVAL_NULL(val);
+	return 0;
 }
 
 int html5_dom_node__nodeValue_set(html5_dom_object_wrap_t *obj, zval *val) {
+	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
+	
+	switch (self->type) {
+		case LXB_DOM_NODE_TYPE_ATTRIBUTE:
+			return html5_dom_attr__value_set(obj, val);
+		break;
+		
+		case LXB_DOM_NODE_TYPE_TEXT:
+		case LXB_DOM_NODE_TYPE_COMMENT:
+		case LXB_DOM_NODE_TYPE_CDATA_SECTION:
+		case LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION:
+			return html5_dom_characterdata__data_set(obj, val);
+		break;
+	}
+	
 	return 0;
 }
 
 int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
+	
 	switch (self->type) {
 		case LXB_DOM_NODE_TYPE_ATTRIBUTE:
+			return html5_dom_attr__value(obj, val);
+		break;
+		
 		case LXB_DOM_NODE_TYPE_TEXT:
 		case LXB_DOM_NODE_TYPE_COMMENT:
 		case LXB_DOM_NODE_TYPE_CDATA_SECTION:
 		case LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION:
-			return html5_dom_node__nodeValue(obj, val);
+			return html5_dom_characterdata__data(obj, val);
 		break;
 		
 		case LXB_DOM_NODE_TYPE_ELEMENT:
@@ -506,17 +514,57 @@ int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val) {
 			} else {
 				ZVAL_EMPTY_STRING(val);
 			}
+			
+			return 1;
 		}
 		break;
-		
-		default:
-			ZVAL_NULL(val);
-		break;
 	}
-	return 1;
+	
+	ZVAL_NULL(val);
+	return 0;
 }
 
 int html5_dom_node__textContent_set(html5_dom_object_wrap_t *obj, zval *val) {
+	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
+	
+	switch (self->type) {
+		case LXB_DOM_NODE_TYPE_ATTRIBUTE:
+			return html5_dom_attr__value_set(obj, val);
+		break;
+		
+		case LXB_DOM_NODE_TYPE_TEXT:
+		case LXB_DOM_NODE_TYPE_COMMENT:
+		case LXB_DOM_NODE_TYPE_CDATA_SECTION:
+		case LXB_DOM_NODE_TYPE_PROCESSING_INSTRUCTION:
+			return html5_dom_characterdata__data_set(obj, val);
+		break;
+		
+		case LXB_DOM_NODE_TYPE_ELEMENT:
+		case LXB_DOM_NODE_TYPE_DOCUMENT_FRAGMENT:
+		{
+			if (Z_TYPE_P(val) != IS_STRING)
+				convert_to_string(val);
+			
+			size_t text_len = Z_STRLEN_P(val);
+			const char *text = Z_STRVAL_P(val);
+			
+			// Remove all child nodes
+			lxb_dom_node_t *child = self->first_child;
+			while (child) {
+				lxb_dom_node_t *next = child->next;
+				html5_dom_node_remove(child);
+				child = next;
+			}
+			
+			// Add new text node
+			lxb_dom_text_t *new_text = lxb_dom_document_create_text_node(self->owner_document, text, text_len);
+			lxb_dom_node_insert_child(self, lxb_dom_interface_node(new_text));
+			
+			return 1;
+		}
+		break;
+	}
+	
 	return 0;
 }
 
@@ -591,7 +639,21 @@ int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val) {
 }
 
 int html5_dom_attr__value_set(html5_dom_object_wrap_t *obj, zval *val) {
-	return 0;
+	lxb_dom_attr_t *self = lxb_dom_interface_attr(obj->ptr);
+	
+	if (Z_TYPE_P(val) != IS_STRING)
+		convert_to_string(val);
+	
+	size_t text_len = Z_STRLEN_P(val);
+	const char *text = Z_STRVAL_P(val);
+	
+	lxb_status_t ret = lxb_dom_attr_set_value(self, text, text_len);
+	if (ret != LXB_STATUS_OK) {
+		// TODO: exception
+		return 0;
+	}
+	
+	return 1;
 }
 
 int html5_dom_attr__ownerElement(html5_dom_object_wrap_t *obj, zval *val) {
@@ -684,7 +746,21 @@ int html5_dom_characterdata__data(html5_dom_object_wrap_t *obj, zval *val) {
 }
 
 int html5_dom_characterdata__data_set(html5_dom_object_wrap_t *obj, zval *val) {
-	return 0;
+	lxb_dom_character_data_t *self = lxb_dom_interface_character_data(obj->ptr);
+	
+	if (Z_TYPE_P(val) != IS_STRING)
+		convert_to_string(val);
+	
+	size_t text_len = Z_STRLEN_P(val);
+	const char *text = Z_STRVAL_P(val);
+	
+	lxb_status_t ret = lxb_dom_character_data_replace(self, text, text_len, 0, self->data.length);
+	if (ret != LXB_STATUS_OK) {
+		// TODO: exception
+		return 0;
+	}
+	
+	return 1;
 }
 
 int html5_dom_characterdata__length(html5_dom_object_wrap_t *obj, zval *val) {
