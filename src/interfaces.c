@@ -996,8 +996,8 @@ void html5_dom_interfaces_init() {
 		{"lastChild", html5_dom_node__lastChild, NULL}, 
 		{"previousSibling", html5_dom_node__previousSibling, NULL}, 
 		{"nextSibling", html5_dom_node__nextSibling, NULL}, 
-		{"nodeValue", html5_dom_node__nodeValue, NULL}, 
-		{"textContent", html5_dom_node__textContent, NULL}, 
+		{"nodeValue", {html5_dom_node__nodeValue, html5_dom_node__nodeValue_set}}, 
+		{"textContent", {html5_dom_node__textContent, html5_dom_node__textContent_set}}, 
 		{"private", {html5_dom_node__private, html5_dom_node__private_set}}, 
 		{"", NULL}, 
 	};

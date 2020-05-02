@@ -236,7 +236,9 @@ int html5_dom_node__lastChild(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__previousSibling(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__nextSibling(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__nodeValue(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__nodeValue_set(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val);
+int html5_dom_node__textContent_set(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__private(html5_dom_object_wrap_t *obj, zval *val);
 int html5_dom_node__private_set(html5_dom_object_wrap_t *obj, zval *val);
 

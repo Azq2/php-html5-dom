@@ -27,14 +27,17 @@ PHP_METHOD(HTML5_DOM_Node, getRootNode) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	html5_dom_node_to_zval(lxb_dom_interface_node(self->owner_document), return_value);
 }
+
 PHP_METHOD(HTML5_DOM_Node, hasChildNodes) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	RETURN_BOOL(self->first_child ? 1 : 0);
 }
+
 PHP_METHOD(HTML5_DOM_Node, normalize) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	html5_dom_node_normalize(self);
 }
+
 PHP_METHOD(HTML5_DOM_Node, cloneNode) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
@@ -44,9 +47,11 @@ PHP_METHOD(HTML5_DOM_Node, cloneNode) {
 	
 	html5_dom_node_to_zval(html5_dom_node_clone(self, deep, NULL), return_value);
 }
+
 PHP_METHOD(HTML5_DOM_Node, isEqualNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Node, isSameNode) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
@@ -57,9 +62,11 @@ PHP_METHOD(HTML5_DOM_Node, isSameNode) {
 	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj);
 	RETURN_BOOL(other_node == self);
 }
+
 PHP_METHOD(HTML5_DOM_Node, compareDocumentPosition) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Node, contains) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
@@ -102,6 +109,7 @@ PHP_METHOD(HTML5_DOM_Node, insertBefore) {
 	
 	html5_dom_node_to_zval(new_node, return_value);
 }
+
 PHP_METHOD(HTML5_DOM_Node, appendChild) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
@@ -113,6 +121,7 @@ PHP_METHOD(HTML5_DOM_Node, appendChild) {
 	lxb_dom_node_insert_child(self, child_node);
 	html5_dom_node_to_zval(child_node, return_value);
 }
+
 PHP_METHOD(HTML5_DOM_Node, replaceChild) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
@@ -128,6 +137,7 @@ PHP_METHOD(HTML5_DOM_Node, replaceChild) {
 	
 	html5_dom_node_to_zval(old_node, return_value);
 }
+
 PHP_METHOD(HTML5_DOM_Node, removeChild) {
 	HTML5_DOM_METHOD_PARAMS(lxb_dom_node_t);
 	
@@ -144,33 +154,43 @@ PHP_METHOD(HTML5_DOM_Node, removeChild) {
 PHP_METHOD(HTML5_DOM_Document, createElement) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createElementNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createDocumentFragment) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createTextNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createComment) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createCDATASection) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createProcessingInstruction) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, importNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, adoptNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createAttribute) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Document, createAttributeNS) {
 	
 }
@@ -179,15 +199,19 @@ PHP_METHOD(HTML5_DOM_Document, createAttributeNS) {
 PHP_METHOD(HTML5_DOM_CharacterData, substringData) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_CharacterData, appendData) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_CharacterData, insertData) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_CharacterData, deleteData) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_CharacterData, replaceData) {
 	
 }
@@ -201,66 +225,87 @@ PHP_METHOD(HTML5_DOM_Text, splitText) {
 PHP_METHOD(HTML5_DOM_Element, hasAttributes) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, getAttributeNames) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, getAttribute) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, getAttributeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, setAttribute) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, setAttributeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, removeAttribute) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, removeAttributeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, toggleAttribute) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, toggleAttributeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, hasAttribute) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, hasAttributeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, getAttributeNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, getAttributeNodeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, setAttributeNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, setAttributeNodeNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, removeAttributeNode) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, closest) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, matches) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, insertAdjacentElement) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, insertAdjacentText) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_Element, insertAdjacentHTML) {
 	
 }
@@ -274,21 +319,27 @@ PHP_METHOD(HTML5_DOM_NonElementParentNode, getElementById) {
 PHP_METHOD(HTML5_DOM_ParentNode, getElementsByTagName) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ParentNode, getElementsByTagNameNS) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ParentNode, getElementsByClassName) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ParentNode, prepend) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ParentNode, append) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ParentNode, querySelector) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ParentNode, querySelectorAll) {
 	
 }
@@ -297,12 +348,15 @@ PHP_METHOD(HTML5_DOM_ParentNode, querySelectorAll) {
 PHP_METHOD(HTML5_DOM_ChildNode, before) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ChildNode, after) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ChildNode, replaceWith) {
 	
 }
+
 PHP_METHOD(HTML5_DOM_ChildNode, remove) {
 	
 }
@@ -322,6 +376,7 @@ int html5_dom_node__nodeType(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_LONG(val, self->type);
 	return 1;
 }
+
 int html5_dom_node__nodeName(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	size_t str_len = 0;
@@ -333,55 +388,66 @@ int html5_dom_node__nodeName(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_node__baseURI(html5_dom_object_wrap_t *obj, zval *val) {
 	// TODO: implement
 	ZVAL_NULL(val);
 	return 1;
 }
+
 int html5_dom_node__isConnected(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	ZVAL_BOOL(val, self->parent ? 1 : 0);
 	return 1;
 }
+
 int html5_dom_node__ownerDocument(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	html5_dom_node_to_zval(lxb_dom_interface_node(self->owner_document), val);
 	return 1;
 }
+
 int html5_dom_node__parentNode(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	html5_dom_node_to_zval(self->parent, val);
 	return 1;
 }
+
 int html5_dom_node__parentElement(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	lxb_dom_node_t *parent = self->parent && self->parent->type == LXB_DOM_NODE_TYPE_ELEMENT ? self->parent : NULL;
 	html5_dom_node_to_zval(parent, val);
 	return 1;
 }
+
 int html5_dom_node__childNodes(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_node__firstChild(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	html5_dom_node_to_zval(self->first_child, val);
 	return 1;
 }
+
 int html5_dom_node__lastChild(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	html5_dom_node_to_zval(self->last_child, val);
 	return 1;
 }
+
 int html5_dom_node__previousSibling(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	html5_dom_node_to_zval(self->prev, val);
 	return 1;
 }
+
 int html5_dom_node__nextSibling(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	html5_dom_node_to_zval(self->next, val);
 	return 1;
 }
+
 int html5_dom_node__nodeValue(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	switch (self->type) {
@@ -412,6 +478,11 @@ int html5_dom_node__nodeValue(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
+int html5_dom_node__nodeValue_set(html5_dom_object_wrap_t *obj, zval *val) {
+	return 0;
+}
+
 int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	switch (self->type) {
@@ -444,9 +515,15 @@ int html5_dom_node__textContent(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
+int html5_dom_node__textContent_set(html5_dom_object_wrap_t *obj, zval *val) {
+	return 0;
+}
+
 int html5_dom_node__private(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_node__private_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
@@ -464,6 +541,7 @@ int html5_dom_attr__namespaceURI(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_attr__prefix(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_attr_t *self = lxb_dom_interface_attr(obj->ptr);
 	size_t str_len = 0;
@@ -475,6 +553,7 @@ int html5_dom_attr__prefix(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_attr__localName(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_attr_t *self = lxb_dom_interface_attr(obj->ptr);
 	size_t str_len = 0;
@@ -486,6 +565,7 @@ int html5_dom_attr__localName(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_attr__name(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_attr_t *self = lxb_dom_interface_attr(obj->ptr);
 	size_t str_len = 0;
@@ -497,6 +577,7 @@ int html5_dom_attr__name(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_attr_t *self = lxb_dom_interface_attr(obj->ptr);
 	size_t str_len = 0;
@@ -508,9 +589,11 @@ int html5_dom_attr__value(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_attr__value_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_attr__ownerElement(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_attr_t *self = lxb_dom_interface_attr(obj->ptr);
 	html5_dom_node_to_zval(lxb_dom_interface_node(self->owner), val);
@@ -521,14 +604,17 @@ int html5_dom_document__URL(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_NULL(val);
 	return 1;
 }
+
 int html5_dom_document__documentURI(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_NULL(val);
 	return 1;
 }
+
 int html5_dom_document__origin(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_NULL(val);
 	return 1;
 }
+
 int html5_dom_document__compatMode(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_document_t *self = lxb_dom_interface_document(obj->ptr);
 	if (self->compat_mode == LXB_DOM_DOCUMENT_CMODE_QUIRKS) {
@@ -540,25 +626,31 @@ int html5_dom_document__compatMode(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_document__characterSet(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_STRINGL(val, "UTF-8", sizeof("UTF-8") - 1);
 	return 1;
 }
+
 int html5_dom_document__charset(html5_dom_object_wrap_t *obj, zval *val) {
 	return html5_dom_document__characterSet(obj, val);
 }
+
 int html5_dom_document__inputEncoding(html5_dom_object_wrap_t *obj, zval *val) {
 	return html5_dom_document__characterSet(obj, val);
 }
+
 int html5_dom_document__contentType(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_STRINGL(val, "text/html", sizeof("text/html") - 1);
 	return 1;
 }
+
 int html5_dom_document__doctype(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_document_t *self = lxb_dom_interface_document(obj->ptr);
 	html5_dom_node_to_zval(lxb_dom_interface_node(self->doctype), val);
 	return 1;
 }
+
 int html5_dom_document__documentElement(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_document_t *self = lxb_dom_interface_document(obj->ptr);
 	html5_dom_node_to_zval(lxb_dom_interface_node(self->element), val);
@@ -571,11 +663,13 @@ int html5_dom_documenttype__name(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_STRINGL(val, self->name.data, self->name.length);
 	return 1;
 }
+
 int html5_dom_documenttype__publicId(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_document_type_t *self = lxb_dom_interface_document_type(obj->ptr);
 	ZVAL_STRINGL(val, self->public_id.data, self->public_id.length);
 	return 1;
 }
+
 int html5_dom_documenttype__systemId(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_document_type_t *self = lxb_dom_interface_document_type(obj->ptr);
 	ZVAL_STRINGL(val, self->system_id.data, self->system_id.length);
@@ -588,9 +682,11 @@ int html5_dom_characterdata__data(html5_dom_object_wrap_t *obj, zval *val) {
 	ZVAL_STRINGL(val, self->data.data, self->data.length);
 	return 1;
 }
+
 int html5_dom_characterdata__data_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_characterdata__length(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_character_data_t *self = lxb_dom_interface_character_data(obj->ptr);
 	ZVAL_LONG(val, self->data.length);
@@ -657,6 +753,7 @@ int html5_dom_element__prefix(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__localName(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_element_t *self = lxb_dom_interface_element(obj->ptr);
 	size_t str_len = 0;
@@ -668,6 +765,7 @@ int html5_dom_element__localName(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__tagName(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_element_t *self = lxb_dom_interface_element(obj->ptr);
 	size_t str_len = 0;
@@ -679,6 +777,7 @@ int html5_dom_element__tagName(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__id(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_element_t *self = lxb_dom_interface_element(obj->ptr);
 	size_t str_len = 0;
@@ -690,9 +789,11 @@ int html5_dom_element__id(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__id_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_element__className(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_element_t *self = lxb_dom_interface_element(obj->ptr);
 	size_t str_len = 0;
@@ -704,15 +805,19 @@ int html5_dom_element__className(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__className_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_element__classList(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_element__attributes(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_element__innerHTML(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	
@@ -727,9 +832,11 @@ int html5_dom_element__innerHTML(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__innerHTML_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_element__outerHTML(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	
@@ -744,6 +851,7 @@ int html5_dom_element__outerHTML(html5_dom_object_wrap_t *obj, zval *val) {
 	}
 	return 1;
 }
+
 int html5_dom_element__outerHTML_set(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
@@ -752,6 +860,7 @@ int html5_dom_element__outerHTML_set(html5_dom_object_wrap_t *obj, zval *val) {
 int html5_dom_parentnode__children(html5_dom_object_wrap_t *obj, zval *val) {
 	return 0;
 }
+
 int html5_dom_parentnode__firstElementChild(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	lxb_dom_node_t *node = self->first_child;
@@ -760,6 +869,7 @@ int html5_dom_parentnode__firstElementChild(html5_dom_object_wrap_t *obj, zval *
 	html5_dom_node_to_zval(node, val);
 	return 1;
 }
+
 int html5_dom_parentnode__lastElementChild(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	lxb_dom_node_t *node = self->last_child;
@@ -768,6 +878,7 @@ int html5_dom_parentnode__lastElementChild(html5_dom_object_wrap_t *obj, zval *v
 	html5_dom_node_to_zval(node, val);
 	return 1;
 }
+
 int html5_dom_parentnode__childElementCount(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	zend_long count = 0;
@@ -790,6 +901,7 @@ int html5_dom_nondocumenttypechildnode__previousElementSibling(html5_dom_object_
 	html5_dom_node_to_zval(node, val);
 	return 1;
 }
+
 int html5_dom_nondocumenttypechildnode__nextElementSibling(html5_dom_object_wrap_t *obj, zval *val) {
 	lxb_dom_node_t *self = lxb_dom_interface_node(obj->ptr);
 	lxb_dom_node_t *node = self->prev;

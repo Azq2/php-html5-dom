@@ -250,10 +250,10 @@ class Node extends EventTarget {
 	/** @var Node|null|readonly */
 	public $nextSibling;
 	
-	/** @var string|null|readonly */
+	/** @var string|null */
 	public $nodeValue;
 	
-	/** @var string|null|readonly */
+	/** @var string|null */
 	public $textContent;
 	
 	/** @var mixed */
