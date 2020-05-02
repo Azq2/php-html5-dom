@@ -45,7 +45,7 @@ PHP_METHOD(HTML5_DOM_Node, cloneNode) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|b", &deep) == FAILURE)
 		WRONG_PARAM_COUNT;
 	
-	html5_dom_node_to_zval(html5_dom_node_clone(self, deep, NULL), return_value);
+	html5_dom_node_to_zval(html5_dom_node_clone(self, deep, false, NULL), return_value);
 }
 
 PHP_METHOD(HTML5_DOM_Node, isEqualNode) {
@@ -59,7 +59,7 @@ PHP_METHOD(HTML5_DOM_Node, isSameNode) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O!", &other_node_obj, html5_dom_node_ce) == FAILURE)
 		WRONG_PARAM_COUNT;
 	
-	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj);
+	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj, self->owner_document);
 	RETURN_BOOL(other_node == self);
 }
 
@@ -74,7 +74,7 @@ PHP_METHOD(HTML5_DOM_Node, contains) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O!", &other_node_obj, html5_dom_node_ce) == FAILURE)
 		WRONG_PARAM_COUNT;
 	
-	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj);
+	lxb_dom_node_t *other_node = html5_dom_zval_to_node(other_node_obj, self->owner_document);
 	
 	if (!other_node || other_node->owner_document != self->owner_document)
 		RETURN_FALSE;
@@ -98,8 +98,8 @@ PHP_METHOD(HTML5_DOM_Node, insertBefore) {
 	// The new child element contains the parent.
 	// The node before which the new node is to be inserted is not a child of this node.
 	
-	lxb_dom_node_t *new_node = html5_dom_zval_to_node(new_node_obj);
-	lxb_dom_node_t *ref_node = html5_dom_zval_to_node(ref_node_obj);
+	lxb_dom_node_t *new_node = html5_dom_zval_to_node(new_node_obj, self->owner_document);
+	lxb_dom_node_t *ref_node = html5_dom_zval_to_node(ref_node_obj, self->owner_document);
 	
 	if (ref_node) {
 		lxb_dom_node_insert_before(ref_node, new_node);
@@ -117,7 +117,7 @@ PHP_METHOD(HTML5_DOM_Node, appendChild) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &child_node_obj, html5_dom_node_ce) == FAILURE)
 		WRONG_PARAM_COUNT;
 	
-	lxb_dom_node_t *child_node = html5_dom_zval_to_node(child_node_obj);
+	lxb_dom_node_t *child_node = html5_dom_zval_to_node(child_node_obj, self->owner_document);
 	lxb_dom_node_insert_child(self, child_node);
 	html5_dom_node_to_zval(child_node, return_value);
 }
@@ -129,8 +129,8 @@ PHP_METHOD(HTML5_DOM_Node, replaceChild) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "OO", &new_node_obj, html5_dom_node_ce, &old_node_obj, html5_dom_node_ce) == FAILURE)
 		WRONG_PARAM_COUNT;
 	
-	lxb_dom_node_t *new_node = html5_dom_zval_to_node(new_node_obj);
-	lxb_dom_node_t *old_node = html5_dom_zval_to_node(old_node_obj);
+	lxb_dom_node_t *new_node = html5_dom_zval_to_node(new_node_obj, self->owner_document);
+	lxb_dom_node_t *old_node = html5_dom_zval_to_node(old_node_obj, self->owner_document);
 	
 	lxb_dom_node_insert_before(old_node, new_node);
 	lxb_dom_node_remove(old_node);
@@ -145,7 +145,7 @@ PHP_METHOD(HTML5_DOM_Node, removeChild) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &child_node_obj, html5_dom_node_ce) == FAILURE)
 		WRONG_PARAM_COUNT;
 	
-	lxb_dom_node_t *child_node = html5_dom_zval_to_node(child_node_obj);
+	lxb_dom_node_t *child_node = html5_dom_zval_to_node(child_node_obj, self->owner_document);
 	lxb_dom_node_remove(child_node);
 	html5_dom_node_to_zval(child_node, return_value);
 }
@@ -180,11 +180,44 @@ PHP_METHOD(HTML5_DOM_Document, createProcessingInstruction) {
 }
 
 PHP_METHOD(HTML5_DOM_Document, importNode) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_document_t);
 	
+	zend_bool deep = 0;
+	zval *node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O|b", &node_obj, html5_dom_node_ce, &deep) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	if (self->node.type == LXB_DOM_NODE_TYPE_DOCUMENT || self->node.type == LXB_DOM_NODE_TYPE_UNDEF) {
+		// TODO: throw exception
+	}
+	
+	lxb_dom_node_t *new_node = html5_dom_zval_to_node(node_obj, NULL);
+	new_node = html5_dom_node_clone(new_node, deep, false, self);
+	
+	if (!new_node) {
+		// TODO: throw exception
+	}
+	
+	html5_dom_node_to_zval(new_node, return_value);
 }
 
 PHP_METHOD(HTML5_DOM_Document, adoptNode) {
+	HTML5_DOM_METHOD_PARAMS(lxb_dom_document_t);
 	
+	zval *node_obj;
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "O", &node_obj, html5_dom_node_ce) == FAILURE)
+		WRONG_PARAM_COUNT;
+	
+	if (self->node.type == LXB_DOM_NODE_TYPE_DOCUMENT || self->node.type == LXB_DOM_NODE_TYPE_UNDEF) {
+		// TODO: throw exception
+	}
+	
+	lxb_dom_node_t *new_node = html5_dom_zval_to_node(node_obj, self);
+	if (!new_node) {
+		// TODO: throw exception
+	}
+	
+	html5_dom_node_to_zval(new_node, return_value);
 }
 
 PHP_METHOD(HTML5_DOM_Document, createAttribute) {
@@ -552,7 +585,7 @@ int html5_dom_node__textContent_set(html5_dom_object_wrap_t *obj, zval *val) {
 			lxb_dom_node_t *child = self->first_child;
 			while (child) {
 				lxb_dom_node_t *next = child->next;
-				html5_dom_node_remove(child);
+				html5_dom_node_remove(child, true);
 				child = next;
 			}
 			
@@ -1020,7 +1053,7 @@ void html5_dom_node_text(lxb_dom_node_t *node, smart_str *str) {
 	}
 }
 
-lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_document_t *new_document) {
+lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, bool adopt, lxb_dom_document_t *new_document) {
 	if (!new_document)
 		new_document = node->owner_document;
 	
@@ -1057,7 +1090,7 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 			// Copy all attributes
 			lxb_dom_attr_t *attr = old_element->first_attr;
 			while (attr) {
-				lxb_dom_attr_t *new_attr = lxb_dom_interface_attr(html5_dom_node_clone(lxb_dom_interface_node(attr), false, new_document));
+				lxb_dom_attr_t *new_attr = lxb_dom_interface_attr(html5_dom_node_clone(lxb_dom_interface_node(attr), false, adopt, new_document));
 				if (!new_attr)
 					return NULL;
 				lxb_dom_element_attr_append(new_element, new_attr);
@@ -1069,7 +1102,7 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 			if (deep) {
 				lxb_dom_node_t *child = node->first_child;
 				while (child) {
-					lxb_dom_node_t *new_child = html5_dom_node_clone(child, true, new_document);
+					lxb_dom_node_t *new_child = html5_dom_node_clone(child, true, adopt, new_document);
 					if (!new_child)
 						return NULL;
 					
@@ -1077,6 +1110,11 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 					
 					child = child->next;
 				}
+			}
+			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_element));
 			}
 			
 			return lxb_dom_interface_node(new_element);
@@ -1119,6 +1157,11 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 			if (old_attr->value)
 				lxb_dom_attr_set_value(new_attr, old_attr->value->data, old_attr->value->length);
 			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_attr));
+			}
+			
 			return lxb_dom_interface_node(new_attr);
 		}
 		break;
@@ -1130,6 +1173,12 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 				new_document, 
 				old_char_data->data.data, old_char_data->data.length
 			);
+			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_text));
+			}
+			
 			return lxb_dom_interface_node(new_text);
 		}
 		break;
@@ -1141,6 +1190,12 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 				new_document, 
 				old_char_data->data.data, old_char_data->data.length
 			);
+			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_cdata));
+			}
+			
 			return lxb_dom_interface_node(new_cdata);
 		}
 		break;
@@ -1156,6 +1211,11 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 				old_char_data->data.data, old_char_data->data.length
 			);
 			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_proc_instr));
+			}
+			
 			return lxb_dom_interface_node(new_proc_instr);
 		}
 		break;
@@ -1167,6 +1227,12 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 				new_document, 
 				old_char_data->data.data, old_char_data->data.length
 			);
+			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_comment));
+			}
+			
 			return lxb_dom_interface_node(new_comment);
 		}
 		break;
@@ -1192,6 +1258,11 @@ lxb_dom_node_t *html5_dom_node_clone(lxb_dom_node_t *node, bool deep, lxb_dom_do
 			
 			if (!lexbor_str_copy(&new_doctype->system_id, &old_doctype->system_id, new_doctype->node.owner_document->text))
 				return NULL;
+			
+			if (adopt && new_document != node->owner_document) {
+				// adopt node
+				html5_dom_node_replace_intern(node, lxb_dom_interface_node(new_doctype));
+			}
 			
 			return lxb_dom_interface_node(new_doctype);
 		}
@@ -1223,12 +1294,13 @@ bool html5_dom_node_normalize(lxb_dom_node_t *node) {
 	lxb_dom_node_t *cursor = node->first_child;
 	
 	while (cursor) {
+		lxb_dom_node_t *next = node->next;
 		if (cursor->type == LXB_DOM_NODE_TYPE_TEXT) {
 			lxb_dom_character_data_t *char_data = lxb_dom_interface_character_data(cursor);
 			if (first_char_data) {
 				if (char_data->data.length)
 					html5_dom_characterdata_append(first_char_data, char_data->data.data, char_data->data.length);
-				html5_dom_node_remove(cursor);
+				html5_dom_node_remove(cursor, true);
 			} else {
 				first_char_data = char_data;
 			}
@@ -1238,13 +1310,13 @@ bool html5_dom_node_normalize(lxb_dom_node_t *node) {
 		} else {
 			first_char_data = NULL;
 		}
-		cursor = node->next;
+		cursor = next;
 	}
 	
 	return true;
 }
 
-void html5_dom_node_remove(lxb_dom_node_t *node) {
+void html5_dom_node_remove(lxb_dom_node_t *node, bool can_destroy) {
 	if (node->owner_document) {
 		lxb_dom_document_t *dom_document = lxb_dom_interface_document(node->owner_document);
 		if (lxb_dom_interface_node(dom_document->element) == node)
@@ -1253,6 +1325,33 @@ void html5_dom_node_remove(lxb_dom_node_t *node) {
 			dom_document->doctype = NULL;
 	}
 	lxb_dom_node_remove(node);
+	
+	if (can_destroy) {
+		switch (node->type) {
+			case LXB_DOM_NODE_TYPE_ELEMENT:
+				if (!node->user && !node->first_child && !lxb_dom_interface_element(node)->first_attr)
+					lxb_dom_node_destroy(node);
+			break;
+			
+			default:
+				if (!node->user && !node->first_child)
+					lxb_dom_node_destroy(node);
+			break;
+		}
+	}
+}
+
+void html5_dom_node_replace_intern(lxb_dom_node_t *old_node, lxb_dom_node_t *new_node) {
+	html5_dom_node_remove(old_node, true);
+	
+	html5_dom_object_wrap_t *intern = (html5_dom_object_wrap_t *) old_node->user;
+	if (intern) {
+		old_node->user = NULL;
+		intern->ptr = new_node;
+		new_node->user = intern;
+		html5_dom_document_delref(lxb_dom_interface_document(old_node->owner_document));
+		html5_dom_document_addref(lxb_dom_interface_document(new_node->owner_document));
+	}
 }
 
 static void _node_free_handler(html5_dom_object_wrap_t *intern) {

@@ -320,9 +320,9 @@ class Document extends Node {
 	/** @var Element|null|readonly */
 	public $documentElement;
 	
-	public function createElement(string $localName) : Element { }
+	public function createElement(string $localName, array $options = NULL) : Element { }
 	
-	public function createElementNS(string $namespace, string $qualifiedName) : Element { }
+	public function createElementNS(string $namespace, string $qualifiedName, array $options = NULL) : Element { }
 	public function createDocumentFragment() : DocumentFragment { }
 	public function createTextNode(string $data) : Text { }
 	public function createComment(string $data) : Comment { }
